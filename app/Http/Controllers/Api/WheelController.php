@@ -8,19 +8,36 @@ use App\Http\Requests\StoreWheelRequest;
 use App\Http\Requests\UpdateWheelRequest;
 use App\Models\Sector;
 use App\Enums\StatusWeelType;
+use Illuminate\Http\Request;
 
 class WheelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $wheels = Wheel::with(['sectors.prize'])->get();
-        foreach($wheels as $wheel){
+        $query = Wheel::with(['sectors.prize']);
+
+        if ($request->has('name') && $request->name != '') {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        $sortField = $request->input('sort', 'id');
+        $sortOrder = $request->input('order', 'asc');
+        $query->orderBy($sortField, $sortOrder);
+
+        $wheels = $query->get();
+
+        foreach ($wheels as $wheel) {
             $wheel->days_of_week = json_decode($wheel->days_of_week);
         }
-        return response()->json($wheels);
+
+        return response()->json($wheels, 200);
     }
 
     /**
