@@ -1,0 +1,257 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Wheel fortune doc API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/": {},
+        "/api/promocode": {
+            "get": {
+                "tags": [
+                    "Промокоды"
+                ],
+                "summary": "Получение списка промокодов",
+                "operationId": "bd471a9cafdaf551d9c0a07a274be5af",
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Промокоды"
+                ],
+                "summary": "Создание промокода",
+                "operationId": "1937e48037402a557b7aca7b5ca2074e",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "type_discount": {
+                                                "type": "enum",
+                                                "example": "Процентная"
+                                            },
+                                            "discount_value": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 15
+                                            },
+                                            "expiry_date": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "2025-05-01"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "abc123"
+                                        },
+                                        "type_discount": {
+                                            "type": "enum",
+                                            "example": "Процентная"
+                                        },
+                                        "discount_value": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 15
+                                        },
+                                        "expiry_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2025-05-01"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/promocode/{promocode}": {
+            "get": {
+                "tags": [
+                    "Промокоды"
+                ],
+                "summary": "Получение промокода по id",
+                "operationId": "06dc8759427b622c7f175a99b333ca77",
+                "parameters": [
+                    {
+                        "name": "promocode",
+                        "in": "path",
+                        "description": "id промокода",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Промокоды"
+                ],
+                "summary": "Обновление промокода  по id",
+                "operationId": "24bd839b6f4f57241f6bd3eaf088f66c",
+                "parameters": [
+                    {
+                        "name": "promocode",
+                        "in": "path",
+                        "description": "id промокода",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "type_discount": {
+                                                "type": "enum",
+                                                "example": "Процентная"
+                                            },
+                                            "discount_value": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 15
+                                            },
+                                            "expiry_date": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "2025-05-01"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "abc123"
+                                        },
+                                        "type_discount": {
+                                            "type": "enum",
+                                            "example": "Процентная"
+                                        },
+                                        "discount_value": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 15
+                                        },
+                                        "expiry_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2025-05-01"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Промокоды"
+                ],
+                "summary": "Удаление промокода по id",
+                "operationId": "34968fe95f4ae51ed84278b395eecb89",
+                "parameters": [
+                    {
+                        "name": "promocode",
+                        "in": "path",
+                        "description": "id промокода",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Промокод успешно удален"
+                    },
+                    "403": {
+                        "description": "Этот приз удалить нельзя, его выйграли"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Промокоды",
+            "description": "Промокоды"
+        }
+    ]
+}
