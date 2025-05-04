@@ -11,7 +11,33 @@ use App\Models\UserPrize;
 class MaterialThingController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 
+     * @OA\Get(
+     *    path="/api/material-thing",
+     *    summary="Получение списка вещей",
+     *    tags={"Вещи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     *    
+     * )
      */
     public function index()
     {
@@ -19,7 +45,44 @@ class MaterialThingController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 
+     * @OA\Post(
+     *    path="/api/material-thing",
+     *    summary="Создание вещи",
+     *    tags={"Вещи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     * 
+     *    @OA\RequestBody(
+     *        @OA\JsonContent(
+     *            allOf={
+     *                @OA\Schema(
+     *                    @OA\Property(property="name", type="string", example="Блокнот А5"),
+     *                )
+     *            }
+     *        )
+     *    ),
+     * 
+     *    @OA\Response(
+     *        response=201,
+     *        description="ОК",
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     * )
      */
     public function store(StoreMaterial_thingRequest $request)
     {
@@ -31,7 +94,41 @@ class MaterialThingController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 
+     * @OA\Get(
+     *    path="/api/material-thing/{id}",
+     *    summary="Получение вещи по id",
+     *    tags={"Вещи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id вещи",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *      
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     * )
      */
     public function show($id)
     {
@@ -40,7 +137,52 @@ class MaterialThingController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * 
+     * @OA\Put(
+     *    path="/api/material-thing/{id}",
+     *    summary="Обновление вещи  по id",
+     *    tags={"Вещи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id вещи",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1
+     *    ),
+     * 
+     * 
+     *    @OA\RequestBody(
+     *        @OA\JsonContent(
+     *            allOf={
+     *                @OA\Schema(
+     *                    @OA\Property(property="name", type="string", example="Блокнот А5"),
+     *                )
+     *            }
+     *        )
+     *    ),
+     * 
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     * )
      */
     public function update(UpdateMaterial_thingRequest $request, $id)
     {
@@ -52,7 +194,38 @@ class MaterialThingController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 
+     * @OA\Delete(
+     *    path="/api/material-thing/{id}",
+     *    summary="Удаление вещи по id",
+     *    tags={"Вещи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id вещи",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="Вещь успешно удалена",  
+     *    ),
+     * 
+     *    @OA\Response(
+     *        response=403,
+     *        description="Этот приз удалить нельзя, его выйграли",  
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    )
+     * )
      */
     public function destroy($id)
     {

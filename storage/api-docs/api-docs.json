@@ -6,6 +6,832 @@
     },
     "paths": {
         "/api/": {},
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Регистрация пользователя",
+                "operationId": "c7bb21a0d87049e161b8e4c9b0d909f2",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "username": {
+                                                "type": "string",
+                                                "example": "user123"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "example": "qwerty12345"
+                                            },
+                                            "surname": {
+                                                "type": "string",
+                                                "example": "Иванов"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Иван"
+                                            },
+                                            "patronymic": {
+                                                "type": "string",
+                                                "example": "Иванович"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Пользователь успешно зарегистрирован",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Пользователь успешно зарегистрирован"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Авторизация пользователя",
+                "operationId": "dd51a484b7fa0f97c7680fdbde14cf5f",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "username": {
+                                                "type": "string",
+                                                "example": "user123"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "example": "qwerty12345"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    }
+                }
+            }
+        },
+        "/api/auth/show": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Получить информацию о текущем пользователе",
+                "operationId": "f2231a68911a1efb2db43651ce16c938",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение данных пользователя"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Выход пользователя",
+                "operationId": "df9bdc6c7a6d9f20b983526b2ec0f698",
+                "responses": {
+                    "200": {
+                        "description": "Выход произошел успешно"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Обновление токена",
+                "operationId": "30c20c52f5f72828d8c531fd7c9ea3e7",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/empty-prize": {
+            "get": {
+                "tags": [
+                    "Пустые призы"
+                ],
+                "summary": "Получение списка пустых призов",
+                "operationId": "2f951e98663a5beb85b386ee6b059541",
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Пустые призы"
+                ],
+                "summary": "Создание пустого приза",
+                "operationId": "dc758cfa76a4a7ac237280b0c3dda72c",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Попытка"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/empty-prize/{id}": {
+            "get": {
+                "tags": [
+                    "Пустые призы"
+                ],
+                "summary": "Получение пустого приза по id",
+                "operationId": "d93f6d2826fc63bb787c59b16900f241",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id пустого приза",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Пустые призы"
+                ],
+                "summary": "Обновление пустого приза по id",
+                "operationId": "3b7f61a86d156d0702bf38cd6b09a09e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id пустого приза",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Попытка"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Пустые призы"
+                ],
+                "summary": "Удаление пустого приза по id",
+                "operationId": "c1f1401c6d6cae68d31114b0449c1dd4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id пустого приза",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Пустой приз успешно удален"
+                    },
+                    "403": {
+                        "description": "Этот приз удалить нельзя, его выйграли"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/material-thing": {
+            "get": {
+                "tags": [
+                    "Вещи"
+                ],
+                "summary": "Получение списка вещей",
+                "operationId": "53182061aec9bb8bf72386e16e5dd057",
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Вещи"
+                ],
+                "summary": "Создание вещи",
+                "operationId": "7460baaa36a6e7b992356ad1e9ddca1c",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Блокнот А5"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/material-thing/{id}": {
+            "get": {
+                "tags": [
+                    "Вещи"
+                ],
+                "summary": "Получение вещи по id",
+                "operationId": "5e4c7213feb4e5678bcd2bf945856c28",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id вещи",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Вещи"
+                ],
+                "summary": "Обновление вещи  по id",
+                "operationId": "4da5f791e2f9ab47db7561cbafbff914",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id вещи",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Блокнот А5"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Вещи"
+                ],
+                "summary": "Удаление вещи по id",
+                "operationId": "78d11539508be32b509403d3a3a54e65",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id вещи",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Вещь успешно удалена"
+                    },
+                    "403": {
+                        "description": "Этот приз удалить нельзя, его выйграли"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
         "/api/promocode": {
             "get": {
                 "tags": [
@@ -16,6 +842,38 @@
                 "responses": {
                     "200": {
                         "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -63,28 +921,33 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "ОК",
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "name": {
+                                        "message": {
                                             "type": "string",
-                                            "example": "abc123"
-                                        },
-                                        "type_discount": {
-                                            "type": "enum",
-                                            "example": "Процентная"
-                                        },
-                                        "discount_value": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 15
-                                        },
-                                        "expiry_date": {
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
                                             "type": "string",
-                                            "format": "date",
-                                            "example": "2025-05-01"
+                                            "example": "Forbidden."
                                         }
                                     },
                                     "type": "object"
@@ -95,21 +958,23 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
                     }
                 ]
             }
         },
-        "/api/promocode/{promocode}": {
+        "/api/promocode/{id}": {
             "get": {
                 "tags": [
                     "Промокоды"
                 ],
                 "summary": "Получение промокода по id",
-                "operationId": "06dc8759427b622c7f175a99b333ca77",
+                "operationId": "84666fe200f6504a3aedcfa3b645f718",
                 "parameters": [
                     {
-                        "name": "promocode",
+                        "name": "id",
                         "in": "path",
                         "description": "id промокода",
                         "required": true,
@@ -119,11 +984,45 @@
                 "responses": {
                     "200": {
                         "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
                     }
                 ]
             },
@@ -132,10 +1031,10 @@
                     "Промокоды"
                 ],
                 "summary": "Обновление промокода  по id",
-                "operationId": "24bd839b6f4f57241f6bd3eaf088f66c",
+                "operationId": "6e5832aecfa890881d04944c79ec888f",
                 "parameters": [
                     {
-                        "name": "promocode",
+                        "name": "id",
                         "in": "path",
                         "description": "id промокода",
                         "required": true,
@@ -173,28 +1072,33 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "ОК",
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "name": {
+                                        "message": {
                                             "type": "string",
-                                            "example": "abc123"
-                                        },
-                                        "type_discount": {
-                                            "type": "enum",
-                                            "example": "Процентная"
-                                        },
-                                        "discount_value": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 15
-                                        },
-                                        "expiry_date": {
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
                                             "type": "string",
-                                            "format": "date",
-                                            "example": "2025-05-01"
+                                            "example": "Forbidden."
                                         }
                                     },
                                     "type": "object"
@@ -205,7 +1109,9 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
                     }
                 ]
             },
@@ -214,10 +1120,10 @@
                     "Промокоды"
                 ],
                 "summary": "Удаление промокода по id",
-                "operationId": "34968fe95f4ae51ed84278b395eecb89",
+                "operationId": "e7a25a7c3ca299f12033c550ce882a89",
                 "parameters": [
                     {
-                        "name": "promocode",
+                        "name": "id",
                         "in": "path",
                         "description": "id промокода",
                         "required": true,
@@ -230,11 +1136,29 @@
                     },
                     "403": {
                         "description": "Этот приз удалить нельзя, его выйграли"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
                     }
                 ]
             }
@@ -249,6 +1173,18 @@
         }
     },
     "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Пустые призы",
+            "description": "Пустые призы"
+        },
+        {
+            "name": "Вещи",
+            "description": "Вещи"
+        },
         {
             "name": "Промокоды",
             "description": "Промокоды"

@@ -22,8 +22,22 @@ class PromocodeController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
-     *      
+     *
      *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
      * )
      */
     public function index()
@@ -37,7 +51,7 @@ class PromocodeController extends Controller
      *    path="/api/promocode",
      *    summary="Создание промокода",
      *    tags={"Промокоды"},
-     *    security={{"bearerAuth":{} }},
+     *    security={{"bearerAuth":{"role": "admin"} }},
      * 
      * 
      *    @OA\RequestBody(
@@ -55,13 +69,22 @@ class PromocodeController extends Controller
      *    @OA\Response(
      *        response=201,
      *        description="ОК",
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
      *        @OA\JsonContent(
-     *            @OA\Property(property="name", type="string", example="abc123"),
-     *            @OA\Property(property="type_discount", type="enum", example="Процентная"),
-     *            @OA\Property(property="discount_value", type="float", example=15),
-     *            @OA\Property(property="expiry_date", type="date", example="2025-05-01"),
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
      *        )
      *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
      * )
      */
     public function store(StorePromocodeRequest $request)
@@ -79,15 +102,15 @@ class PromocodeController extends Controller
     /**
      * 
      * @OA\Get(
-     *    path="/api/promocode/{promocode}",
+     *    path="/api/promocode/{id}",
      *    summary="Получение промокода по id",
      *    tags={"Промокоды"},
-     *    security={{"bearerAuth":{} }},
+     *    security={{"bearerAuth":{"role": "admin"} }},
      * 
      *    @OA\Parameter(
      *        description="id промокода",
      *        in="path",
-     *        name="promocode",
+     *        name="id",
      *        required=true,
      *        example=1
      *    ),
@@ -97,6 +120,20 @@ class PromocodeController extends Controller
      *        description="ОК",
      *      
      *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden")
+     *        )
+     *    )
      * )
      */
     public function show(Promocode $promocode)
@@ -109,15 +146,15 @@ class PromocodeController extends Controller
     /**
      * 
      * @OA\Put(
-     *    path="/api/promocode/{promocode}",
+     *    path="/api/promocode/{id}",
      *    summary="Обновление промокода  по id",
      *    tags={"Промокоды"},
-     *    security={{"bearerAuth":{} }},
+     *    security={{"bearerAuth":{"role": "admin"} }},
      * 
      *    @OA\Parameter(
      *        description="id промокода",
      *        in="path",
-     *        name="promocode",
+     *        name="id",
      *        required=true,
      *        example=1
      *    ),
@@ -138,13 +175,22 @@ class PromocodeController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
      *        @OA\JsonContent(
-     *            @OA\Property(property="name", type="string", example="abc123"),
-     *            @OA\Property(property="type_discount", type="enum", example="Процентная"),
-     *            @OA\Property(property="discount_value", type="float", example=15),
-     *            @OA\Property(property="expiry_date", type="date", example="2025-05-01"),
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
      *        )
      *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
      * )
      */
     public function update(UpdatePromocodeRequest $request, $id)
@@ -162,15 +208,15 @@ class PromocodeController extends Controller
     /**
      * 
      * @OA\Delete(
-     *    path="/api/promocode/{promocode}",
+     *    path="/api/promocode/{id}",
      *    summary="Удаление промокода по id",
      *    tags={"Промокоды"},
-     *    security={{"bearerAuth":{} }},
+     *    security={{"bearerAuth":{"role": "admin"} }},
      * 
      *    @OA\Parameter(
      *        description="id промокода",
      *        in="path",
-     *        name="promocode",
+     *        name="id",
      *        required=true,
      *        example=1
      *    ),
@@ -184,6 +230,14 @@ class PromocodeController extends Controller
      *        response=403,
      *        description="Этот приз удалить нельзя, его выйграли",  
      *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    )
+     * 
      * )
      */
     public function destroy($id)
