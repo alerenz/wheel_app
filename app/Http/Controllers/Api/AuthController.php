@@ -59,7 +59,7 @@ class AuthController extends Controller
             'patronymic'=>$request->patronymic,
             'role'=>'user',
             'active'=>true,
-            
+            'attempts'=>0
             
         ]);
 
