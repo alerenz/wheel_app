@@ -20,7 +20,33 @@ use App\Enums\StatusWeelType;
 class SectorController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 
+     * @OA\Get(
+     *    path="/api/sector",
+     *    summary="Получение списка секторов",
+     *    tags={"Секторы"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     * )
      */
     public function index()
     {
@@ -40,6 +66,55 @@ class SectorController extends Controller
             }
         return response()->json($sectors, 200);
     }
+
+    /**
+     * 
+     * @OA\Post(
+     *    path="/api/sector",
+     *    summary="Создание сектора",
+     *    tags={"Секторы"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     * 
+     *    @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Промокод на скидку 15%"),
+     *             @OA\Property(
+     *                 property="prize_type",
+     *                 type="string",
+     *                 enum={"promocode", "material_thing", "empty_prize"},
+     *                 example="promocode"
+     *             ),
+     *             @OA\Property(property="prize_id", type="integer", example=1),
+     *             @OA\Property(property="wheel_id", type="integer", example=1),
+     *             @OA\Property(property="count", type="integer", example=100),
+     *             required={"name", "prize_type","prize_id", "wheel_id", "count"}
+     *         )
+     *     ),
+     * 
+     *    @OA\Response(
+     *        response=201,
+     *        description="ОК",
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     * )
+     */
 
     public function store(StoreSectorRequest $request)
     {
@@ -79,7 +154,7 @@ class SectorController extends Controller
                 $type_prize = Empty_prize::class;
                 break;
             default:
-                return response()->json(["message"=>"Неверный тип приза, выберите промокод, или вещь или пустой приз"], 404);
+                return response()->json(["message"=>"Неверный тип приза, выберите промокод, или вещь или пустой приз"], 403);
                 break;
         }
 
@@ -88,13 +163,58 @@ class SectorController extends Controller
             'name'=>$request->name,
             'prize_type'=>$type_prize,
             'prize_id'=>$request->prize_id,
-            'probability'=>$request->probability,
             'wheel_id'=>$request->wheel_id,
             'count'=>$request->count
         ]);
         return response()->json($sector,201);
        
     }
+
+    /**
+     * 
+     * @OA\Get(
+     *    path="/api/sector/{id}",
+     *    summary="Получение сектора по id",
+     *    tags={"Секторы"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id сектора",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *      
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Сектора с таким id не существует")
+     *        )
+     *    ),
+     * )
+     */
 
     public function show($id)
     {
@@ -112,6 +232,74 @@ class SectorController extends Controller
         }
         return response()->json($sector, 200);
     }
+
+    /**
+     * 
+     * @OA\Put(
+     *    path="/api/sector/{id}",
+     *    summary="Обновление сектора по id",
+     *    tags={"Секторы"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id сектора",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     * 
+     * 
+     *    @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Промокод на скидку 15%"),
+     *             @OA\Property(
+     *                 property="prize_type",
+     *                 type="string",
+     *                 enum={"promocode", "material_thing", "empty_prize"},
+     *                 example="promocode"
+     *             ),
+     *             @OA\Property(property="prize_id", type="integer", example=1),
+     *             @OA\Property(property="probability", type="float", example=15),
+     *             @OA\Property(property="wheel_id", type="integer", example=1),
+     *             @OA\Property(property="count", type="integer", example=100),
+     *             required={"name", "prize_type","prize_id", "probability", "wheel_id", "count"}
+     *         )
+     *     ),
+     * 
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Общая сумма вероятностей превышает 100%")
+     *        )
+     *    ),
+     * 
+     *   
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Сектора с таким id не существует")
+     *        )
+     *    ),
+     * )
+     */
 
     public function update(UpdateSectorRequest $request, $id)
     {
@@ -157,6 +345,52 @@ class SectorController extends Controller
         return response()->json($sector, 200);
     }
 
+    /**
+     * 
+     * @OA\Delete(
+     *    path="/api/sector/{id}",
+     *    summary="Удаление сектора по id",
+     *    tags={"Секторы"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id сектора",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Сектор успешно удален")
+     *        )  
+     *    ),
+     * 
+     *    @OA\Response(
+     *        response=403,
+     *        description="При активном колесе нельзя удалить сектор",  
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Сектора с таким id не существует")
+     *        )
+     *    ),
+     * )
+     */
+
     public function destroy($id)
     {
         $sector = Sector::findOrFail($id);
@@ -167,6 +401,37 @@ class SectorController extends Controller
         $sector->delete();
         return response()->json(["message"=>"Сектор успешно удален"]);
     }
+
+
+    /**
+     * 
+     * @OA\Get(
+     *    path="/api/sectors/droppedSector",
+     *    summary="Получение выйгранного сектора",
+     *    tags={"Секторы"},
+     *    security={{"bearerAuth":{} }},
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=500,
+     *        description="Ошибка сервера",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="error", type="string", example="Произошла ошибка при обработке запроса")
+     *        )
+     *    )
+     * )
+     */
 
     public function getDroppedSector()
     {

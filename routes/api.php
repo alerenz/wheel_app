@@ -53,12 +53,13 @@ Route::group(['middleware'=>['jwt.auth', 'role:admin']], function ($router) {
     Route::put('sector/{id}', [SectorController::class,'update']);
     Route::delete('sector/{id}', [SectorController::class,'destroy']);
 
+    Route::get('userPrize',[UserPrizeController::class, 'index']);
+    Route::get('userPrize/{id}',[UserPrizeController::class, 'show']);
+
 });
 
 Route::group(['middleware'=>'jwt.auth'], function ($router) {
     Route::get('wheel/{id}', [WheelController::class,'show']);
     Route::get('sectors/droppedSector',[SectorController::class, 'getDroppedSector']);
-    Route::get('userPrize',[UserPrizeController::class, 'index']);
-    Route::get('userPrize/{id}',[UserPrizeController::class, 'show']);
     Route::get('userPrizes/user/{id}',[UserPrizeController::class, 'get_user_prizes']);
 });

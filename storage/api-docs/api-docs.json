@@ -14,43 +14,47 @@
                 "summary": "Регистрация пользователя",
                 "operationId": "c7bb21a0d87049e161b8e4c9b0d909f2",
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "allOf": [
-                                    {
-                                        "properties": {
-                                            "username": {
-                                                "type": "string",
-                                                "example": "user123"
-                                            },
-                                            "password": {
-                                                "type": "string",
-                                                "example": "qwerty12345"
-                                            },
-                                            "surname": {
-                                                "type": "string",
-                                                "example": "Иванов"
-                                            },
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Иван"
-                                            },
-                                            "patronymic": {
-                                                "type": "string",
-                                                "example": "Иванович"
-                                            }
-                                        },
-                                        "type": "object"
+                                "required": [
+                                    "username",
+                                    "password",
+                                    "surname",
+                                    "name",
+                                    "patronymic"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "user123"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "qwerty12345"
+                                    },
+                                    "surname": {
+                                        "type": "string",
+                                        "example": "Иванов"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Иван"
+                                    },
+                                    "patronymic": {
+                                        "type": "string",
+                                        "example": "Иванович"
                                     }
-                                ]
+                                },
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Пользователь успешно зарегистрирован",
+                        "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -76,24 +80,25 @@
                 "summary": "Авторизация пользователя",
                 "operationId": "dd51a484b7fa0f97c7680fdbde14cf5f",
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "allOf": [
-                                    {
-                                        "properties": {
-                                            "username": {
-                                                "type": "string",
-                                                "example": "user123"
-                                            },
-                                            "password": {
-                                                "type": "string",
-                                                "example": "qwerty12345"
-                                            }
-                                        },
-                                        "type": "object"
+                                "required": [
+                                    "username",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "user123"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "qwerty12345"
                                     }
-                                ]
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -269,20 +274,20 @@
                 "summary": "Создание пустого приза",
                 "operationId": "dc758cfa76a4a7ac237280b0c3dda72c",
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "allOf": [
-                                    {
-                                        "properties": {
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Попытка"
-                                            }
-                                        },
-                                        "type": "object"
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Попытка"
                                     }
-                                ]
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -346,6 +351,9 @@
                         "in": "path",
                         "description": "id пустого приза",
                         "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
                         "example": 1
                     }
                 ],
@@ -378,6 +386,22 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Пустого приза с таким id не существует"
                                         }
                                     },
                                     "type": "object"
@@ -406,24 +430,27 @@
                         "in": "path",
                         "description": "id пустого приза",
                         "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
                         "example": 1
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "allOf": [
-                                    {
-                                        "properties": {
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Попытка"
-                                            }
-                                        },
-                                        "type": "object"
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Попытка"
                                     }
-                                ]
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -463,6 +490,22 @@
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Пустого приза с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -485,15 +528,44 @@
                         "in": "path",
                         "description": "id пустого приза",
                         "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
                         "example": 1
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Пустой приз успешно удален"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Пустой приз успешно удален"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "403": {
-                        "description": "Этот приз удалить нельзя, его выйграли"
+                        "description": "Действие запрещено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Этот приз удалить нельзя, его выйграли"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -504,6 +576,22 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Пустого приза с таким id не существует"
                                         }
                                     },
                                     "type": "object"
@@ -580,20 +668,20 @@
                 "summary": "Создание вещи",
                 "operationId": "7460baaa36a6e7b992356ad1e9ddca1c",
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "allOf": [
-                                    {
-                                        "properties": {
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Блокнот А5"
-                                            }
-                                        },
-                                        "type": "object"
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Блокнот А5"
                                     }
-                                ]
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -657,6 +745,9 @@
                         "in": "path",
                         "description": "id вещи",
                         "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
                         "example": 1
                     }
                 ],
@@ -689,6 +780,22 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Вещи с таким id не существует"
                                         }
                                     },
                                     "type": "object"
@@ -717,24 +824,27 @@
                         "in": "path",
                         "description": "id вещи",
                         "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
                         "example": 1
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "allOf": [
-                                    {
-                                        "properties": {
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Блокнот А5"
-                                            }
-                                        },
-                                        "type": "object"
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Блокнот А5"
                                     }
-                                ]
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -774,6 +884,22 @@
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Вещи с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -796,15 +922,44 @@
                         "in": "path",
                         "description": "id вещи",
                         "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
                         "example": 1
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Вещь успешно удалена"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Вещь успешна удалена"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "403": {
-                        "description": "Этот приз удалить нельзя, его выйграли"
+                        "description": "Действие запрещено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Этот приз удалить нельзя, его выйграли"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -815,6 +970,22 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Вещи с таким id не существует"
                                         }
                                     },
                                     "type": "object"
@@ -891,30 +1062,36 @@
                 "summary": "Создание промокода",
                 "operationId": "1937e48037402a557b7aca7b5ca2074e",
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "allOf": [
-                                    {
-                                        "properties": {
-                                            "type_discount": {
-                                                "type": "enum",
-                                                "example": "Процентная"
-                                            },
-                                            "discount_value": {
-                                                "type": "number",
-                                                "format": "float",
-                                                "example": 15
-                                            },
-                                            "expiry_date": {
-                                                "type": "string",
-                                                "format": "date",
-                                                "example": "2025-05-01"
-                                            }
-                                        },
-                                        "type": "object"
+                                "required": [
+                                    "type_discount",
+                                    "discount_value",
+                                    "expiry_date"
+                                ],
+                                "properties": {
+                                    "type_discount": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Процентная",
+                                            "Фиксированная"
+                                        ],
+                                        "example": "Фиксированная"
+                                    },
+                                    "discount_value": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 15
+                                    },
+                                    "expiry_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-01"
                                     }
-                                ]
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -978,6 +1155,9 @@
                         "in": "path",
                         "description": "id промокода",
                         "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
                         "example": 1
                     }
                 ],
@@ -1016,6 +1196,22 @@
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Промокода с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -1038,38 +1234,208 @@
                         "in": "path",
                         "description": "id промокода",
                         "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
                         "example": 1
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "allOf": [
-                                    {
-                                        "properties": {
-                                            "type_discount": {
-                                                "type": "enum",
-                                                "example": "Процентная"
-                                            },
-                                            "discount_value": {
-                                                "type": "number",
-                                                "format": "float",
-                                                "example": 15
-                                            },
-                                            "expiry_date": {
-                                                "type": "string",
-                                                "format": "date",
-                                                "example": "2025-05-01"
-                                            }
-                                        },
-                                        "type": "object"
+                                "required": [
+                                    "type_discount",
+                                    "discount_value",
+                                    "expiry_date"
+                                ],
+                                "properties": {
+                                    "type_discount": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Процентная",
+                                            "Фиксированная"
+                                        ],
+                                        "example": "Фиксированная"
+                                    },
+                                    "discount_value": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 15
+                                    },
+                                    "expiry_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-01"
                                     }
-                                ]
+                                },
+                                "type": "object"
                             }
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Промокода с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Промокоды"
+                ],
+                "summary": "Удаление промокода по id",
+                "operationId": "e7a25a7c3ca299f12033c550ce882a89",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id промокода",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Промокод успешно удален"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Действие запрещено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Этот приз удалить нельзя, его выйграли"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Промокода с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/sector": {
+            "get": {
+                "tags": [
+                    "Секторы"
+                ],
+                "summary": "Получение списка секторов",
+                "operationId": "9c2a860ae6e45df5f8de308029568fcd",
                 "responses": {
                     "200": {
                         "description": "ОК"
@@ -1115,27 +1481,59 @@
                     }
                 ]
             },
-            "delete": {
+            "post": {
                 "tags": [
-                    "Промокоды"
+                    "Секторы"
                 ],
-                "summary": "Удаление промокода по id",
-                "operationId": "e7a25a7c3ca299f12033c550ce882a89",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "id промокода",
-                        "required": true,
-                        "example": 1
+                "summary": "Создание сектора",
+                "operationId": "8291b004d547fe26d032fa6004b2353f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "prize_type",
+                                    "prize_id",
+                                    "wheel_id",
+                                    "count"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Промокод на скидку 15%"
+                                    },
+                                    "prize_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "promocode",
+                                            "material_thing",
+                                            "empty_prize"
+                                        ],
+                                        "example": "promocode"
+                                    },
+                                    "prize_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "wheel_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "count": {
+                                        "type": "integer",
+                                        "example": 100
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
-                ],
+                },
                 "responses": {
-                    "200": {
-                        "description": "Промокод успешно удален"
-                    },
-                    "403": {
-                        "description": "Этот приз удалить нельзя, его выйграли"
+                    "201": {
+                        "description": "ОК"
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -1146,6 +1544,1042 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/sector/{id}": {
+            "get": {
+                "tags": [
+                    "Секторы"
+                ],
+                "summary": "Получение сектора по id",
+                "operationId": "04f957c60f2c9081280a3ea8a3cb78e8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id сектора",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Сектора с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Секторы"
+                ],
+                "summary": "Обновление сектора по id",
+                "operationId": "ef79643087858b1c33947e2d06a861d1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id сектора",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "prize_type",
+                                    "prize_id",
+                                    "probability",
+                                    "wheel_id",
+                                    "count"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Промокод на скидку 15%"
+                                    },
+                                    "prize_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "promocode",
+                                            "material_thing",
+                                            "empty_prize"
+                                        ],
+                                        "example": "promocode"
+                                    },
+                                    "prize_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "probability": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 15
+                                    },
+                                    "wheel_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "count": {
+                                        "type": "integer",
+                                        "example": 100
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Общая сумма вероятностей превышает 100%"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Сектора с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Секторы"
+                ],
+                "summary": "Удаление сектора по id",
+                "operationId": "8c6c085d210601eab5d7b9c61fd3d49b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id сектора",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Сектор успешно удален"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "При активном колесе нельзя удалить сектор"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Сектора с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/sectors/droppedSector": {
+            "get": {
+                "tags": [
+                    "Секторы"
+                ],
+                "summary": "Получение выйгранного сектора",
+                "operationId": "6c1795a5b655de275c0a30600b9a6084",
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Произошла ошибка при обработке запроса"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/userPrize": {
+            "get": {
+                "tags": [
+                    "Призы пользователей"
+                ],
+                "summary": "Получение списка призов, выйгранные пользователями",
+                "operationId": "bd6798859279be26f1933348287ea4e4",
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/userPrize/{id}": {
+            "get": {
+                "tags": [
+                    "Призы пользователей"
+                ],
+                "summary": "Получение приза по id",
+                "operationId": "07ba37ce63f5d6e2d137d2568d7164d2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id приза",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Записи с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/userPrizes/user/{id}": {
+            "get": {
+                "tags": [
+                    "Призы пользователей"
+                ],
+                "summary": "Получение списка призов пользователя по его id",
+                "operationId": "b3d3c0eb6239696e2e11d24e821592f3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id пользователя",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Пользователя с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/wheel": {
+            "get": {
+                "tags": [
+                    "Колеса"
+                ],
+                "summary": "Получение списка колес",
+                "operationId": "aa9999bc0fdb846ad80e86b55717f1a3",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Фильтрация по имени колеса",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Фильтрация по статусу",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Поле для сортировки",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "id"
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "Порядок сортировки",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Колеса"
+                ],
+                "summary": "Создание колеса",
+                "operationId": "fa13e5506c95f358f9ba940e00713ead",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "count_sectors",
+                                    "animation",
+                                    "date_start",
+                                    "date_end",
+                                    "days_of_week"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Акция мая"
+                                    },
+                                    "count_sectors": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "animation": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "date_start": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-01"
+                                    },
+                                    "date_end": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-31"
+                                    },
+                                    "days_of_week": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "Понедельник",
+                                            "Среда"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/wheel/{id}": {
+            "get": {
+                "tags": [
+                    "Колеса"
+                ],
+                "summary": "Получение колеса по id",
+                "operationId": "c8d77d46b19405dbe49c50c87d7c7222",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id колеса",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Колеса с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Колеса"
+                ],
+                "summary": "Обновление колеса по id",
+                "operationId": "8384d7423bb391fcc6f30db60dff109d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id колеса",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "count_sectors",
+                                    "status",
+                                    "animation",
+                                    "date_start",
+                                    "date_end",
+                                    "days_of_week"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Акция мая"
+                                    },
+                                    "count_sectors": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Активно",
+                                            "Не активно",
+                                            "В архиве"
+                                        ],
+                                        "example": "Активно"
+                                    },
+                                    "animation": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "date_start": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-01"
+                                    },
+                                    "date_end": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-31"
+                                    },
+                                    "days_of_week": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "Понедельник",
+                                            "Среда"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ОК"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Колесо в архиве, удалять нельзя"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Плохой запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Новая дата окончания не может быть раньше, чем текущая дата окончания"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Колеса с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Колеса"
+                ],
+                "summary": "Удаление колеса по id",
+                "operationId": "56a6077eeede85de036672ec0522f7ee",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id колеса",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Колесо успешно удалено"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Колесо активно, удалить нельзя"
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Колеса с таким id не существует"
                                         }
                                     },
                                     "type": "object"
@@ -1188,6 +2622,18 @@
         {
             "name": "Промокоды",
             "description": "Промокоды"
+        },
+        {
+            "name": "Секторы",
+            "description": "Секторы"
+        },
+        {
+            "name": "Призы пользователей",
+            "description": "Призы пользователей"
+        },
+        {
+            "name": "Колеса",
+            "description": "Колеса"
         }
     ]
 }

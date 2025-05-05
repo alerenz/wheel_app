@@ -54,14 +54,13 @@ class EmptyPrizeController extends Controller
      * 
      * 
      *    @OA\RequestBody(
-     *        @OA\JsonContent(
-     *            allOf={
-     *                @OA\Schema(
-     *                    @OA\Property(property="name", type="string", example="Попытка"),
-     *                )
-     *            }
-     *        )
-     *    ),
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Попытка"),
+     *             required={"name"}
+     *         )
+     *     ),
      * 
      *    @OA\Response(
      *        response=201,
@@ -106,7 +105,8 @@ class EmptyPrizeController extends Controller
      *        in="path",
      *        name="id",
      *        required=true,
-     *        example=1
+     *        example=1,
+     *        @OA\Schema(type="integer")
      *    ),
      *
      *    @OA\Response(
@@ -127,7 +127,14 @@ class EmptyPrizeController extends Controller
      *        @OA\JsonContent(
      *            @OA\Property(property="message", type="string", example="Forbidden.")
      *        )
-     *    )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Пустого приза с таким id не существует")
+     *        )
+     *    ),
      * )
      */
     public function show($id)
@@ -149,19 +156,19 @@ class EmptyPrizeController extends Controller
      *        in="path",
      *        name="id",
      *        required=true,
-     *        example=1
+     *        example=1,
+     *        @OA\Schema(type="integer")
      *    ),
      * 
      * 
      *    @OA\RequestBody(
-     *        @OA\JsonContent(
-     *            allOf={
-     *                @OA\Schema(
-     *                    @OA\Property(property="name", type="string", example="Попытка"),
-     *                )
-     *            }
-     *        )
-     *    ),
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Попытка"),
+     *             required={"name"}
+     *         )
+     *     ),
      * 
      *    @OA\Response(
      *        response=200,
@@ -181,7 +188,14 @@ class EmptyPrizeController extends Controller
      *        @OA\JsonContent(
      *            @OA\Property(property="message", type="string", example="Forbidden.")
      *        )
-     *    )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Пустого приза с таким id не существует")
+     *        )
+     *    ),
      * )
      */
     public function update(UpdateEmpty_prizeRequest $request, $id)
@@ -206,17 +220,24 @@ class EmptyPrizeController extends Controller
      *        in="path",
      *        name="id",
      *        required=true,
-     *        example=1
+     *        example=1,
+     *        @OA\Schema(type="integer")
      *    ),
      *
      *    @OA\Response(
      *        response=200,
-     *        description="Пустой приз успешно удален",  
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Пустой приз успешно удален")
+     *        ) 
      *    ),
      * 
      *    @OA\Response(
      *        response=403,
-     *        description="Этот приз удалить нельзя, его выйграли",  
+     *        description="Действие запрещено", 
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Этот приз удалить нельзя, его выйграли")
+     *        ) 
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -224,7 +245,14 @@ class EmptyPrizeController extends Controller
      *        @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Unauthenticated.")
      *        )
-     *    )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Пустого приза с таким id не существует")
+     *        )
+     *    ),
      * )
      */
     public function destroy($id)

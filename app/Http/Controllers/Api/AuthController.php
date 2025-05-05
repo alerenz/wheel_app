@@ -17,22 +17,21 @@ class AuthController extends Controller
      *    tags={"Auth"},
      *    
      *    @OA\RequestBody(
-     *        @OA\JsonContent(
-     *            allOf={
-     *                @OA\Schema(
-     *                    @OA\Property(property="username", type="string", example="user123"),
-     *                    @OA\Property(property="password", type="string", example="qwerty12345"),
-     *                    @OA\Property(property="surname", type="string", example="Иванов"),
-     *                    @OA\Property(property="name", type="string", example="Иван"),
-     *                    @OA\Property(property="patronymic", type="string", example="Иванович"),
-     *                )
-     *            }
-     *        )
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="username", type="string", example="user123"),
+     *             @OA\Property(property="password", type="string", example="qwerty12345"),
+     *             @OA\Property(property="surname", type="string", example="Иванов"),
+     *             @OA\Property(property="name", type="string", example="Иван"),
+     *             @OA\Property(property="patronymic", type="string", example="Иванович"),
+     *             required = {"username","password","surname","name","patronymic"}
+     *         ) 
      *    ),
      * 
      *    @OA\Response(
      *        response=201,
-     *        description="Пользователь успешно зарегистрирован",
+     *        description="OK",
      *        @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Пользователь успешно зарегистрирован")
      *        )
@@ -75,14 +74,12 @@ class AuthController extends Controller
      *    tags={"Auth"},
      *    
      *    @OA\RequestBody(
-     *        @OA\JsonContent(
-     *            allOf={
-     *                @OA\Schema(
-     *                    @OA\Property(property="username", type="string", example="user123"),
-     *                    @OA\Property(property="password", type="string", example="qwerty12345"),
-     *                    
-     *                )
-     *            }
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="username", type="string", example="user123"),
+     *             @OA\Property(property="password", type="string", example="qwerty12345"),
+     *             required={"username","password"},    
      *        )
      *    ),
      * 

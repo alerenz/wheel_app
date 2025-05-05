@@ -13,7 +13,61 @@ use Illuminate\Http\Request;
 class WheelController extends Controller
 {
     /**
-     * Display a listing of the resource.
+    * 
+    * @OA\Get(
+    *    path="/api/wheel",
+    *    summary="Получение списка колес",
+    *    tags={"Колеса"},
+    *    security={{"bearerAuth":{"role": "admin"} }},
+    *    @OA\Parameter(
+    *         name="name",
+    *         in="query",
+    *         description="Фильтрация по имени колеса",
+    *         required=false,
+    *         @OA\Schema(type="string")
+    *     ),
+    *     @OA\Parameter(
+    *         name="status",
+    *         in="query",
+    *         description="Фильтрация по статусу",
+    *         required=false,
+    *         @OA\Schema(type="string")
+    *     ),
+    *     @OA\Parameter(
+    *         name="sort",
+    *         in="query",
+    *         description="Поле для сортировки",
+    *         required=false,
+    *         @OA\Schema(type="string", default="id")
+    *     ),
+    *     @OA\Parameter(
+    *         name="order",
+    *         in="query",
+    *         description="Порядок сортировки",
+    *         required=false,
+    *         @OA\Schema(type="string", enum={"asc", "desc"}, default="asc")
+    *     ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     *    
+     * )
      */
     public function index(Request $request)
     {
@@ -41,7 +95,48 @@ class WheelController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 
+     * @OA\Post(
+     *    path="/api/wheel",
+     *    summary="Создание колеса",
+     *    tags={"Колеса"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     * 
+     *    @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Акция мая"),
+     *             @OA\Property(property="count_sectors", type="integer", example=5),
+     *             @OA\Property(property="animation", type="boolean", example=true),
+     *             @OA\Property(property="date_start", type="date", example="2025-05-01"),
+     *             @OA\Property(property="date_end", type="date", example="2025-05-31"),
+     *             @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
+     *             required={"name", "count_sectors","animation", "date_start", "date_end", "days_of_week"}
+     *         )
+     *     ),
+     * 
+     *    @OA\Response(
+     *        response=201,
+     *        description="ОК",
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     * )
      */
     public function store(StoreWheelRequest $request)
     {
@@ -59,7 +154,43 @@ class WheelController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 
+     * @OA\Get(
+     *    path="/api/wheel/{id}",
+     *    summary="Получение колеса по id",
+     *    tags={"Колеса"},
+     *    security={{"bearerAuth":{} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id колеса",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *      
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Колеса с таким id не существует")
+     *        )
+     *    ),
+     *    
+     * )
      */
     public function show($id)
     {
@@ -69,7 +200,79 @@ class WheelController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * 
+     * @OA\Put(
+     *    path="/api/wheel/{id}",
+     *    summary="Обновление колеса по id",
+     *    tags={"Колеса"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id колеса",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     * 
+     * 
+     *    @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Акция мая"),
+     *             @OA\Property(property="count_sectors", type="integer", example=5),
+     *             @OA\Property(
+     *                 property="status",
+     *                 type="string",
+     *                 enum={"Активно", "Не активно", "В архиве"},
+     *                 example="Активно"
+     *             ),
+     *             @OA\Property(property="animation", type="boolean", example=true),
+     *             @OA\Property(property="date_start", type="date", example="2025-05-01"),
+     *             @OA\Property(property="date_end", type="date", example="2025-05-31"),
+     *             @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
+     *             required={"name", "count_sectors","status","animation", "date_start", "date_end", "days_of_week"}
+     *         )
+     *     ),
+     * 
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Колесо в архиве, удалять нельзя")
+     *        )
+     *    ),
+     * 
+     *    @OA\Response(
+     *        response=400,
+     *        description="Плохой запрос",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", 
+     *            example="Новая дата окончания не может быть раньше, чем текущая дата окончания")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Колеса с таким id не существует")
+     *        )
+     *    ),
+     * )
      */
     public function update(UpdateWheelRequest $request, $id)
     {
@@ -78,7 +281,7 @@ class WheelController extends Controller
         if($wheel->status == StatusWeelType::active->value || $wheel->status == StatusWeelType::nonActive->value){
             if (strtotime($request->date_end) < strtotime($wheel->date_end)) {
                 return response()->json(["message" => 
-                "Новая дата окончания не может быть раньше, чем текущая дата окончания " . $wheel->date_end], 400);
+                "Новая дата окончания не может быть раньше, чем текущая дата окончания" . $wheel->date_end], 400);
             }
             $wheel->name = $request->name;
             $wheel->count_sectors = $request->count_sectors;
@@ -90,12 +293,54 @@ class WheelController extends Controller
             $wheel->save();
             return $wheel;
         }else{
-            return response()->json(["message"=>"Колесо ".$wheel->name." в архиве, изменять нельзя"],403);
+            return response()->json(["message"=>"Колесо в архиве, изменять нельзя"],403);
         }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 
+     * @OA\Delete(
+     *    path="/api/wheel/{id}",
+     *    summary="Удаление колеса по id",
+     *    tags={"Колеса"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id колеса",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Колесо успешно удалено")
+     *        )  
+     *    ),
+     * 
+     *    @OA\Response(
+     *        response=403,
+     *        description="Колесо активно, удалить нельзя",  
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Колеса с таким id не существует")
+     *        )
+     *    ),
+     * )
      */
     public function destroy($id)
     {
@@ -105,7 +350,7 @@ class WheelController extends Controller
         if($wheel->status != StatusWeelType::active->value){
             $name = $wheel->name;
             $wheel->delete();
-            return response()->json(["message"=>"Колесо ".$name." удалено успешно"]);
+            return response()->json(["message"=>"Колесо удалено успешно"]);
         }else{
             return response()->json(["message"=>"Колесо активно, удалить нельзя"],403);
         }

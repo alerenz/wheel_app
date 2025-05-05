@@ -54,17 +54,21 @@ class PromocodeController extends Controller
      *    security={{"bearerAuth":{"role": "admin"} }},
      * 
      * 
-     *    @OA\RequestBody(
-     *        @OA\JsonContent(
-     *            allOf={
-     *                @OA\Schema(
-     *                    @OA\Property(property="type_discount", type="enum", example="Процентная"),
-     *                    @OA\Property(property="discount_value", type="float", example=15),
-     *                    @OA\Property(property="expiry_date", type="date", example="2025-05-01"),
-     *                )
-     *            }
-     *        )
-     *    ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="type_discount",
+     *                 type="string",
+     *                 enum={"Процентная", "Фиксированная"},
+     *                 example="Фиксированная"
+     *             ),
+     *             @OA\Property(property="discount_value", type="float", example=15),
+     *             @OA\Property(property="expiry_date", type="date", example="2025-05-01"),
+     *             required={"type_discount", "discount_value","expiry_date"}
+     *         )
+     *     ),
      * 
      *    @OA\Response(
      *        response=201,
@@ -112,7 +116,8 @@ class PromocodeController extends Controller
      *        in="path",
      *        name="id",
      *        required=true,
-     *        example=1
+     *        example=1,
+     *        @OA\Schema(type="integer")
      *    ),
      *
      *    @OA\Response(
@@ -133,7 +138,14 @@ class PromocodeController extends Controller
      *        @OA\JsonContent(
      *            @OA\Property(property="message", type="string", example="Forbidden")
      *        )
-     *    )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Промокода с таким id не существует")
+     *        )
+     *    ),
      * )
      */
     public function show(Promocode $promocode)
@@ -156,21 +168,26 @@ class PromocodeController extends Controller
      *        in="path",
      *        name="id",
      *        required=true,
-     *        example=1
+     *        example=1,
+     *        @OA\Schema(type="integer")
      *    ),
      * 
      * 
      *    @OA\RequestBody(
-     *        @OA\JsonContent(
-     *            allOf={
-     *                @OA\Schema(
-     *                    @OA\Property(property="type_discount", type="enum", example="Процентная"),
-     *                    @OA\Property(property="discount_value", type="float", example=15),
-     *                    @OA\Property(property="expiry_date", type="date", example="2025-05-01"),
-     *                )
-     *            }
-     *        )
-     *    ),
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="type_discount",
+     *                 type="string",
+     *                 enum={"Процентная", "Фиксированная"},
+     *                 example="Фиксированная"
+     *             ),
+     *             @OA\Property(property="discount_value", type="float", example=15),
+     *             @OA\Property(property="expiry_date", type="date", example="2025-05-01"),
+     *             required={"type_discount", "discount_value","expiry_date"}
+     *         )
+     *     ),
      * 
      *    @OA\Response(
      *        response=200,
@@ -190,7 +207,14 @@ class PromocodeController extends Controller
      *        @OA\JsonContent(
      *            @OA\Property(property="message", type="string", example="Forbidden.")
      *        )
-     *    )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Промокода с таким id не существует")
+     *        )
+     *    ),
      * )
      */
     public function update(UpdatePromocodeRequest $request, $id)
@@ -218,17 +242,24 @@ class PromocodeController extends Controller
      *        in="path",
      *        name="id",
      *        required=true,
-     *        example=1
+     *        example=1,
+     *        @OA\Schema(type="integer")
      *    ),
      *
      *    @OA\Response(
      *        response=200,
-     *        description="Промокод успешно удален",  
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Промокод успешно удален")
+     *        ) 
      *    ),
      * 
      *    @OA\Response(
      *        response=403,
-     *        description="Этот приз удалить нельзя, его выйграли",  
+     *        description="Действие запрещено", 
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Этот приз удалить нельзя, его выйграли")
+     *        ) 
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -236,7 +267,14 @@ class PromocodeController extends Controller
      *        @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Unauthenticated.")
      *        )
-     *    )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Промокода с таким id не существует")
+     *        )
+     *    ),
      * 
      * )
      */

@@ -12,44 +12,121 @@ use App\Http\Requests\UpdateUserPrizeRequest;
 class UserPrizeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 
+     * @OA\Get(
+     *    path="/api/userPrize",
+     *    summary="Получение списка призов, выйгранные пользователями",
+     *    tags={"Призы пользователей"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     * )
      */
     public function index()
     {
         return UserPrize::with('prize')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreUserPrizeRequest $request)
-    {
-        //
-    }
 
     /**
-     * Display the specified resource.
+     * 
+     * @OA\Get(
+     *    path="/api/userPrize/{id}",
+     *    summary="Получение приза по id",
+     *    tags={"Призы пользователей"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id приза",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *      
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Записи с таким id не существует")
+     *        )
+     *    ),
+     * )
      */
     public function show($id)
     {
         $userPrize = UserPrize::with('prize')->findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
+/**
+     * 
+     * @OA\Get(
+     *    path="/api/userPrizes/user/{id}",
+     *    summary="Получение списка призов пользователя по его id",
+     *    tags={"Призы пользователей"},
+     *    security={{"bearerAuth":{} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id пользователя",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *      
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Пользователя с таким id не существует")
+     *        )
+     *    ),
+     * )
      */
-    public function update(UpdateUserPrizeRequest $request, UserPrize $userPrize)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-    }
 
     public function get_user_prizes($userId){
 
