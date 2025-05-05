@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Wheel;
+use App\Models\Promocode;
+use App\Models\Material_thing;
+use App\Models\Empty_prize;
 use App\Http\Requests\StoreWheelRequest;
 use App\Http\Requests\UpdateWheelRequest;
 use App\Models\Sector;
@@ -89,6 +92,20 @@ class WheelController extends Controller
 
         foreach ($wheels as $wheel) {
             $wheel->days_of_week = json_decode($wheel->days_of_week);
+
+            foreach($wheel->sectors as $sector){
+                switch($sector->prize_type){
+                    case Promocode::class:
+                        $sector->prize_type = "promocode";
+                        break;
+                    case Material_thing::class:
+                        $sector->prize_type = "material_thing";
+                        break;  
+                    case Empty_prize::class:
+                        $sector->prize_type = "empty_prize";
+                        break;
+                }
+            }
         }
 
         return response()->json($wheels, 200);
@@ -196,6 +213,19 @@ class WheelController extends Controller
     {
         $wheel = Wheel::with(['sectors.prize'])->withCount('sectors')->findOrFail($id);
         $wheel->days_of_week = json_decode($wheel->days_of_week);
+        foreach($wheel->sectors as $sector){
+            switch($sector->prize_type){
+                case Promocode::class:
+                    $sector->prize_type = "promocode";
+                    break;
+                case Material_thing::class:
+                    $sector->prize_type = "material_thing";
+                    break;  
+                case Empty_prize::class:
+                    $sector->prize_type = "empty_prize";
+                    break;
+            }
+        }
         return response()->json(["added sectors count"=>$wheel->sectors_count, "data"=>$wheel], 200);
     }
 
@@ -277,7 +307,13 @@ class WheelController extends Controller
     public function update(UpdateWheelRequest $request, $id)
     {
     
-        $wheel = Wheel::findOrFail($id);
+        $wheel = Wheel::with(['sectors.prize'])->withCount('sectors')->findOrFail($id);
+        $sectors_count = $wheel->sectors_count;
+
+        if($request->status == StatusWeelType::active->value && $sectors_count < $wheel->count_sectors){
+            return response()->json(["message"=>"Нельзя поставить статус Активный, пока количество секторов меньше чем задано"]);
+        }
+
         if($wheel->status == StatusWeelType::active->value || $wheel->status == StatusWeelType::nonActive->value){
             if (strtotime($request->date_end) < strtotime($wheel->date_end)) {
                 return response()->json(["message" => 

@@ -52,18 +52,20 @@ class SectorController extends Controller
     {
         $sectors = Sector::with('prize')->get();
         if(!$sectors->isEmpty()){
-            switch($item->prize_type){
-                case Promocode::class:
-                    $item->prize_type = "promocode";
-                    break;
-                case Material_thing::class:
-                    $item->prize_type = "material_thing";
-                    break;  
-                case Empty_prize::class:
-                    $item->prize_type = "empty_prize";
-                    break;
+            foreach($sectors as $item){
+                switch($item->prize_type){
+                    case Promocode::class:
+                        $item->prize_type = "promocode";
+                        break;
+                    case Material_thing::class:
+                        $item->prize_type = "material_thing";
+                        break;  
+                    case Empty_prize::class:
+                        $item->prize_type = "empty_prize";
+                        break;
                 }
             }
+        }
         return response()->json($sectors, 200);
     }
 
@@ -452,6 +454,7 @@ class SectorController extends Controller
             $userPrize->prize_type = $sector->prize_type;
             $userPrize->prize_id = $sector->prize_id;
             $userPrize->date = Carbon::now();
+            $userPrize->wheel_id = $wheel->id;
             $userPrize->save();
 
             if($sector->prize_type == Empty_prize::class){

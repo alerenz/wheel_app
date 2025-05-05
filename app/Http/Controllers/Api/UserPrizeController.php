@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserPrize;
+use App\Models\Wheel;
 use App\Models\Promocode;
 use App\Models\Material_thing;
+use App\Models\Empty_prize;
 use App\Http\Requests\StoreUserPrizeRequest;
 use App\Http\Requests\UpdateUserPrizeRequest;
 
@@ -18,6 +20,21 @@ class UserPrizeController extends Controller
      *    summary="Получение списка призов, выйгранные пользователями",
      *    tags={"Призы пользователей"},
      *    security={{"bearerAuth":{"role": "admin"} }},
+     *    
+    *     @OA\Parameter(
+    *         name="sort",
+    *         in="query",
+    *         description="Поле для сортировки",
+    *         required=false,
+    *         @OA\Schema(type="string", default="id")
+    *     ),
+    *     @OA\Parameter(
+    *         name="order",
+    *         in="query",
+    *         description="Порядок сортировки",
+    *         required=false,
+    *         @OA\Schema(type="string", enum={"asc", "desc"}, default="asc")
+    *     ),
      *
      *    @OA\Response(
      *        response=200,
@@ -40,9 +57,32 @@ class UserPrizeController extends Controller
      *    )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserPrize::with('prize')->get();
+        $query = UserPrize::with('prize');
+
+        $sortField = $request->input('sort', 'id');
+        $sortOrder = $request->input('order', 'asc');
+        $query->orderBy($sortField, $sortOrder);
+
+
+        $userPrizes = $query->get();
+        if(!$userPrizes->isEmpty()){
+            foreach($userPrizes as $item){
+                switch($item->prize_type){
+                    case Promocode::class:
+                        $item->prize_type = "promocode";
+                        break;
+                    case Material_thing::class:
+                        $item->prize_type = "material_thing";
+                        break;  
+                    case Empty_prize::class:
+                        $item->prize_type = "empty_prize";
+                        break;
+                }
+            }
+        }
+        return response()->json($userPrizes, 200);
     }
 
 
@@ -87,6 +127,17 @@ class UserPrizeController extends Controller
     public function show($id)
     {
         $userPrize = UserPrize::with('prize')->findOrFail($id);
+        switch($userPrize->prize_type){
+            case Promocode::class:
+                $userPrize->prize_type = "promocode";
+                break;
+            case Material_thing::class:
+                $userPrize->prize_type = "material_thing";
+                break;  
+            case Empty_prize::class:
+                $userPrize->prize_type = "empty_prize";
+                break;
+        }
     }
 
 /**
@@ -131,6 +182,21 @@ class UserPrizeController extends Controller
     public function get_user_prizes($userId){
 
         $userPrizes = UserPrize::with('prize')->where('user_id', $userId)->get();
-        return response()->json($userPrizes);
+        if(!$userPrizes->isEmpty()){
+            foreach($userPrizes as $item){
+                switch($item->prize_type){
+                    case Promocode::class:
+                        $item->prize_type = "promocode";
+                        break;
+                    case Material_thing::class:
+                        $item->prize_type = "material_thing";
+                        break;  
+                    case Empty_prize::class:
+                        $item->prize_type = "empty_prize";
+                        break;
+                }
+            }
+        }
+        return response()->json($userPrizes, 200);
     }
 }
