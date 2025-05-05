@@ -310,8 +310,18 @@ class WheelController extends Controller
         $wheel = Wheel::with(['sectors.prize'])->withCount('sectors')->findOrFail($id);
         $sectors_count = $wheel->sectors_count;
 
+        $sectors = Sector::where('wheel_id', $id)->get();
+        $probability = 0;
+        foreach($sectors as $sector){
+            $probability += $sector->probability;
+        }
+
         if($request->status == StatusWeelType::active->value && $sectors_count < $wheel->count_sectors){
-            return response()->json(["message"=>"Нельзя поставить статус Активный, пока количество секторов меньше чем задано"]);
+            return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока количество секторов меньше чем задано"],403);
+        }
+
+        if($request->status == StatusWeelType::active->value && $probability < 100){
+            return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока общая вероятность меньше 100%"],403);
         }
 
         if($wheel->status == StatusWeelType::active->value || $wheel->status == StatusWeelType::nonActive->value){
