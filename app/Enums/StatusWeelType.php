@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+// wheel
 enum StatusWeelType:string
 {
     case active = 'Активно';

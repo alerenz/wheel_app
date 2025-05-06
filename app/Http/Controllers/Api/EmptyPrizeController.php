@@ -11,7 +11,7 @@ use App\Models\UserPrize;
 class EmptyPrizeController extends Controller
 {
     /**
-     * 
+     *
      * @OA\Get(
      *    path="/api/empty-prize",
      *    summary="Получение списка пустых призов",
@@ -36,7 +36,7 @@ class EmptyPrizeController extends Controller
      *            @OA\Property(property="message", type="string", example="Forbidden.")
      *        )
      *    )
-     *    
+     *
      * )
      */
     public function index()
@@ -45,14 +45,14 @@ class EmptyPrizeController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Post(
      *    path="/api/empty-prize",
      *    summary="Создание пустого приза",
      *    tags={"Пустые призы"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
-     * 
+     *
+     *
      *    @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -61,11 +61,11 @@ class EmptyPrizeController extends Controller
      *             required={"name"}
      *         )
      *     ),
-     * 
+     *
      *    @OA\Response(
      *        response=201,
      *        description="ОК",
-     *        
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -85,6 +85,7 @@ class EmptyPrizeController extends Controller
      */
     public function store(StoreEmpty_prizeRequest $request)
     {
+        // camelCase везде
         $empty_prize = Empty_prize::create([
             'name'=>$request->name
         ]);
@@ -93,13 +94,13 @@ class EmptyPrizeController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Get(
      *    path="/api/empty-prize/{id}",
      *    summary="Получение пустого приза по id",
      *    tags={"Пустые призы"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id пустого приза",
      *        in="path",
@@ -112,7 +113,7 @@ class EmptyPrizeController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
-     *      
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -144,13 +145,13 @@ class EmptyPrizeController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Put(
      *    path="/api/empty-prize/{id}",
      *    summary="Обновление пустого приза по id",
      *    tags={"Пустые призы"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id пустого приза",
      *        in="path",
@@ -159,8 +160,8 @@ class EmptyPrizeController extends Controller
      *        example=1,
      *        @OA\Schema(type="integer")
      *    ),
-     * 
-     * 
+     *
+     *
      *    @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -169,11 +170,11 @@ class EmptyPrizeController extends Controller
      *             required={"name"}
      *         )
      *     ),
-     * 
+     *
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
-     *        
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -208,13 +209,13 @@ class EmptyPrizeController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Delete(
      *    path="/api/empty-prize/{id}",
      *    summary="Удаление пустого приза по id",
      *    tags={"Пустые призы"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id пустого приза",
      *        in="path",
@@ -229,15 +230,15 @@ class EmptyPrizeController extends Controller
      *        description="ОК",
      *        @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Пустой приз успешно удален")
-     *        ) 
+     *        )
      *    ),
-     * 
+     *
      *    @OA\Response(
      *        response=403,
-     *        description="Действие запрещено", 
+     *        description="Действие запрещено",
      *        @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Этот приз удалить нельзя, его выйграли")
-     *        ) 
+     *        )
      *    ),
      *    @OA\Response(
      *        response=401,

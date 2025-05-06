@@ -29,7 +29,7 @@ class IncrementUsersAttempts extends Command
     public function handle()
     {
         $currentDayIndex = date('w');
-        
+
         $daysMap = [
             0 => 'воскресенье',
             1 => 'понедельник',
@@ -39,16 +39,17 @@ class IncrementUsersAttempts extends Command
             5 => 'пятница',
             6 => 'суббота'
         ];
-    
+
         $currentDay = $daysMap[$currentDayIndex];
 
+        // что если сервер будет выключен, когда должна была выполняться команда? или в момент работы вылетит ошибка?
         $wheels = Wheel::where('status', StatusWeelType::active->value)->get();
         foreach($wheels as $wheel){
             $wheelDays = json_decode($wheel->days_of_week);
             if (in_array($currentDay, $wheelDays)) {
                 User::where('attempts', '<', 5)
                         ->increment('attempts');
-                
+
                 $this->info("Попытки для прокрутки колеса {$wheel->name} увеличились для всех пользователей");
             }
         }

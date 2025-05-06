@@ -11,7 +11,7 @@ use App\Models\UserPrize;
 class MaterialThingController extends Controller
 {
     /**
-     * 
+     *
      * @OA\Get(
      *    path="/api/material-thing",
      *    summary="Получение списка вещей",
@@ -36,7 +36,7 @@ class MaterialThingController extends Controller
      *            @OA\Property(property="message", type="string", example="Forbidden.")
      *        )
      *    )
-     *    
+     *
      * )
      */
     public function index()
@@ -45,14 +45,14 @@ class MaterialThingController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Post(
      *    path="/api/material-thing",
      *    summary="Создание вещи",
      *    tags={"Вещи"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
-     * 
+     *
+     *
      *    @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -61,11 +61,11 @@ class MaterialThingController extends Controller
      *             required={"name"}
      *         )
      *     ),
-     * 
+     *
      *    @OA\Response(
      *        response=201,
      *        description="ОК",
-     *        
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -93,13 +93,13 @@ class MaterialThingController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Get(
      *    path="/api/material-thing/{id}",
      *    summary="Получение вещи по id",
      *    tags={"Вещи"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id вещи",
      *        in="path",
@@ -112,7 +112,7 @@ class MaterialThingController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
-     *      
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -144,13 +144,13 @@ class MaterialThingController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Put(
      *    path="/api/material-thing/{id}",
      *    summary="Обновление вещи  по id",
      *    tags={"Вещи"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id вещи",
      *        in="path",
@@ -159,8 +159,8 @@ class MaterialThingController extends Controller
      *        example=1,
      *        @OA\Schema(type="integer")
      *    ),
-     * 
-     * 
+     *
+     *
      *    @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -169,11 +169,11 @@ class MaterialThingController extends Controller
      *             required={"name"}
      *         )
      *     ),
-     * 
+     *
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
-     *        
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -201,6 +201,8 @@ class MaterialThingController extends Controller
     public function update(UpdateMaterial_thingRequest $request, $id)
     {
         $material_thing = Material_thing::findOrFail($id);
+//        если выиграли приз, то его можно отредактировать?
+//        один приз может быть у разных колес?
         $material_thing->name = $request->name;
 
         $material_thing->save();
@@ -208,13 +210,13 @@ class MaterialThingController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Delete(
      *    path="/api/material-thing/{id}",
      *    summary="Удаление вещи по id",
      *    tags={"Вещи"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id вещи",
      *        in="path",
@@ -229,15 +231,15 @@ class MaterialThingController extends Controller
      *        description="ОК",
      *        @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Вещь успешна удалена")
-     *        ) 
+     *        )
      *    ),
-     * 
+     *
      *    @OA\Response(
      *        response=403,
-     *        description="Действие запрещено", 
+     *        description="Действие запрещено",
      *        @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Этот приз удалить нельзя, его выйграли")
-     *        ) 
+     *        )
      *    ),
      *    @OA\Response(
      *        response=401,
