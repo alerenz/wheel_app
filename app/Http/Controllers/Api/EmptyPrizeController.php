@@ -11,7 +11,33 @@ use App\Models\UserPrize;
 class EmptyPrizeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 
+     * @OA\Get(
+     *    path="/api/empty-prize",
+     *    summary="Получение списка пустых призов",
+     *    tags={"Пустые призы"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     *    
+     * )
      */
     public function index()
     {
@@ -19,7 +45,43 @@ class EmptyPrizeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 
+     * @OA\Post(
+     *    path="/api/empty-prize",
+     *    summary="Создание пустого приза",
+     *    tags={"Пустые призы"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     * 
+     *    @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Попытка"),
+     *             required={"name"}
+     *         )
+     *     ),
+     * 
+     *    @OA\Response(
+     *        response=201,
+     *        description="ОК",
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     * )
      */
     public function store(StoreEmpty_prizeRequest $request)
     {
@@ -31,7 +93,49 @@ class EmptyPrizeController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 
+     * @OA\Get(
+     *    path="/api/empty-prize/{id}",
+     *    summary="Получение пустого приза по id",
+     *    tags={"Пустые призы"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id пустого приза",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *      
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Пустого приза с таким id не существует")
+     *        )
+     *    ),
+     * )
      */
     public function show($id)
     {
@@ -40,7 +144,59 @@ class EmptyPrizeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * 
+     * @OA\Put(
+     *    path="/api/empty-prize/{id}",
+     *    summary="Обновление пустого приза по id",
+     *    tags={"Пустые призы"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id пустого приза",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     * 
+     * 
+     *    @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Попытка"),
+     *             required={"name"}
+     *         )
+     *     ),
+     * 
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Пустого приза с таким id не существует")
+     *        )
+     *    ),
+     * )
      */
     public function update(UpdateEmpty_prizeRequest $request, $id)
     {
@@ -52,7 +208,52 @@ class EmptyPrizeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 
+     * @OA\Delete(
+     *    path="/api/empty-prize/{id}",
+     *    summary="Удаление пустого приза по id",
+     *    tags={"Пустые призы"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id пустого приза",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Пустой приз успешно удален")
+     *        ) 
+     *    ),
+     * 
+     *    @OA\Response(
+     *        response=403,
+     *        description="Действие запрещено", 
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Этот приз удалить нельзя, его выйграли")
+     *        ) 
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Пустого приза с таким id не существует")
+     *        )
+     *    ),
+     * )
      */
     public function destroy($id)
     {
@@ -62,6 +263,6 @@ class EmptyPrizeController extends Controller
             return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
         }
         $empty_prize->delete();
-        return response()->json(["message"=>"Пустой приз"]);
+        return response()->json(["message"=>"Пустой приз успешно удален"]);
     }
 }

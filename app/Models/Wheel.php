@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Sector;
+use App\Models\UserPrize;
 use App\Enums\StatusWeelType;
 
 class Wheel extends Model
@@ -22,6 +23,10 @@ class Wheel extends Model
     public function sectors()
     {
         return $this->hasMany(Sector::class);
+    }
+
+    public function userPrizes(){
+        return $this->hasMany(UserPrize::class);
     }
 
     protected static function boot()
