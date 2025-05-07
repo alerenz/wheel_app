@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Sector;
 use App\Models\Promocode;
-use App\Models\Material_thing;
-use App\Models\Empty_prize;
+use App\Models\MaterialThing;
+use App\Models\EmptyPrize;
 use App\Models\UserPrize;
 use App\Models\Wheel;
 use Carbon\Carbon;
@@ -15,7 +15,8 @@ use App\Http\Requests\UpdateSectorRequest;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Enums\StatusWeelType;
+use App\Enums\StatusWheelType;
+use App\Services\PrizeTypeService;
 
 class SectorController extends Controller
 {
@@ -53,17 +54,7 @@ class SectorController extends Controller
         $sectors = Sector::with('prize')->get();
         if(!$sectors->isEmpty()){
             foreach($sectors as $item){
-                switch($item->prize_type){
-                    case Promocode::class:
-                        $item->prize_type = "promocode";
-                        break;
-                    case Material_thing::class:
-                        $item->prize_type = "material_thing";
-                        break;  
-                    case Empty_prize::class:
-                        $item->prize_type = "empty_prize";
-                        break;
-                }
+                $item->prize_type = PrizeTypeService::classToString($item->prize_type);
             }
         }
         return response()->json($sectors, 200);
@@ -142,24 +133,7 @@ class SectorController extends Controller
             }
         }
 
-
-        $type_prize = $request->prize_type;
-
-         switch ($type_prize) {
-            case 'promocode':
-                $type_prize = Promocode::class;
-                break;
-            case 'material_thing':
-                $type_prize = Material_thing::class;
-                break;
-            case 'empty_prize':
-                $type_prize = Empty_prize::class;
-                break;
-            default:
-                return response()->json(["message"=>"Неверный тип приза, выберите промокод, или вещь или пустой приз"], 403);
-                break;
-        }
-
+        $type_prize = PrizeTypeService::stringToClass($request->prize_type);
 
         $sector = Sector::create([
             'name'=>$request->name,
@@ -221,17 +195,7 @@ class SectorController extends Controller
     public function show($id)
     {
         $sector = Sector::with('prize')->findOrFail($id);
-        switch($sector->prize_type){
-            case Promocode::class:
-                $sector->prize_type = "promocode";
-                break;
-            case Material_thing::class:
-                $sector->prize_type = "material_thing";
-                break;  
-            case Empty_prize::class:
-                $sector->prize_type = "empty_prize";
-                break;
-        }
+        $sector->prize_type = PrizeTypeService::classToString($sector->prize_type);
         return response()->json($sector, 200);
     }
 
@@ -318,22 +282,7 @@ class SectorController extends Controller
                 return response()->json(["message"=>"Общая сумма вероятностей превышает 100%"],403);
             }
         }
-        $type_prize = $request->prize_type;
-
-         switch ($type_prize) {
-            case 'promocode':
-                $type_prize = Promocode::class;
-                break;
-            case 'material_thing':
-                $type_prize = Material_thing::class;
-                break;
-            case 'empty_prize':
-                $type_prize = Empty_prize::class;
-                break;
-            default:
-                throw new \InvalidArgumentException('Некорректный тип приза');
-                break;
-            }
+        $type_prize = PrizeTypeService::stringToClass($request->prize_type);
             
         $sector = Sector::findOrFail($id);
         $sector->name = $request->name;
@@ -397,7 +346,7 @@ class SectorController extends Controller
     {
         $sector = Sector::findOrFail($id);
         $wheel = Wheel::findOrFail($sector->wheel_id);
-        if($wheel->status == StatusWeelType::active->value){
+        if($wheel->status == StatusWheelType::active->value){
             return response()->json(["message"=>"При активном колесе нельзя удалить сектор"], 403);
         }
         $sector->delete();
@@ -457,14 +406,14 @@ class SectorController extends Controller
             $userPrize->wheel_id = $wheel->id;
             $userPrize->save();
 
-            if($sector->prize_type == Empty_prize::class){
-                $empty = Empty_prize::findOrFail($sector->prize_id);
+            if($sector->prize_type == EmptyPrize::class){
+                $empty = EmptyPrize::findOrFail($sector->prize_id);
                 if ($empty->name == 'Попытка') {
                     if ($user->attempts < 5) {
                         $user->attempts = $user->attempts + 1;
                     }
                 }
-            }else if($sector->prize_type == Material_thing::class || $sector->prize_type == Promocode::class){
+            }else if($sector->prize_type == MaterialThing::class || $sector->prize_type == Promocode::class){
                 $sector->count = $sector->count - 1;
                 if($sector->count == 0){
                     $probability = $sector->probability;
@@ -480,19 +429,7 @@ class SectorController extends Controller
             
             $user->save();
 
-            switch ($sector->prize_type) {
-                case Promocode::class:
-                    $sector->prize_type = "promocode";
-                    break;
-                    
-                case Material_thing::class:
-                    $sector->prize_type = "material_thing";
-                    break;
-                    
-                case Empty_prize::class:
-                    $sector->prize_type = "empty_prize";
-                    break;
-            }
+            $sector->prize_type = PrizeTypeService::classToString($sector->prize_type);
             
             DB::commit();
             return response()->json($sector, 200);

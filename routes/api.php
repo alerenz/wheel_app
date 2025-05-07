@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\WheelController;
 use App\Http\Controllers\Api\SectorController;
 use App\Http\Middleware\CheckRole;
 use App\Http\Controllers\Api\UserPrizeController;
+use App\Http\Controllers\Api\UserController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -55,6 +56,8 @@ Route::group(['middleware'=>['jwt.auth', 'role:admin']], function ($router) {
 
     Route::get('userPrize',[UserPrizeController::class, 'index']);
     Route::get('userPrize/{id}',[UserPrizeController::class, 'show']);
+
+    Route::get('users',[UserController::class, 'index']);
 
 });
 

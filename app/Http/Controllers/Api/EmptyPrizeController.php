@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Empty_prize;
-use App\Http\Requests\StoreEmpty_prizeRequest;
-use App\Http\Requests\UpdateEmpty_prizeRequest;
+use App\Models\EmptyPrize;
+use App\Http\Requests\StoreEmptyPrizeRequest;
+use App\Http\Requests\UpdateEmptyPrizeRequest;
 use App\Models\UserPrize;
 
 class EmptyPrizeController extends Controller
@@ -41,7 +41,7 @@ class EmptyPrizeController extends Controller
      */
     public function index()
     {
-        return Empty_prize::all();
+        return EmptyPrize::all();
     }
 
     /**
@@ -83,13 +83,13 @@ class EmptyPrizeController extends Controller
      *    )
      * )
      */
-    public function store(StoreEmpty_prizeRequest $request)
+    public function store(StoreEmptyPrizeRequest $request)
     {
-        $empty_prize = Empty_prize::create([
+        $emptyPrize = EmptyPrize::create([
             'name'=>$request->name
         ]);
 
-        return response()->json($empty_prize, 201);
+        return response()->json($emptyPrize, 201);
     }
 
     /**
@@ -139,8 +139,8 @@ class EmptyPrizeController extends Controller
      */
     public function show($id)
     {
-        $empty_prize = Empty_prize::findOrFail($id);
-        return $empty_prize;
+        $emptyPrize = EmptyPrize::findOrFail($id);
+        return $emptyPrize;
     }
 
     /**
@@ -198,13 +198,13 @@ class EmptyPrizeController extends Controller
      *    ),
      * )
      */
-    public function update(UpdateEmpty_prizeRequest $request, $id)
+    public function update(UpdateEmptyPrizeRequest $request, $id)
     {
-        $empty_prize = Empty_prize::findOrFail($id);
-        $empty_prize->name = $request->name;
-        $empty_prize->save();
+        $emptyPrize = EmptyPrize::findOrFail($id);
+        $emptyPrize->name = $request->name;
+        $emptyPrize->save();
 
-        return $empty_prize;
+        return $emptyPrize;
     }
 
     /**
@@ -257,12 +257,12 @@ class EmptyPrizeController extends Controller
      */
     public function destroy($id)
     {
-        $empty_prize = Empty_prize::findOrFail($id);
-        $userPrizes = UserPrize::where('prize_type', Empty_prize::class)->where('prize_id', $id)->get();
+        $emptyPrize = EmptyPrize::findOrFail($id);
+        $userPrizes = UserPrize::where('prize_type', EmptyPrize::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
             return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
         }
-        $empty_prize->delete();
+        $emptyPrize->delete();
         return response()->json(["message"=>"Пустой приз успешно удален"]);
     }
 }

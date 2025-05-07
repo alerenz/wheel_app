@@ -23,12 +23,12 @@ class UserPrize extends Model
         return $this->morphTo();
     }
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function wheel(): BelongsTo
+    public function wheel()
     {
         return $this->belongsTo(Wheel::class);
     }

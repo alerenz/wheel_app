@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Model\Sector;
 use App\Model\UserPrize;
 
-class Material_thing extends Model
+class MaterialThing extends Model
 {
     protected $fillable = [
         'name',

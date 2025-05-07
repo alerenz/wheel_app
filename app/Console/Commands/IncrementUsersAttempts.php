@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\User;
 use App\Models\Wheel;
-use App\Enums\StatusWeelType;
+use App\Enums\StatusWheelType;
 
 class IncrementUsersAttempts extends Command
 {
@@ -42,7 +42,7 @@ class IncrementUsersAttempts extends Command
     
         $currentDay = $daysMap[$currentDayIndex];
 
-        $wheels = Wheel::where('status', StatusWeelType::active->value)->get();
+        $wheels = Wheel::where('status', StatusWheelType::active->value)->get();
         foreach($wheels as $wheel){
             $wheelDays = json_decode($wheel->days_of_week);
             if (in_array($currentDay, $wheelDays)) {

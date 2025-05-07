@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Model\Sector;
 
 
-class Empty_prize extends Model
+class EmptyPrize extends Model
 {
     protected $fillable=['name'];
 

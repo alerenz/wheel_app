@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\ExistDayOfWeek;
-use App\Enums\StatusWeelType;
+use App\Enums\StatusWheelType;
 
 class UpdateWheelRequest extends FormRequest
 {
@@ -29,7 +29,7 @@ class UpdateWheelRequest extends FormRequest
             'days_of_week'=>['required',new ExistDayOfWeek()],
             'date_start'=>['required', 'date',],
             'date_end' => ['required', 'date', 'after:today'],
-            'status' => ['required', 'in:' . implode(',', array_column(StatusWeelType::cases(), 'value'))],
+            'status' => ['required', 'in:' . implode(',', array_column(StatusWheelType::cases(), 'value'))],
             'animation'=>['boolean'],
             
         ];
@@ -50,7 +50,7 @@ class UpdateWheelRequest extends FormRequest
             'date_end.date' => 'Неверный формат даты',
             'date_end.after' => 'Дата окончания должна быть позже текущей',
             'status.required' => 'Статус обязателен для заполнения',
-            'status.in'=>'Неверный тип статуса, может быть только: '.implode(', ', array_column(StatusWeelType::cases(), 'value')),
+            'status.in'=>'Неверный тип статуса, может быть только: '.implode(', ', array_column(StatusWheelType::cases(), 'value')),
             'animation.boolean'=>"Анимация должна быть булевым значением",
             'days_of_week.required'=>'Дни недели обязательны для заполнения',
         ];

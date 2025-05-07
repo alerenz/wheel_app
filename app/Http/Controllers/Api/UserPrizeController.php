@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\UserPrize;
 use App\Models\Wheel;
 use App\Models\Promocode;
-use App\Models\Material_thing;
-use App\Models\Empty_prize;
+use App\Models\MaterialThing;
+use App\Models\EmptyPrize;
 use App\Http\Requests\StoreUserPrizeRequest;
 use App\Http\Requests\UpdateUserPrizeRequest;
+use Illuminate\Http\Request;
+use App\Services\PrizeTypeService;
 
 class UserPrizeController extends Controller
 {
@@ -59,7 +61,7 @@ class UserPrizeController extends Controller
      */
     public function index(Request $request)
     {
-        $query = UserPrize::with('prize');
+        $query = UserPrize::with('prize', 'user', 'wheel');
 
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc');
@@ -69,17 +71,7 @@ class UserPrizeController extends Controller
         $userPrizes = $query->get();
         if(!$userPrizes->isEmpty()){
             foreach($userPrizes as $item){
-                switch($item->prize_type){
-                    case Promocode::class:
-                        $item->prize_type = "promocode";
-                        break;
-                    case Material_thing::class:
-                        $item->prize_type = "material_thing";
-                        break;  
-                    case Empty_prize::class:
-                        $item->prize_type = "empty_prize";
-                        break;
-                }
+                $item->prize_type = PrizeTypeService::classToString($item->prize_type);
             }
         }
         return response()->json($userPrizes, 200);
@@ -126,18 +118,9 @@ class UserPrizeController extends Controller
      */
     public function show($id)
     {
-        $userPrize = UserPrize::with('prize')->findOrFail($id);
-        switch($userPrize->prize_type){
-            case Promocode::class:
-                $userPrize->prize_type = "promocode";
-                break;
-            case Material_thing::class:
-                $userPrize->prize_type = "material_thing";
-                break;  
-            case Empty_prize::class:
-                $userPrize->prize_type = "empty_prize";
-                break;
-        }
+        $userPrize = UserPrize::with('prize', 'user', 'wheel')->findOrFail($id);
+        $userPrize->prize_type = PrizeTypeService::classToString($userPrize->prize_type);
+        return response()->json($userPrize, 200);
     }
 
 /**
@@ -181,20 +164,10 @@ class UserPrizeController extends Controller
 
     public function get_user_prizes($userId){
 
-        $userPrizes = UserPrize::with('prize')->where('user_id', $userId)->get();
+        $userPrizes = UserPrize::with('prize', 'wheel')->where('user_id', $userId)->get();
         if(!$userPrizes->isEmpty()){
             foreach($userPrizes as $item){
-                switch($item->prize_type){
-                    case Promocode::class:
-                        $item->prize_type = "promocode";
-                        break;
-                    case Material_thing::class:
-                        $item->prize_type = "material_thing";
-                        break;  
-                    case Empty_prize::class:
-                        $item->prize_type = "empty_prize";
-                        break;
-                }
+                $item->prize_type = PrizeTypeService::classToString($item->prize_type);
             }
         }
         return response()->json($userPrizes, 200);

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Material_thing;
-use App\Http\Requests\StoreMaterial_thingRequest;
-use App\Http\Requests\UpdateMaterial_thingRequest;
+use App\Models\MaterialThing;
+use App\Http\Requests\StoreMaterialThingRequest;
+use App\Http\Requests\UpdateMaterialThingRequest;
 use App\Models\UserPrize;
 
 class MaterialThingController extends Controller
@@ -41,7 +41,7 @@ class MaterialThingController extends Controller
      */
     public function index()
     {
-        return Material_thing::all();
+        return MaterialThing::all();
     }
 
     /**
@@ -83,9 +83,9 @@ class MaterialThingController extends Controller
      *    )
      * )
      */
-    public function store(StoreMaterial_thingRequest $request)
+    public function store(StoreMaterialThingRequest $request)
     {
-        $thing= Material_thing::create([
+        $thing= MaterialThing::create([
             'name'=>$request->name,
         ]);
 
@@ -139,8 +139,8 @@ class MaterialThingController extends Controller
      */
     public function show($id)
     {
-        $material_thing = Material_thing::findOrFail($id);
-        return $material_thing;
+        $materialThing = MaterialThing::findOrFail($id);
+        return $materialThing;
     }
 
     /**
@@ -198,13 +198,13 @@ class MaterialThingController extends Controller
      *    ),
      * )
      */
-    public function update(UpdateMaterial_thingRequest $request, $id)
+    public function update(UpdateMaterialThingRequest $request, $id)
     {
-        $material_thing = Material_thing::findOrFail($id);
-        $material_thing->name = $request->name;
+        $materialThing = MaterialThing::findOrFail($id);
+        $materialThing->name = $request->name;
 
-        $material_thing->save();
-        return $material_thing;
+        $materialThing->save();
+        return $materialThing;
     }
 
     /**
@@ -257,12 +257,12 @@ class MaterialThingController extends Controller
      */
     public function destroy($id)
     {
-        $material_thing = Material_thing::findOrFail($id);
-        $userPrizes = UserPrize::where('prize_type', Material_thing::class)->where('prize_id', $id)->get();
+        $materialThing = MaterialThing::findOrFail($id);
+        $userPrizes = UserPrize::where('prize_type', MaterialThing::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
             return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
         }
-        $material_thing->delete();
+        $materialThing->delete();
         return response()->json(["message"=>"Вещь успешно удалена"]);
     }
 }
