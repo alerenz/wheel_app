@@ -68,6 +68,9 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
                     }
                 }
             }
@@ -106,6 +109,9 @@
                 "responses": {
                     "200": {
                         "description": "ОК"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
                     }
                 }
             }
