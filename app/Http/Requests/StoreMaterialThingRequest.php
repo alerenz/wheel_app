@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreEmpty_prizeRequest extends FormRequest
+class StoreMaterialThingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class StoreEmpty_prizeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>['required', 'string']
+            'name'=>['required','string'],
+            'count'=>['required','integer', 'min:0'],
         ];
     }
 
@@ -31,6 +32,9 @@ class StoreEmpty_prizeRequest extends FormRequest
         return [
             'name.required' => 'Наименование обязательно для заполнения',
             'name.string' => 'Тип данных наименование строка',
+            'count.required' => 'Количество обязательно для заполнения',
+            'count.integer'=>'Количество должно быть числом',
+            'count.min'=>'Количество не может быть меньше 0',
         ];
     }
 }

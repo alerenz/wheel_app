@@ -6,14 +6,30 @@ use App\Http\Controllers\Controller;
 use App\Models\UserPrize;
 use App\Models\Wheel;
 use App\Models\Promocode;
-use App\Models\Material_thing;
-use App\Models\Empty_prize;
+use App\Models\MaterialThing;
+use App\Models\EmptyPrize;
 use App\Http\Requests\StoreUserPrizeRequest;
 use App\Http\Requests\UpdateUserPrizeRequest;
+use Illuminate\Http\Request;
+use App\Services\PrizeTypeService;
 
 class UserPrizeController extends Controller
 {
     /**
+     * 
+     * @OA\Schema(
+     *     schema="UserPrize",
+     *     type="object",
+     *     @OA\Property(property="id", type="integer", example=1),
+     *     @OA\Property(property="date", type="date",example="2025-06-01"),
+     *     @OA\Property(property="prize_type", type="string",example="empty_prize"),
+     *     @OA\Property(property="prize_id", type="integer",example=1),
+     *     @OA\Property(property="user_id", type="integer",example=1),
+     *     @OA\Property(property="wheel_id", type="integer",example=1),
+     *     @OA\Property(property="prize", ref="#/components/schemas/Prize"),
+     *     @OA\Property(property="user", ref="#/components/schemas/User"),
+     *     @OA\Property(property="wheel", ref="#/components/schemas/WheelWithOutSectors"),
+     * )
      * 
      * @OA\Get(
      *    path="/api/userPrize",
@@ -39,7 +55,10 @@ class UserPrizeController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
-     *
+     *        @OA\JsonContent(
+     *            type="array",
+     *            @OA\Items(ref="#/components/schemas/UserPrize")
+     *        )
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -59,7 +78,7 @@ class UserPrizeController extends Controller
      */
     public function index(Request $request)
     {
-        $query = UserPrize::with('prize');
+        $query = UserPrize::with('prize', 'user', 'wheel');
 
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc');
@@ -69,17 +88,7 @@ class UserPrizeController extends Controller
         $userPrizes = $query->get();
         if(!$userPrizes->isEmpty()){
             foreach($userPrizes as $item){
-                switch($item->prize_type){
-                    case Promocode::class:
-                        $item->prize_type = "promocode";
-                        break;
-                    case Material_thing::class:
-                        $item->prize_type = "material_thing";
-                        break;  
-                    case Empty_prize::class:
-                        $item->prize_type = "empty_prize";
-                        break;
-                }
+                $item->prize_type = PrizeTypeService::classToString($item->prize_type);
             }
         }
         return response()->json($userPrizes, 200);
@@ -106,6 +115,9 @@ class UserPrizeController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/UserPrize"
+     *        )
      *      
      *    ),
      *    @OA\Response(
@@ -126,40 +138,25 @@ class UserPrizeController extends Controller
      */
     public function show($id)
     {
-        $userPrize = UserPrize::with('prize')->findOrFail($id);
-        switch($userPrize->prize_type){
-            case Promocode::class:
-                $userPrize->prize_type = "promocode";
-                break;
-            case Material_thing::class:
-                $userPrize->prize_type = "material_thing";
-                break;  
-            case Empty_prize::class:
-                $userPrize->prize_type = "empty_prize";
-                break;
-        }
+        $userPrize = UserPrize::with('prize', 'user', 'wheel')->findOrFail($id);
+        $userPrize->prize_type = PrizeTypeService::classToString($userPrize->prize_type);
+        return response()->json($userPrize, 200);
     }
 
 /**
      * 
      * @OA\Get(
-     *    path="/api/userPrizes/user/{id}",
-     *    summary="Получение списка призов пользователя по его id",
+     *    path="/api/userPrizes/user",
+     *    summary="Получение списка призов пользователя",
      *    tags={"Призы пользователей"},
      *    security={{"bearerAuth":{} }},
      * 
-     *    @OA\Parameter(
-     *        description="id пользователя",
-     *        in="path",
-     *        name="id",
-     *        required=true,
-     *        example=1,
-     *        @OA\Schema(type="integer")
-     *    ),
-     *
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/UserPrize"
+     *        )
      *      
      *    ),
      *    @OA\Response(
@@ -179,22 +176,14 @@ class UserPrizeController extends Controller
      * )
      */
 
-    public function get_user_prizes($userId){
+    public function getUserPrizes(){
 
-        $userPrizes = UserPrize::with('prize')->where('user_id', $userId)->get();
+        $user = auth('api')->user(); 
+
+        $userPrizes = UserPrize::with('prize', 'wheel')->where('user_id', $user->id)->get();
         if(!$userPrizes->isEmpty()){
             foreach($userPrizes as $item){
-                switch($item->prize_type){
-                    case Promocode::class:
-                        $item->prize_type = "promocode";
-                        break;
-                    case Material_thing::class:
-                        $item->prize_type = "material_thing";
-                        break;  
-                    case Empty_prize::class:
-                        $item->prize_type = "empty_prize";
-                        break;
-                }
+                $item->prize_type = PrizeTypeService::classToString($item->prize_type);
             }
         }
         return response()->json($userPrizes, 200);

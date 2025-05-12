@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\WheelController;
 use App\Http\Controllers\Api\SectorController;
 use App\Http\Middleware\CheckRole;
 use App\Http\Controllers\Api\UserPrizeController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\PromocodesCodeController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -44,6 +46,7 @@ Route::group(['middleware'=>['jwt.auth', 'role:admin']], function ($router) {
 
     Route::get('wheel', [WheelController::class,'index']);
     Route::post('wheel', [WheelController::class,'store']);
+    Route::get('wheel/{id}', [WheelController::class,'show']);
     Route::put('wheel/{id}', [WheelController::class,'update']);
     Route::delete('wheel/{id}', [WheelController::class,'destroy']);
 
@@ -56,10 +59,15 @@ Route::group(['middleware'=>['jwt.auth', 'role:admin']], function ($router) {
     Route::get('userPrize',[UserPrizeController::class, 'index']);
     Route::get('userPrize/{id}',[UserPrizeController::class, 'show']);
 
+    Route::get('users',[UserController::class, 'index']);
+    
+    Route::get('promocodesCode',[PromocodesCodeController::class,'index']);
+    Route::post('promocodesCode/{id}',[PromocodesCodeController::class,'store']);
+    
 });
 
 Route::group(['middleware'=>'jwt.auth'], function ($router) {
-    Route::get('wheel/{id}', [WheelController::class,'show']);
-    Route::get('sectors/droppedSector',[SectorController::class, 'getDroppedSector']);
-    Route::get('userPrizes/user/{id}',[UserPrizeController::class, 'get_user_prizes']);
+    Route::get('wheels/activeWheel',[WheelController::class, 'activeWheel']);
+    Route::get('sectors/winSector',[SectorController::class, 'getDroppedSector']);
+    Route::get('userPrizes/user',[UserPrizeController::class, 'getUserPrizes']);
 });

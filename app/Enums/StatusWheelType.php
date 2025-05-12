@@ -2,10 +2,9 @@
 
 namespace App\Enums;
 
-// wheel
-enum StatusWeelType:string
+enum StatusWheelType:string
 {
     case active = 'Активно';
     case nonActive = 'Не активно';
-    case archive = 'В архиве';
+    case archive = 'Архив';
 }

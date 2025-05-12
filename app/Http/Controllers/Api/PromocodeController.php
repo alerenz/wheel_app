@@ -6,12 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Promocode;
 use App\Http\Requests\StorePromocodeRequest;
 use App\Http\Requests\UpdatePromocodeRequest;
-use App\Enums\DiscountType;
 use App\Models\UserPrize;
+use DateTime;
 
 class PromocodeController extends Controller
 {
     /**
+     * 
+     * 
+     * @OA\Schema(
+     *     schema="Promocode",
+     *     type="object",
+     *     @OA\Property(property="id", type="integer", example=1),
+     *     @OA\Property(property="name", type="string", example="Скидка 10% на пиццу"),
+     * )
      * 
      * @OA\Get(
      *    path="/api/promocode",
@@ -22,6 +30,10 @@ class PromocodeController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            type="array",
+     *            @OA\Items(ref="#/components/schemas/Promocode")
+     *        )
      *
      *    ),
      *    @OA\Response(
@@ -49,7 +61,7 @@ class PromocodeController extends Controller
      * 
      * @OA\Post(
      *    path="/api/promocode",
-     *    summary="Создание промокода",
+     *    summary="Создание промокодов посредством загрузки csv файла",
      *    tags={"Промокоды"},
      *    security={{"bearerAuth":{"role": "admin"} }},
      * 
@@ -58,21 +70,18 @@ class PromocodeController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(
-     *                 property="type_discount",
-     *                 type="string",
-     *                 enum={"Процентная", "Фиксированная"},
-     *                 example="Фиксированная"
-     *             ),
-     *             @OA\Property(property="discount_value", type="float", example=15),
-     *             @OA\Property(property="expiry_date", type="date", example="2025-05-01"),
-     *             required={"type_discount", "discount_value","expiry_date"}
+     *             @OA\Property(property="name", type="string", example="Скидка на пиццу 10%"),
+     *             required={"name"}
      *         )
      *     ),
      * 
      *    @OA\Response(
      *        response=201,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="id", type="integer", example=1),
+     *            @OA\Property(property="name", type="string", example="Скидка на пиццу 10%"),
+     *        )
      *        
      *    ),
      *    @OA\Response(
@@ -91,12 +100,10 @@ class PromocodeController extends Controller
      *    )
      * )
      */
-    public function store(StorePromocodeRequest $request)
-    {
+    
+    public function store(StorePromocodeRequest $request){
         $promocode = Promocode::create([
-            'type_discount' => DiscountType::from($request->type_discount),
-            'discount_value'=>$request->discount_value,
-            'expiry_date'=>$request->expiry_date,
+            'name'=>$request->name
         ]);
 
         return response()->json($promocode, 201);
@@ -123,6 +130,9 @@ class PromocodeController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/Promocode"
+     *        )
      *      
      *    ),
      *    @OA\Response(
@@ -177,21 +187,17 @@ class PromocodeController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(
-     *                 property="type_discount",
-     *                 type="string",
-     *                 enum={"Процентная", "Фиксированная"},
-     *                 example="Фиксированная"
-     *             ),
-     *             @OA\Property(property="discount_value", type="float", example=15),
-     *             @OA\Property(property="expiry_date", type="date", example="2025-05-01"),
-     *             required={"type_discount", "discount_value","expiry_date"}
+     *             @OA\Property(property="name", type="string", example="Промокод на скидку 15 процентов"),
+     *             required={"name"}
      *         )
      *     ),
      * 
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/Promocode"
+     *        )
      *        
      *    ),
      *    @OA\Response(
@@ -220,9 +226,11 @@ class PromocodeController extends Controller
     public function update(UpdatePromocodeRequest $request, $id)
     {
         $promocode = Promocode::findOrFail($id);
-        $promocode->type_discount = DiscountType::from($request->type_discount);
-        $promocode->discount_value = $request->discount_value;
-        $promocode->expiry_date = $request->expiry_date;
+        $userPrizes = UserPrize::where('prize_type', Promocode::class)->where('prize_id', $id)->get();
+        if(!$userPrizes->isEmpty()){
+            return response()->json(["message"=>"Этот промокод редактировать нельзя, его выйграли"], 403);
+        }
+        $promocode->name = $request->name;
 
         $promocode->save();
         return $promocode;

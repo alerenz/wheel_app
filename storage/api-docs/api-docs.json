@@ -68,6 +68,9 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
                     }
                 }
             }
@@ -106,6 +109,9 @@
                 "responses": {
                     "200": {
                         "description": "ОК"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
                     }
                 }
             }
@@ -224,7 +230,17 @@
                 "operationId": "2f951e98663a5beb85b386ee6b059541",
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/EmptyPrize"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -294,7 +310,14 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyPrize"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -359,7 +382,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyPrize"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -457,7 +487,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyPrize"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -618,7 +655,17 @@
                 "operationId": "53182061aec9bb8bf72386e16e5dd057",
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MaterialThing"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -673,12 +720,17 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name"
+                                    "name",
+                                    "count"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
                                         "example": "Блокнот А5"
+                                    },
+                                    "count": {
+                                        "type": "integer",
+                                        "example": 100
                                     }
                                 },
                                 "type": "object"
@@ -688,7 +740,14 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MaterialThing"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -753,7 +812,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MaterialThing"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -842,6 +908,10 @@
                                     "name": {
                                         "type": "string",
                                         "example": "Блокнот А5"
+                                    },
+                                    "count": {
+                                        "type": "integer",
+                                        "example": 100
                                     }
                                 },
                                 "type": "object"
@@ -851,7 +921,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MaterialThing"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -1012,7 +1089,17 @@
                 "operationId": "bd471a9cafdaf551d9c0a07a274be5af",
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Promocode"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -1059,7 +1146,7 @@
                 "tags": [
                     "Промокоды"
                 ],
-                "summary": "Создание промокода",
+                "summary": "Создание промокодов посредством загрузки csv файла",
                 "operationId": "1937e48037402a557b7aca7b5ca2074e",
                 "requestBody": {
                     "required": true,
@@ -1067,28 +1154,12 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "type_discount",
-                                    "discount_value",
-                                    "expiry_date"
+                                    "name"
                                 ],
                                 "properties": {
-                                    "type_discount": {
+                                    "name": {
                                         "type": "string",
-                                        "enum": [
-                                            "Процентная",
-                                            "Фиксированная"
-                                        ],
-                                        "example": "Фиксированная"
-                                    },
-                                    "discount_value": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 15
-                                    },
-                                    "expiry_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2025-05-01"
+                                        "example": "Скидка на пиццу 10%"
                                     }
                                 },
                                 "type": "object"
@@ -1098,7 +1169,24 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Скидка на пиццу 10%"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -1163,7 +1251,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Promocode"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -1246,28 +1341,12 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "type_discount",
-                                    "discount_value",
-                                    "expiry_date"
+                                    "name"
                                 ],
                                 "properties": {
-                                    "type_discount": {
+                                    "name": {
                                         "type": "string",
-                                        "enum": [
-                                            "Процентная",
-                                            "Фиксированная"
-                                        ],
-                                        "example": "Фиксированная"
-                                    },
-                                    "discount_value": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 15
-                                    },
-                                    "expiry_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2025-05-01"
+                                        "example": "Промокод на скидку 15 процентов"
                                     }
                                 },
                                 "type": "object"
@@ -1277,7 +1356,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Promocode"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -1429,6 +1515,158 @@
                 ]
             }
         },
+        "/api/promocodesCode": {
+            "get": {
+                "tags": [
+                    "Коды промокодов"
+                ],
+                "summary": "Получение списка кодов промокодов",
+                "operationId": "8db4d04b54053799a0650835cf26c971",
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PromocodesCode"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/promocodesCode/{id}": {
+            "post": {
+                "tags": [
+                    "Коды промокодов"
+                ],
+                "summary": "Создание промокодов посредством загрузки csv файла",
+                "operationId": "02df5ffc64659a51df262f85fb63cee1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id промокода",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "description": "CSV file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PromocodesCode"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
         "/api/sector": {
             "get": {
                 "tags": [
@@ -1438,7 +1676,17 @@
                 "operationId": "9c2a860ae6e45df5f8de308029568fcd",
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Sector"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -1496,8 +1744,7 @@
                                     "name",
                                     "prize_type",
                                     "prize_id",
-                                    "wheel_id",
-                                    "count"
+                                    "wheel_id"
                                 ],
                                 "properties": {
                                     "name": {
@@ -1520,10 +1767,6 @@
                                     "wheel_id": {
                                         "type": "integer",
                                         "example": 1
-                                    },
-                                    "count": {
-                                        "type": "integer",
-                                        "example": 100
                                     }
                                 },
                                 "type": "object"
@@ -1533,7 +1776,32 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Промокод на скидку 15%"
+                                        },
+                                        "prize_type": {
+                                            "type": "string",
+                                            "example": "promocode"
+                                        },
+                                        "prize_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "wheel_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -1598,7 +1866,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Sector"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -1714,10 +1989,6 @@
                                     "wheel_id": {
                                         "type": "integer",
                                         "example": 1
-                                    },
-                                    "count": {
-                                        "type": "integer",
-                                        "example": 100
                                     }
                                 },
                                 "type": "object"
@@ -1727,7 +1998,37 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Промокод на скидку 15%"
+                                        },
+                                        "prize_type": {
+                                            "type": "string",
+                                            "example": "promocode"
+                                        },
+                                        "prize_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "probability": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 15
+                                        },
+                                        "wheel_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -1866,16 +2167,23 @@
                 ]
             }
         },
-        "/api/sectors/droppedSector": {
+        "/api/sectors/winSector": {
             "get": {
                 "tags": [
                     "Секторы"
                 ],
                 "summary": "Получение выйгранного сектора",
-                "operationId": "6c1795a5b655de275c0a30600b9a6084",
+                "operationId": "3860ea068aa308ec83da3c36c29c9141",
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Sector"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -1917,6 +2225,69 @@
                 ]
             }
         },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Пользователи"
+                ],
+                "summary": "Получение списка пользователей",
+                "operationId": "566aed8efb436ca506e0ef51a032ecd9",
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
         "/api/userPrize": {
             "get": {
                 "tags": [
@@ -1952,7 +2323,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserPrize"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -2017,7 +2398,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserPrize"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -2061,28 +2449,23 @@
                 ]
             }
         },
-        "/api/userPrizes/user/{id}": {
+        "/api/userPrizes/user": {
             "get": {
                 "tags": [
                     "Призы пользователей"
                 ],
-                "summary": "Получение списка призов пользователя по его id",
-                "operationId": "b3d3c0eb6239696e2e11d24e821592f3",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "id пользователя",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "example": 1
-                    }
-                ],
+                "summary": "Получение списка призов пользователя",
+                "operationId": "aab39108eb95216d06b30b9528a8ef91",
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserPrize"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -2177,7 +2560,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Wheel"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -2280,7 +2673,62 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Акция мая"
+                                        },
+                                        "count_sectors": {
+                                            "type": "integer",
+                                            "example": 5
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Не активно"
+                                        },
+                                        "animation": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "date_start": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2025-05-01"
+                                        },
+                                        "date_end": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2025-05-31"
+                                        },
+                                        "days_of_week": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": [
+                                                "Понедельник",
+                                                "Среда"
+                                            ]
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-05-07T12:31:41.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-05-07T12:39:53.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -2345,7 +2793,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Wheel"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -2382,7 +2837,9 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
                     }
                 ]
             },
@@ -2468,7 +2925,62 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Акция мая"
+                                        },
+                                        "count_sectors": {
+                                            "type": "integer",
+                                            "example": 5
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Не активно"
+                                        },
+                                        "animation": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "date_start": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2025-05-01"
+                                        },
+                                        "date_end": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2025-05-31"
+                                        },
+                                        "days_of_week": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": [
+                                                "Понедельник",
+                                                "Среда"
+                                            ]
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-05-07T12:31:41.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-05-07T12:39:53.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -2622,9 +3134,346 @@
                     }
                 ]
             }
+        },
+        "/api/wheels/activeWheel": {
+            "get": {
+                "tags": [
+                    "Колеса"
+                ],
+                "summary": "Получение активного колеса",
+                "operationId": "947181a4a192bf4d8a6633b5163fddc2",
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Wheel"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ничего не найдено"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
+        "schemas": {
+            "EmptyPrize": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Попытка"
+                    }
+                },
+                "type": "object"
+            },
+            "MaterialThing": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Блокнот А5"
+                    },
+                    "count": {
+                        "type": "integer",
+                        "example": 100
+                    }
+                },
+                "type": "object"
+            },
+            "Promocode": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Скидка 10% на пиццу"
+                    }
+                },
+                "type": "object"
+            },
+            "PromocodesCode": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "ABC123"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "promocode_id": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "Sector": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "prize_type": {
+                        "type": "string",
+                        "example": "material_thing"
+                    },
+                    "prize_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "probability": {
+                        "type": "string",
+                        "example": "15"
+                    },
+                    "wheel_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "вещь"
+                    },
+                    "prize": {
+                        "$ref": "#/components/schemas/Prize"
+                    }
+                },
+                "type": "object"
+            },
+            "Prize": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Ручка синяя шариковая"
+                    },
+                    "count": {
+                        "type": "integer",
+                        "example": 10
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "user123"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "qwerty12345"
+                    },
+                    "surname": {
+                        "type": "string",
+                        "example": "Иванов"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Иван"
+                    },
+                    "patronymic": {
+                        "type": "string",
+                        "example": "Иванович"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "role": {
+                        "type": "string",
+                        "example": "user"
+                    }
+                },
+                "type": "object"
+            },
+            "UserPrize": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-06-01"
+                    },
+                    "prize_type": {
+                        "type": "string",
+                        "example": "empty_prize"
+                    },
+                    "prize_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "wheel_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "prize": {
+                        "$ref": "#/components/schemas/Prize"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "wheel": {
+                        "$ref": "#/components/schemas/WheelWithOutSectors"
+                    }
+                },
+                "type": "object"
+            },
+            "Wheel": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Акция мая"
+                    },
+                    "count_sectors": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "Не активно"
+                    },
+                    "animation": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "date_start": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-05-01"
+                    },
+                    "date_end": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-05-31"
+                    },
+                    "days_of_week": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "Понедельник",
+                            "Среда"
+                        ]
+                    },
+                    "sectors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Sector"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "WheelWithOutSectors": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Акция мая"
+                    },
+                    "count_sectors": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "Не активно"
+                    },
+                    "animation": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "date_start": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-05-01"
+                    },
+                    "date_end": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-05-31"
+                    },
+                    "days_of_week": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "Понедельник",
+                            "Среда"
+                        ]
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
@@ -2650,8 +3499,16 @@
             "description": "Промокоды"
         },
         {
+            "name": "Коды промокодов",
+            "description": "Коды промокодов"
+        },
+        {
             "name": "Секторы",
             "description": "Секторы"
+        },
+        {
+            "name": "Пользователи",
+            "description": "Пользователи"
         },
         {
             "name": "Призы пользователей",

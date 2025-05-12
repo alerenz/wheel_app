@@ -37,6 +37,11 @@ class AuthController extends Controller
      *        )
      *        
      *    ),
+     * 
+     *    @OA\Response(
+     *        response=422,
+     *        description="Unprocessable Entity"
+     *    )
      * )
      */
     
@@ -44,8 +49,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|min:6',
+            'username' => 'required|string|unique',
+            'password' => 'required|min:6|max:20',
             'surname'=>'required|string',
             'name'=>'required|string',
             'patronymic'=>'required|string',
@@ -88,6 +93,10 @@ class AuthController extends Controller
      *        description="ОК",
      *        
      *    ),
+     *    @OA\Response(
+     *        response=422,
+     *        description="Unprocessable Entity"
+     *    )
      * )
      */
 

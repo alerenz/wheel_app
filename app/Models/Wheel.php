@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Sector;
 use App\Models\UserPrize;
-use App\Enums\StatusWeelType;
+use App\Enums\StatusWheelType;
 
 class Wheel extends Model
 {
@@ -34,7 +34,7 @@ class Wheel extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->status = StatusWeelType::nonActive;
+            $model->status = StatusWheelType::nonActive;
         });
     }
 }
