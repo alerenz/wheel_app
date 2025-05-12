@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Sector;
 use App\Models\Promocode;
+use App\Models\PromocodesCode;
 use App\Models\MaterialThing;
 use App\Models\EmptyPrize;
 use App\Models\UserPrize;
@@ -17,10 +18,32 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Enums\StatusWheelType;
 use App\Services\PrizeTypeService;
+use Illuminate\Support\Facades\Config;
 
 class SectorController extends Controller
 {
     /**
+     * 
+     * 
+     *@OA\Schema(
+     *     schema="Sector",
+     *     type="object",
+     *     @OA\Property(property="id", type="integer", example=1),
+     *     @OA\Property(property="prize_type", type="string", example="material_thing"),
+     *     @OA\Property(property="prize_id", type="integer", example=1),
+     *     @OA\Property(property="probability", type="string", example="15"),
+     *     @OA\Property(property="wheel_id", type="integer", example=1),
+     *     @OA\Property(property="name", type="string", example="вещь"),
+     *     @OA\Property(property="prize", ref="#/components/schemas/Prize")
+     * )
+     *
+     * @OA\Schema(
+     *     schema="Prize",
+     *     type="object",
+     *     @OA\Property(property="id", type="integer", example=1),
+     *     @OA\Property(property="name", type="string", example="Ручка синяя шариковая"),
+     *     @OA\Property(property="count", type="integer", example=10)
+     * )
      * 
      * @OA\Get(
      *    path="/api/sector",
@@ -28,10 +51,13 @@ class SectorController extends Controller
      *    tags={"Секторы"},
      *    security={{"bearerAuth":{"role": "admin"} }},
      *
-     *    @OA\Response(
+     *        @OA\Response(
      *        response=200,
      *        description="ОК",
-     *
+     *        @OA\JsonContent(
+     *            type="array",
+     *            @OA\Items(ref="#/components/schemas/Sector")
+     *        )
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -82,14 +108,19 @@ class SectorController extends Controller
      *             ),
      *             @OA\Property(property="prize_id", type="integer", example=1),
      *             @OA\Property(property="wheel_id", type="integer", example=1),
-     *             @OA\Property(property="count", type="integer", example=100),
-     *             required={"name", "prize_type","prize_id", "wheel_id", "count"}
+     *             required={"name", "prize_type","prize_id", "wheel_id"}
      *         )
      *     ),
      * 
      *    @OA\Response(
      *        response=201,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="name", type="string", example="Промокод на скидку 15%"),
+     *            @OA\Property(property="prize_type",type="string",example="promocode"),
+     *            @OA\Property(property="prize_id", type="integer", example=1),
+     *            @OA\Property(property="wheel_id", type="integer", example=1),
+     *        )
      *        
      *    ),
      *    @OA\Response(
@@ -133,14 +164,16 @@ class SectorController extends Controller
             }
         }
 
+
         $type_prize = PrizeTypeService::stringToClass($request->prize_type);
+
+
 
         $sector = Sector::create([
             'name'=>$request->name,
             'prize_type'=>$type_prize,
             'prize_id'=>$request->prize_id,
-            'wheel_id'=>$request->wheel_id,
-            'count'=>$request->count
+            'wheel_id'=>$request->wheel_id
         ]);
         return response()->json($sector,201);
        
@@ -166,6 +199,9 @@ class SectorController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/Sector"
+     *        )
      *      
      *    ),
      *    @OA\Response(
@@ -231,7 +267,6 @@ class SectorController extends Controller
      *             @OA\Property(property="prize_id", type="integer", example=1),
      *             @OA\Property(property="probability", type="float", example=15),
      *             @OA\Property(property="wheel_id", type="integer", example=1),
-     *             @OA\Property(property="count", type="integer", example=100),
      *             required={"name", "prize_type","prize_id", "probability", "wheel_id", "count"}
      *         )
      *     ),
@@ -239,6 +274,14 @@ class SectorController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="name", type="string", example="Промокод на скидку 15%"),
+     *            @OA\Property(property="prize_type",type="string",example="promocode"),
+     *            @OA\Property(property="prize_id", type="integer", example=1),
+     *            @OA\Property(property="probability", type="float", example=15),
+     *            @OA\Property(property="wheel_id", type="integer", example=1),
+     *            
+     *        )
      *        
      *    ),
      *    @OA\Response(
@@ -290,7 +333,6 @@ class SectorController extends Controller
         $sector->prize_id = $request->prize_id;
         $sector->probability = $request->probability;
         $sector->wheel_id = $request->wheel_id;
-        $sector->count = $request->count;
         $sector->save();
 
         return response()->json($sector, 200);
@@ -357,7 +399,7 @@ class SectorController extends Controller
     /**
      * 
      * @OA\Get(
-     *    path="/api/sectors/droppedSector",
+     *    path="/api/sectors/winSector",
      *    summary="Получение выйгранного сектора",
      *    tags={"Секторы"},
      *    security={{"bearerAuth":{} }},
@@ -365,6 +407,9 @@ class SectorController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/Sector"
+     *        )
      *
      *    ),
      *    @OA\Response(
@@ -395,29 +440,65 @@ class SectorController extends Controller
             $wheel = Wheel::findOrFail($sector->wheel_id);
             $sectors = Sector::where('wheel_id', $sector->wheel_id)->get();
             $user = auth('api')->user();
-            
+
+            $countSectors = Sector::where('wheel_id', $sector->wheel_id)->count();
+
             $user->attempts = $user->attempts - 1;
-            
+
             $userPrize = new UserPrize();
             $userPrize->user_id = $user->id;
             $userPrize->prize_type = $sector->prize_type;
             $userPrize->prize_id = $sector->prize_id;
             $userPrize->date = Carbon::now();
             $userPrize->wheel_id = $wheel->id;
+
+            if($sector->prize_type == Promocode::class){
+                $promocodesCodes = PromocodesCode::where('promocode_id', $sector->prize_id)
+                    ->where('active', true)
+                    ->get();
+
+                if ($promocodesCodes->isNotEmpty()) {
+                    $code = $promocodesCodes->random();
+
+                    $code->active = false;
+                    $code->save();
+                    $userPrize->promocodeCode_id = $code->id;
+                }
+
+            }
+            
             $userPrize->save();
+
+            $max_attempts = config('custom.max_attempts');
 
             if($sector->prize_type == EmptyPrize::class){
                 $empty = EmptyPrize::findOrFail($sector->prize_id);
                 if ($empty->name == 'Попытка') {
-                    if ($user->attempts < 5) {
+                    if ($user->attempts < $max_attempts) {
                         $user->attempts = $user->attempts + 1;
                     }
                 }
-            }else if($sector->prize_type == MaterialThing::class || $sector->prize_type == Promocode::class){
-                $sector->count = $sector->count - 1;
-                if($sector->count == 0){
+            }
+            else if($sector->prize_type == MaterialThing::class){
+                $thing = MaterialThing::findOrFail($sector->prize_id);
+                $thing->count = $thing->count - 1;
+                if($thing->count == 0){
                     $probability = $sector->probability;
-                    $probability = $probability / ($sectors->count() - 1);
+                    $probability = $probability / ($countSectors - 1);
+                    $sector->probability = 0;
+                    foreach($sectors as $item){
+                        if($item->id != $sector->id){
+                            $item->probability = $item->probability + $probability;
+                        }
+                    }
+                }
+            }else if($sector->prize_type == Promocode::class){
+                $promocodesCodesCount = PromocodesCode::where('promocode_id',$sector->prize_id)
+                ->where('active', true)->count();
+
+                if($promocodesCodesCount == 0){
+                    $probability = $sector->probability;
+                    $probability = $probability / ($countSectors - 1);
                     $sector->probability = 0;
                     foreach($sectors as $item){
                         if($item->id != $sector->id){
@@ -435,7 +516,7 @@ class SectorController extends Controller
             return response()->json($sector, 200);
         } catch (\Exception $e) {
             DB::rollback();
-            Log::error("Ошибка в getDroppedSector: " . $e->getMessage());
+            Log::error("Ошибка в функции getDroppedSector: " . $e->getMessage());
             return response()->json(['error' => 'Произошла ошибка при обработке запроса'], 500);
         }
     }

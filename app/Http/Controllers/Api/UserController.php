@@ -10,8 +10,53 @@ use App\Http\Requests\UpdateUserRequest;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 
+     * @OA\Schema(
+     *     schema="User",
+     *     type="object",
+     *     @OA\Property(property="id", type="integer", example=1),
+     *     @OA\Property(property="username", type="string", example="user123"),
+     *     @OA\Property(property="password", type="string", example="qwerty12345"),
+     *     @OA\Property(property="surname", type="string", example="Иванов"),
+     *     @OA\Property(property="name", type="string", example="Иван"),
+     *     @OA\Property(property="patronymic", type="string", example="Иванович"),
+     *     @OA\Property(property="active", type="boolean", example=true),
+     *     @OA\Property(property="role", type="string", example="user"),
+     * )
+     * 
+     * @OA\Get(
+     *    path="/api/users",
+     *    summary="Получение списка пользователей",
+     *    tags={"Пользователи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *            type="array",
+     *            @OA\Items(ref="#/components/schemas/User")
+     *        )
+     *
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    ),
+     * )
+     * 
      */
+
     public function index()
     {
         return User::all();

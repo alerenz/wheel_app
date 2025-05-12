@@ -33,7 +33,6 @@ class StoreSectorRequest extends FormRequest
             ],
             'probability' => ['numeric', 'min:0', 'max:100'],
             'wheel_id' => ['required', 'exists:wheels,id'],
-            'count'=>['required','integer','min:0']
         ];
     }
 
@@ -49,9 +48,6 @@ class StoreSectorRequest extends FormRequest
             'probability.max'=>'Вероятность не должна быть больше 100%',
             'wheel_id.required'=>'ID колеса обязателен для заполнения',
             'wheel_id.exists'=>'Колеса с таким id не существует',
-            'count.required'=>'Количество призов должно быть указано',
-            'count.integer'=>'Количество призов должно быть целым числом',
-            'count.min'=>'Количество призов не может быть отрицательным',
         ];
     }
 }

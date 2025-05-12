@@ -11,6 +11,14 @@ use App\Models\UserPrize;
 class EmptyPrizeController extends Controller
 {
     /**
+     * @OA\Schema(
+     *     schema="EmptyPrize",
+     *     type="object",
+     *     @OA\Property(property="id", type="integer", example=1),
+     *     @OA\Property(property="name", type="string", example="Попытка"),
+     * )
+     *
+     *
      * 
      * @OA\Get(
      *    path="/api/empty-prize",
@@ -21,6 +29,10 @@ class EmptyPrizeController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            type="array",
+     *            @OA\Items(ref="#/components/schemas/EmptyPrize")
+     *        )
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -65,6 +77,9 @@ class EmptyPrizeController extends Controller
      *    @OA\Response(
      *        response=201,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/EmptyPrize"
+     *        )
      *        
      *    ),
      *    @OA\Response(
@@ -112,6 +127,9 @@ class EmptyPrizeController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/EmptyPrize"
+     *        )
      *      
      *    ),
      *    @OA\Response(
@@ -173,6 +191,9 @@ class EmptyPrizeController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/EmptyPrize"
+     *        )
      *        
      *    ),
      *    @OA\Response(

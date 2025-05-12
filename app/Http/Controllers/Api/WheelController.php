@@ -17,6 +17,34 @@ use App\Services\PrizeTypeService;
 class WheelController extends Controller
 {
     /**
+    * @OA\Schema(
+    *     schema="Wheel",
+    *     type="object",
+    *     @OA\Property(property="name", type="string", example="Акция мая"),
+    *     @OA\Property(property="count_sectors", type="integer", example=5),
+    *     @OA\Property(property="status", type="string", example="Не активно"),
+    *     @OA\Property(property="animation", type="boolean", example=true),
+    *     @OA\Property(property="date_start", type="date", example="2025-05-01"),
+    *     @OA\Property(property="date_end", type="date", example="2025-05-31"),
+    *     @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
+    *     @OA\Property(property="sectors", type="array", 
+    *         @OA\Items(ref="#/components/schemas/Sector")
+    *     )
+    * )
+    *
+    * @OA\Schema(
+    *     schema="WheelWithOutSectors",
+    *     type="object",
+    *     @OA\Property(property="name", type="string", example="Акция мая"),
+    *     @OA\Property(property="count_sectors", type="integer", example=5),
+    *     @OA\Property(property="status", type="string", example="Не активно"),
+    *     @OA\Property(property="animation", type="boolean", example=true),
+    *     @OA\Property(property="date_start", type="date", example="2025-05-01"),
+    *     @OA\Property(property="date_end", type="date", example="2025-05-31"),
+    *     @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
+    * )
+    *
+    * 
     * 
     * @OA\Get(
     *    path="/api/wheel",
@@ -55,6 +83,10 @@ class WheelController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            type="array",
+     *            @OA\Items(ref="#/components/schemas/Wheel")
+     *        )
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -128,6 +160,17 @@ class WheelController extends Controller
      *    @OA\Response(
      *        response=201,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="name", type="string", example="Акция мая"),
+     *            @OA\Property(property="count_sectors", type="integer", example=5),
+     *            @OA\Property(property="status", type="string", example="Не активно"),
+     *            @OA\Property(property="animation", type="boolean", example=true),
+     *            @OA\Property(property="date_start", type="date", example="2025-05-01"),
+     *            @OA\Property(property="date_end", type="date", example="2025-05-31"),
+     *            @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
+     *            @OA\Property(property="created_at", type="string", format="date-time", example="2025-05-07T12:31:41.000000Z"),
+     *            @OA\Property(property="updated_at", type="string", format="date-time", example="2025-05-07T12:39:53.000000Z"),
+     *        )
      *        
      *    ),
      *    @OA\Response(
@@ -167,7 +210,7 @@ class WheelController extends Controller
      *    path="/api/wheel/{id}",
      *    summary="Получение колеса по id",
      *    tags={"Колеса"},
-     *    security={{"bearerAuth":{} }},
+     *    security={{"bearerAuth":{"role": "admin"} }},
      * 
      *    @OA\Parameter(
      *        description="id колеса",
@@ -181,6 +224,9 @@ class WheelController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/Wheel"
+     *        )
      *      
      *    ),
      *    @OA\Response(
@@ -251,6 +297,17 @@ class WheelController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="name", type="string", example="Акция мая"),
+     *            @OA\Property(property="count_sectors", type="integer", example=5),
+     *            @OA\Property(property="status", type="string", example="Не активно"),
+     *            @OA\Property(property="animation", type="boolean", example=true),
+     *            @OA\Property(property="date_start", type="date", example="2025-05-01"),
+     *            @OA\Property(property="date_end", type="date", example="2025-05-31"),
+     *            @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
+     *            @OA\Property(property="created_at", type="string", format="date-time", example="2025-05-07T12:31:41.000000Z"),
+     *            @OA\Property(property="updated_at", type="string", format="date-time", example="2025-05-07T12:39:53.000000Z"),
+     *        )
      *        
      *    ),
      *    @OA\Response(
@@ -288,7 +345,7 @@ class WheelController extends Controller
     public function update(UpdateWheelRequest $request, $id)
     {
     
-        $wheel = Wheel::with(['sectors.prize'])->withCount('sectors')->findOrFail($id);
+        $wheel = Wheel::withCount('sectors')->findOrFail($id);
         $sectors_count = $wheel->sectors_count;
 
         $sectors = Sector::where('wheel_id', $id)->get();
@@ -314,7 +371,7 @@ class WheelController extends Controller
             $wheel->date_end = $request->date_end;
             $wheel->days_of_week = json_encode($request->days_of_week);
             $wheel->save();
-            return $wheel;
+            return response()->json($wheel);
         }else{
             return response()->json(["message"=>"Колесо в архиве, изменять нельзя"],403);
         }
@@ -377,5 +434,59 @@ class WheelController extends Controller
         }else{
             return response()->json(["message"=>"Колесо активно, удалить нельзя"],403);
         }
+    }
+
+    /**
+     * 
+     * @OA\Get(
+     *    path="/api/wheels/activeWheel",
+     *    summary="Получение активного колеса",
+     *    tags={"Колеса"},
+     *    security={{"bearerAuth":{} }},
+     * 
+     *  
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/Wheel"
+     *        )
+     *      
+     *    ),
+     * 
+     *    @OA\Response(
+     *        response=404,
+     *        description="Not Found",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ничего не найдено")
+     *        )
+     *    ),
+     * 
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     * )
+     */
+
+    public function activeWheel()
+    {
+        $wheel = Wheel::with(['sectors.prize'])
+            ->where('status', StatusWheelType::active->value)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        if(!$wheel){
+            return response()->json(["message"=>"Ничего не найдено"], 404);
+        }
+        
+        $wheel->days_of_week = json_decode($wheel->days_of_week);
+        foreach($wheel->sectors as $sector){
+            $sector->prize_type = PrizeTypeService::classToString($sector->prize_type);
+        }
+        return response()->json($wheel, 200);
     }
 }

@@ -10,7 +10,17 @@ use App\Models\UserPrize;
 
 class MaterialThingController extends Controller
 {
+
     /**
+     * @OA\Schema(
+     *     schema="MaterialThing",
+     *     type="object",
+     *     @OA\Property(property="id", type="integer", example=1),
+     *     @OA\Property(property="name", type="string", example="Блокнот А5"),
+     *     @OA\Property(property="count", type="integer", example=100),
+     * )
+     *
+     *
      * 
      * @OA\Get(
      *    path="/api/material-thing",
@@ -21,6 +31,10 @@ class MaterialThingController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            type="array",
+     *            @OA\Items(ref="#/components/schemas/MaterialThing")
+     *        )
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -58,13 +72,17 @@ class MaterialThingController extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="name", type="string", example="Блокнот А5"),
-     *             required={"name"}
+     *             @OA\Property(property="count", type="integer", example=100),
+     *             required={"name", "count"}
      *         )
      *     ),
      * 
      *    @OA\Response(
      *        response=201,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/MaterialThing"
+     *        )
      *        
      *    ),
      *    @OA\Response(
@@ -87,6 +105,7 @@ class MaterialThingController extends Controller
     {
         $thing= MaterialThing::create([
             'name'=>$request->name,
+            'count'=>$request->count,
         ]);
 
         return response()->json($thing, 201);
@@ -112,6 +131,9 @@ class MaterialThingController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/MaterialThing"
+     *        )
      *      
      *    ),
      *    @OA\Response(
@@ -166,6 +188,7 @@ class MaterialThingController extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="name", type="string", example="Блокнот А5"),
+     *             @OA\Property(property="count", type="integer", example=100),
      *             required={"name"}
      *         )
      *     ),
@@ -173,6 +196,9 @@ class MaterialThingController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/MaterialThing"
+     *        )
      *        
      *    ),
      *    @OA\Response(
@@ -202,6 +228,7 @@ class MaterialThingController extends Controller
     {
         $materialThing = MaterialThing::findOrFail($id);
         $materialThing->name = $request->name;
+        $materialThing->count = $request->count;
 
         $materialThing->save();
         return $materialThing;

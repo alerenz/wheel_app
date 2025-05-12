@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Wheel;
+use App\Models\PromocodesCode;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserPrize extends Model
@@ -14,7 +15,8 @@ class UserPrize extends Model
         'prize_id',
         'date',
         'user_id',
-        'extradition'
+        'wheel_id',
+        'promocodeCode_id'
     ];
 
 
@@ -31,6 +33,10 @@ class UserPrize extends Model
     public function wheel()
     {
         return $this->belongsTo(Wheel::class);
+    }
+
+    public function promocodeCode(){
+        return $this->belongsTo(PromocodesCode::class);
     }
     
 }

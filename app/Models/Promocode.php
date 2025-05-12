@@ -3,24 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\DiscountType;
 use App\Model\Sector;
 use App\Model\UserPrize;
+use App\Model\PromocodesCode;
 
 class Promocode extends Model
 {
-    protected $fillable = [
-        'code',
-        'type_discount',
-        'discount_value',
-        'expiry_date',
-    ];
+    protected $fillable = ['name'];
 
     protected $casts = [
-        'expiry_date' => 'date',
-        'discount_value' => 'float'
+        
     ];
 
+    public function codes(){
+        return $this->hasMany(PromocodesCode::class);
+    }
 
     public function sectors(): MorphMany
     {
