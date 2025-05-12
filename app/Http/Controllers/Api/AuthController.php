@@ -37,6 +37,11 @@ class AuthController extends Controller
      *        )
      *        
      *    ),
+     * 
+     *    @OA\Response(
+     *        response=422,
+     *        description="Unprocessable Entity"
+     *    )
      * )
      */
     
@@ -88,6 +93,10 @@ class AuthController extends Controller
      *        description="ОК",
      *        
      *    ),
+     *    @OA\Response(
+     *        response=422,
+     *        description="Unprocessable Entity"
+     *    )
      * )
      */
 
