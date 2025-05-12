@@ -226,6 +226,10 @@ class PromocodeController extends Controller
     public function update(UpdatePromocodeRequest $request, $id)
     {
         $promocode = Promocode::findOrFail($id);
+        $userPrizes = UserPrize::where('prize_type', Promocode::class)->where('prize_id', $id)->get();
+        if(!$userPrizes->isEmpty()){
+            return response()->json(["message"=>"Этот промокод редактировать нельзя, его выйграли"], 403);
+        }
         $promocode->name = $request->name;
 
         $promocode->save();

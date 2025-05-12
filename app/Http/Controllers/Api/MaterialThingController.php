@@ -227,6 +227,10 @@ class MaterialThingController extends Controller
     public function update(UpdateMaterialThingRequest $request, $id)
     {
         $materialThing = MaterialThing::findOrFail($id);
+        $userPrizes = UserPrize::where('prize_type', MaterialThing::class)->where('prize_id', $id)->get();
+        if(!$userPrizes->isEmpty()){
+            return response()->json(["message"=>"Эту вещь редактировать нельзя, его выйграли"], 403);
+        }
         $materialThing->name = $request->name;
         $materialThing->count = $request->count;
 

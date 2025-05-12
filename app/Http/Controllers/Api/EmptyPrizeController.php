@@ -222,6 +222,10 @@ class EmptyPrizeController extends Controller
     public function update(UpdateEmptyPrizeRequest $request, $id)
     {
         $emptyPrize = EmptyPrize::findOrFail($id);
+        $userPrizes = UserPrize::where('prize_type', EmptyPrize::class)->where('prize_id', $id)->get();
+        if(!$userPrizes->isEmpty()){
+            return response()->json(["message"=>"Этот приз редактировать нельзя, его выйграли"], 403);
+        }
         $emptyPrize->name = $request->name;
         $emptyPrize->save();
 
