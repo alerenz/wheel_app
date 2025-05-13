@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Attempt;
+use App\Models\EmptyPrize;
+use App\Models\MaterialThing;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use App\Model\Promocode;
-use App\Model\Material_thing;
-use App\Model\Empty_prize;
+use App\Models\Promocode;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,9 +26,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Relation::enforceMorphMap([
-            'Промокод'=>\App\Model\Promocode::class,
-            'Пустой приз' => \App\Model\Empty_prize::class,
-            'Вещь' => \App\Model\Material_thing::class,
+            'promocode'=>Promocode::class,
+            'empty_prize' => EmptyPrize::class,
+            'material_thing' => MaterialThing::class,
+            'attempt'=>Attempt::class,
+            'user' => User::class,
+
         ]);
     }
 }

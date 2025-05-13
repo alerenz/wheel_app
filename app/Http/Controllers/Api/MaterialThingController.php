@@ -10,7 +10,6 @@ use App\Models\UserPrize;
 
 class MaterialThingController extends Controller
 {
-
     /**
      * @OA\Schema(
      *     schema="MaterialThing",

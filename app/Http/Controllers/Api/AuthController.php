@@ -49,8 +49,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|unique',
-            'password' => 'required|min:6|max:20',
+            'username' => 'required|string|unique|min:5',
+            'password' => 'required|string|min:6|max:20',
             'surname'=>'required|string',
             'name'=>'required|string',
             'patronymic'=>'required|string',
@@ -100,7 +100,8 @@ class AuthController extends Controller
      * )
      */
 
-    public function login(){
+    public function login()
+    {
         $credentials = request(['username', 'password']);
 
         if (! $token = JWTAuth::attempt($credentials)) {
@@ -131,7 +132,8 @@ class AuthController extends Controller
      * )
      */
 
-    public function user(){
+    public function user()
+    {
         return response()->json(auth('api')->user());
     }
 
@@ -156,7 +158,8 @@ class AuthController extends Controller
      * )
      */
 
-    public function logout(){
+    public function logout()
+    {
         auth('api')->logout();
         return response()->json(['message' => 'Выход произошел успешно']);
     }
@@ -182,7 +185,8 @@ class AuthController extends Controller
      * )
      */
     
-    public function refresh(){
+    public function refresh()
+    {
         return $this->respondWithToken(auth('api')->refresh());
     }
 

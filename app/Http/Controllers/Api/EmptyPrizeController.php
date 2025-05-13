@@ -15,7 +15,7 @@ class EmptyPrizeController extends Controller
      *     schema="EmptyPrize",
      *     type="object",
      *     @OA\Property(property="id", type="integer", example=1),
-     *     @OA\Property(property="name", type="string", example="Попытка"),
+     *     @OA\Property(property="name", type="string", example="В следующий раз"),
      * )
      *
      *
@@ -69,7 +69,7 @@ class EmptyPrizeController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="name", type="string", example="Попытка"),
+     *             @OA\Property(property="name", type="string", example="В следующий раз"),
      *             required={"name"}
      *         )
      *     ),
@@ -183,7 +183,7 @@ class EmptyPrizeController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="name", type="string", example="Попытка"),
+     *             @OA\Property(property="name", type="string", example="В следующий раз"),
      *             required={"name"}
      *         )
      *     ),

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\WheelFortuneController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PromocodeController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\WheelController;
 use App\Http\Controllers\Api\SectorController;
 use App\Http\Middleware\CheckRole;
+use App\Http\Controllers\Api\AttemptController;
 use App\Http\Controllers\Api\UserPrizeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PromocodesCodeController;
@@ -56,18 +58,24 @@ Route::group(['middleware'=>['jwt.auth', 'role:admin']], function ($router) {
     Route::put('sector/{id}', [SectorController::class,'update']);
     Route::delete('sector/{id}', [SectorController::class,'destroy']);
 
-    Route::get('userPrize',[UserPrizeController::class, 'index']);
-    Route::get('userPrize/{id}',[UserPrizeController::class, 'show']);
+    Route::get('user-prize',[UserPrizeController::class, 'index']);
+    Route::get('user-prize/{id}',[UserPrizeController::class, 'show']);
 
     Route::get('users',[UserController::class, 'index']);
     
-    Route::get('promocodesCode',[PromocodesCodeController::class,'index']);
-    Route::post('promocodesCode/{id}',[PromocodesCodeController::class,'store']);
+    Route::get('promocodes-code',[PromocodesCodeController::class,'index']);
+    Route::post('promocodes-code/{id}',[PromocodesCodeController::class,'store']);
+
+    Route::get('attempt',[AttemptController::class,'index']);
+    Route::post('attempt',[AttemptController::class,'store']);
+    Route::get('attempt/{id}',[AttemptController::class,'show']);
+    Route::put('attempt/{id}',[AttemptController::class,'update']);
+    Route::delete('attempt/{id}',[AttemptController::class,'delete']);
     
 });
 
 Route::group(['middleware'=>'jwt.auth'], function ($router) {
-    Route::get('wheels/activeWheel',[WheelController::class, 'activeWheel']);
-    Route::get('sectors/winSector',[SectorController::class, 'getDroppedSector']);
-    Route::get('userPrizes/user',[UserPrizeController::class, 'getUserPrizes']);
+    Route::get('wheel-fortune/active-wheel',[WheelFortuneController::class, 'getActiveWheel']);
+    Route::get('wheel-fortune/win-sector',[WheelFortuneController::class, 'getWinSector']);
+    Route::get('user-prizes',[WheelFortuneController::class, 'getUserPrizes']);
 });

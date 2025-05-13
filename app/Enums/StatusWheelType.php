@@ -6,5 +6,5 @@ enum StatusWheelType:string
 {
     case active = 'Активно';
     case nonActive = 'Не активно';
-    case archive = 'Архив';
+    case archive = 'В архиве';
 }

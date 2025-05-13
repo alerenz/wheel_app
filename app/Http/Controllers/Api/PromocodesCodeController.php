@@ -10,7 +10,7 @@ use App\Http\Requests\UpdatePromocodesCodeRequest;
 
 class PromocodesCodeController extends Controller
 {
-/**
+    /**
      * 
      * 
      * @OA\Schema(
@@ -23,7 +23,7 @@ class PromocodesCodeController extends Controller
      * )
      * 
      * @OA\Get(
-     *    path="/api/promocodesCode",
+     *    path="/api/promocodes-code",
      *    summary="Получение списка кодов промокодов",
      *    tags={"Коды промокодов"},
      *    security={{"bearerAuth":{"role": "admin"} }},
@@ -61,7 +61,7 @@ class PromocodesCodeController extends Controller
     /**
      * 
      * @OA\Post(
-     *    path="/api/promocodesCode/{id}",
+     *    path="/api/promocodes-code/{id}",
      *    summary="Создание промокодов посредством загрузки csv файла",
      *    tags={"Коды промокодов"},
      *    security={{"bearerAuth":{"role": "admin"} }},
@@ -122,9 +122,7 @@ class PromocodesCodeController extends Controller
             return response()->json(["message"=>"Промокода с таким id не существует"]);
         }
         $allPromocodesCodes = PromocodesCode::all();
-
         $file = $request->file('file');
-        
         $promocodesCodes = [];
 
         if (($handle = fopen($file->getRealPath(), 'r')) !== false) {

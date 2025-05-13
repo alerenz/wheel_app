@@ -25,7 +25,6 @@ class UpdateSectorRequest extends FormRequest
         $prizeType = $this->input('prize_type');
 
         return [
-            'name' => ['required', 'string'],
             'prize_type' => ['required'],
             'prize_id' => [
                 'required',
@@ -40,8 +39,6 @@ class UpdateSectorRequest extends FormRequest
 
     public function messages(){
         return [
-            'name.required'=>'Наименование сектора обязательно.',
-            'name.string'=>'Наименование должно быть строкой.',
             'prize_type.required' => 'Тип приза обязателен для заполнения',
             'prize_id.required' => 'ID приза обязателен для заполнения',
             'probability.numeric'=>'Вероятность должна быть числом',

@@ -4,12 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserPrize;
-use App\Models\Wheel;
-use App\Models\Promocode;
-use App\Models\MaterialThing;
-use App\Models\EmptyPrize;
-use App\Http\Requests\StoreUserPrizeRequest;
-use App\Http\Requests\UpdateUserPrizeRequest;
 use Illuminate\Http\Request;
 use App\Services\PrizeTypeService;
 
@@ -32,7 +26,7 @@ class UserPrizeController extends Controller
      * )
      * 
      * @OA\Get(
-     *    path="/api/userPrize",
+     *    path="/api/user-prize",
      *    summary="Получение списка призов, выйгранные пользователями",
      *    tags={"Призы пользователей"},
      *    security={{"bearerAuth":{"role": "admin"} }},
@@ -51,6 +45,13 @@ class UserPrizeController extends Controller
     *         required=false,
     *         @OA\Schema(type="string", enum={"asc", "desc"}, default="asc")
     *     ),
+    *    @OA\Parameter(
+     *         name="per_page",
+     *         description="Количество элементов на странице (по умолчанию 10)",
+     *         required=false,
+     *         in="query",
+     *         @OA\Schema(type="integer")
+     *     ),
      *
      *    @OA\Response(
      *        response=200,
@@ -84,8 +85,9 @@ class UserPrizeController extends Controller
         $sortOrder = $request->input('order', 'asc');
         $query->orderBy($sortField, $sortOrder);
 
+        $perPage = $request->input('per_page', 10);
+        $userPrizes = $query->paginate($perPage);
 
-        $userPrizes = $query->get();
         if(!$userPrizes->isEmpty()){
             foreach($userPrizes as $item){
                 $item->prize_type = PrizeTypeService::classToString($item->prize_type);
@@ -98,7 +100,7 @@ class UserPrizeController extends Controller
     /**
      * 
      * @OA\Get(
-     *    path="/api/userPrize/{id}",
+     *    path="/api/user-prize/{id}",
      *    summary="Получение приза по id",
      *    tags={"Призы пользователей"},
      *    security={{"bearerAuth":{"role": "admin"} }},
@@ -143,49 +145,5 @@ class UserPrizeController extends Controller
         return response()->json($userPrize, 200);
     }
 
-/**
-     * 
-     * @OA\Get(
-     *    path="/api/userPrizes/user",
-     *    summary="Получение списка призов пользователя",
-     *    tags={"Призы пользователей"},
-     *    security={{"bearerAuth":{} }},
-     * 
-     *    @OA\Response(
-     *        response=200,
-     *        description="ОК",
-     *        @OA\JsonContent(
-     *            ref="#/components/schemas/UserPrize"
-     *        )
-     *      
-     *    ),
-     *    @OA\Response(
-     *        response=401,
-     *        description="Неавторизованный доступ",
-     *        @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Unauthenticated")
-     *        )
-     *    ),
-     *    @OA\Response(
-     *        response=404,
-     *        description="Ничего не найдено",
-     *        @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Пользователя с таким id не существует")
-     *        )
-     *    ),
-     * )
-     */
-
-    public function getUserPrizes(){
-
-        $user = auth('api')->user(); 
-
-        $userPrizes = UserPrize::with('prize', 'wheel')->where('user_id', $user->id)->get();
-        if(!$userPrizes->isEmpty()){
-            foreach($userPrizes as $item){
-                $item->prize_type = PrizeTypeService::classToString($item->prize_type);
-            }
-        }
-        return response()->json($userPrizes, 200);
-    }
+    
 }

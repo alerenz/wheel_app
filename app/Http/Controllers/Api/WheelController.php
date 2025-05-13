@@ -124,8 +124,6 @@ class WheelController extends Controller
         $wheels = $query->get();
 
         foreach ($wheels as $wheel) {
-            $wheel->days_of_week = json_decode($wheel->days_of_week);
-
             foreach($wheel->sectors as $sector){
                 $sector->prize_type = PrizeTypeService::classToString($sector->prize_type);
             }
@@ -198,7 +196,7 @@ class WheelController extends Controller
             'animation'=>$request->animation,
             'date_start'=>$request->date_start,
             'date_end'=>$request->date_end,
-            'days_of_week' => json_encode($request->days_of_week),
+            'days_of_week' =>$request->days_of_week,
         ]);
 
         return response()->json($wheel, 201);
@@ -249,7 +247,6 @@ class WheelController extends Controller
     public function show($id)
     {
         $wheel = Wheel::with(['sectors.prize'])->withCount('sectors')->findOrFail($id);
-        $wheel->days_of_week = json_decode($wheel->days_of_week);
         foreach($wheel->sectors as $sector){
             $sector->prize_type = PrizeTypeService::classToString($sector->prize_type);
         }
@@ -321,7 +318,7 @@ class WheelController extends Controller
      *        response=403,
      *        description="Доступ запрещен",
      *        @OA\JsonContent(
-     *            @OA\Property(property="message", type="string", example="Колесо в архиве, удалять нельзя")
+     *            @OA\Property(property="message", type="string", example="Колесо в архиве, изменять нельзя")
      *        )
      *    ),
      * 
@@ -365,11 +362,11 @@ class WheelController extends Controller
         if($wheel->status == StatusWheelType::active->value || $wheel->status == StatusWheelType::nonActive->value){
             $wheel->name = $request->name;
             $wheel->count_sectors = $request->count_sectors;
-            $wheel->status = StatusWheelType::from($request->status);
+            $wheel->status = StatusWheelType::from($request->status)->value;
             $wheel->animation = $request->animation;
             $wheel->date_start = $request->date_start;
             $wheel->date_end = $request->date_end;
-            $wheel->days_of_week = json_encode($request->days_of_week);
+            $wheel->days_of_week = $request->days_of_week;
             $wheel->save();
             return response()->json($wheel);
         }else{
@@ -424,11 +421,8 @@ class WheelController extends Controller
      */
     public function destroy($id)
     {
-        // $wheel->sectors()->delete();
         $wheel = Wheel::findOrFail($id);
-        // dd($wheel->id);
         if($wheel->status != StatusWheelType::active->value){
-            $name = $wheel->name;
             $wheel->delete();
             return response()->json(["message"=>"Колесо удалено успешно"]);
         }else{
@@ -436,57 +430,5 @@ class WheelController extends Controller
         }
     }
 
-    /**
-     * 
-     * @OA\Get(
-     *    path="/api/wheels/activeWheel",
-     *    summary="Получение активного колеса",
-     *    tags={"Колеса"},
-     *    security={{"bearerAuth":{} }},
-     * 
-     *  
-     *
-     *    @OA\Response(
-     *        response=200,
-     *        description="ОК",
-     *        @OA\JsonContent(
-     *            ref="#/components/schemas/Wheel"
-     *        )
-     *      
-     *    ),
-     * 
-     *    @OA\Response(
-     *        response=404,
-     *        description="Not Found",
-     *        @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Ничего не найдено")
-     *        )
-     *    ),
-     * 
-     *    @OA\Response(
-     *        response=401,
-     *        description="Неавторизованный доступ",
-     *        @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
-     *        )
-     *    ),
-     * )
-     */
-
-    public function activeWheel()
-    {
-        $wheel = Wheel::with(['sectors.prize'])
-            ->where('status', StatusWheelType::active->value)
-            ->orderBy('created_at', 'desc')
-            ->first();
-        if(!$wheel){
-            return response()->json(["message"=>"Ничего не найдено"], 404);
-        }
-        
-        $wheel->days_of_week = json_decode($wheel->days_of_week);
-        foreach($wheel->sectors as $sector){
-            $sector->prize_type = PrizeTypeService::classToString($sector->prize_type);
-        }
-        return response()->json($wheel, 200);
-    }
+    
 }

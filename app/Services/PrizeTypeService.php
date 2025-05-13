@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+use App\Models\Attempt;
 use InvalidArgumentException;
 use App\Models\Promocode;
 use App\Models\EmptyPrize;
@@ -13,6 +14,7 @@ class PrizeTypeService
         'promocode' => Promocode::class,
         'material_thing' => MaterialThing::class,
         'empty_prize' => EmptyPrize::class,
+        'attempt'=>Attempt::class,
     ];
 
     /**

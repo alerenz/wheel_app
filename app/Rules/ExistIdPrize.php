@@ -15,8 +15,6 @@ class ExistIdPrize implements ValidationRule
      */
 
     protected $prizeType;
-
-    // Конструктор для передачи prize_type
     public function __construct($prizeType)
     {
         $this->prizeType = $prizeType;

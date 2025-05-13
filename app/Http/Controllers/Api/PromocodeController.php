@@ -101,7 +101,8 @@ class PromocodeController extends Controller
      * )
      */
     
-    public function store(StorePromocodeRequest $request){
+    public function store(StorePromocodeRequest $request)
+    {
         $promocode = Promocode::create([
             'name'=>$request->name
         ]);
@@ -158,7 +159,7 @@ class PromocodeController extends Controller
      *    ),
      * )
      */
-    public function show(Promocode $promocode)
+    public function show($id)
     {
         $promocode = Promocode::findOrFail($id);
         return $promocode;
@@ -231,7 +232,6 @@ class PromocodeController extends Controller
             return response()->json(["message"=>"Этот промокод редактировать нельзя, его выйграли"], 403);
         }
         $promocode->name = $request->name;
-
         $promocode->save();
         return $promocode;
     }

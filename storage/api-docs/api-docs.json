@@ -6,6 +6,431 @@
     },
     "paths": {
         "/api/": {},
+        "/api/attempt": {
+            "get": {
+                "tags": [
+                    "Попытки"
+                ],
+                "summary": "Получение списка попыток",
+                "operationId": "1a55e26b9a4c7dfa0b004a7bf0bafafd",
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Attempt"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Попытки"
+                ],
+                "summary": "Создание попытки",
+                "operationId": "d91b6069bfea96df1224a1164c417cd1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Попытка"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Attempt"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/attempt/{id}": {
+            "get": {
+                "tags": [
+                    "Попытки"
+                ],
+                "summary": "Получение попытки по id",
+                "operationId": "1089bab4c757cc803c5d5c7343bb0dd3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id попытки",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Attempt"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Попытки с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Попытки"
+                ],
+                "summary": "Обновление попытки по id",
+                "operationId": "dda1ea5ee90a318b189afe92f3409ec6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id попытки",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "попытка"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Attempt"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Попытки с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Попытки"
+                ],
+                "summary": "Удаление попытки по id",
+                "operationId": "4817cf39ad6ac8716d84700c08b4ef98",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id попытки",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Попытка успешно удален"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Действие запрещено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Этот приз удалить нельзя, его выйграли"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Попытки с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "role": "admin"
+                        }
+                    }
+                ]
+            }
+        },
         "/api/auth/register": {
             "post": {
                 "tags": [
@@ -300,7 +725,7 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "Попытка"
+                                        "example": "В следующий раз"
                                     }
                                 },
                                 "type": "object"
@@ -477,7 +902,7 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "Попытка"
+                                        "example": "В следующий раз"
                                     }
                                 },
                                 "type": "object"
@@ -1515,13 +1940,13 @@
                 ]
             }
         },
-        "/api/promocodesCode": {
+        "/api/promocodes-code": {
             "get": {
                 "tags": [
                     "Коды промокодов"
                 ],
                 "summary": "Получение списка кодов промокодов",
-                "operationId": "8db4d04b54053799a0650835cf26c971",
+                "operationId": "189027658be56db092da392bd35e502d",
                 "responses": {
                     "200": {
                         "description": "ОК",
@@ -1578,13 +2003,13 @@
                 ]
             }
         },
-        "/api/promocodesCode/{id}": {
+        "/api/promocodes-code/{id}": {
             "post": {
                 "tags": [
                     "Коды промокодов"
                 ],
                 "summary": "Создание промокодов посредством загрузки csv файла",
-                "operationId": "02df5ffc64659a51df262f85fb63cee1",
+                "operationId": "0f78e2ceb53b5c47434335a790de9e5a",
                 "parameters": [
                     {
                         "name": "id",
@@ -1747,10 +2172,6 @@
                                     "wheel_id"
                                 ],
                                 "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Промокод на скидку 15%"
-                                    },
                                     "prize_type": {
                                         "type": "string",
                                         "enum": [
@@ -1781,10 +2202,6 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Промокод на скидку 15%"
-                                        },
                                         "prize_type": {
                                             "type": "string",
                                             "example": "promocode"
@@ -1964,10 +2381,6 @@
                                     "count"
                                 ],
                                 "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Промокод на скидку 15%"
-                                    },
                                     "prize_type": {
                                         "type": "string",
                                         "enum": [
@@ -2003,10 +2416,6 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Промокод на скидку 15%"
-                                        },
                                         "prize_type": {
                                             "type": "string",
                                             "example": "promocode"
@@ -2167,64 +2576,6 @@
                 ]
             }
         },
-        "/api/sectors/winSector": {
-            "get": {
-                "tags": [
-                    "Секторы"
-                ],
-                "summary": "Получение выйгранного сектора",
-                "operationId": "3860ea068aa308ec83da3c36c29c9141",
-                "responses": {
-                    "200": {
-                        "description": "ОК",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Sector"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Неавторизованный доступ",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка сервера",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Произошла ошибка при обработке запроса"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "/api/users": {
             "get": {
                 "tags": [
@@ -2288,13 +2639,13 @@
                 ]
             }
         },
-        "/api/userPrize": {
+        "/api/user-prize": {
             "get": {
                 "tags": [
                     "Призы пользователей"
                 ],
                 "summary": "Получение списка призов, выйгранные пользователями",
-                "operationId": "bd6798859279be26f1933348287ea4e4",
+                "operationId": "5e00c14f4fa628f2ee09df9a4bf48232",
                 "parameters": [
                     {
                         "name": "sort",
@@ -2318,6 +2669,15 @@
                                 "asc",
                                 "desc"
                             ]
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Количество элементов на странице (по умолчанию 10)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
                 ],
@@ -2377,13 +2737,13 @@
                 ]
             }
         },
-        "/api/userPrize/{id}": {
+        "/api/user-prize/{id}": {
             "get": {
                 "tags": [
                     "Призы пользователей"
                 ],
                 "summary": "Получение приза по id",
-                "operationId": "07ba37ce63f5d6e2d137d2568d7164d2",
+                "operationId": "93290b33446c3df29904c7fc6117ddcf",
                 "parameters": [
                     {
                         "name": "id",
@@ -2445,64 +2805,6 @@
                         "bearerAuth": {
                             "role": "admin"
                         }
-                    }
-                ]
-            }
-        },
-        "/api/userPrizes/user": {
-            "get": {
-                "tags": [
-                    "Призы пользователей"
-                ],
-                "summary": "Получение списка призов пользователя",
-                "operationId": "aab39108eb95216d06b30b9528a8ef91",
-                "responses": {
-                    "200": {
-                        "description": "ОК",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/UserPrize"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Неавторизованный доступ",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Ничего не найдено",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Пользователя с таким id не существует"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
                     }
                 ]
             }
@@ -3006,7 +3308,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Колесо в архиве, удалять нельзя"
+                                            "example": "Колесо в архиве, изменять нельзя"
                                         }
                                     },
                                     "type": "object"
@@ -3135,13 +3437,13 @@
                 ]
             }
         },
-        "/api/wheels/activeWheel": {
+        "/api/wheel-fortune/active-wheel": {
             "get": {
                 "tags": [
-                    "Колеса"
+                    "Колесо фортуны"
                 ],
                 "summary": "Получение активного колеса",
-                "operationId": "947181a4a192bf4d8a6633b5163fddc2",
+                "operationId": "a6d155a6213de314922e477e3e5e7334",
                 "responses": {
                     "200": {
                         "description": "ОК",
@@ -3192,11 +3494,127 @@
                     }
                 ]
             }
+        },
+        "/api/wheel-fortune/win-sector": {
+            "get": {
+                "tags": [
+                    "Колесо фортуны"
+                ],
+                "summary": "Получение выйгранного сектора",
+                "operationId": "9638def3fdd51a016959c965e83ee5a2",
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Sector"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Произошла ошибка при обработке запроса"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user-prizes": {
+            "get": {
+                "tags": [
+                    "Колесо фортуны"
+                ],
+                "summary": "Получение списка призов пользователя",
+                "operationId": "0043ad0bcd0675743a2a69c18e8aa9e6",
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserPrize"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ничего не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Пользователя с таким id не существует"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
         "schemas": {
-            "EmptyPrize": {
+            "Attempt": {
                 "properties": {
                     "id": {
                         "type": "integer",
@@ -3205,6 +3623,19 @@
                     "name": {
                         "type": "string",
                         "example": "Попытка"
+                    }
+                },
+                "type": "object"
+            },
+            "EmptyPrize": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "В следующий раз"
                     }
                 },
                 "type": "object"
@@ -3281,10 +3712,6 @@
                     "wheel_id": {
                         "type": "integer",
                         "example": 1
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "вещь"
                     },
                     "prize": {
                         "$ref": "#/components/schemas/Prize"
@@ -3483,6 +3910,10 @@
     },
     "tags": [
         {
+            "name": "Попытки",
+            "description": "Попытки"
+        },
+        {
             "name": "Auth",
             "description": "Auth"
         },
@@ -3517,6 +3948,10 @@
         {
             "name": "Колеса",
             "description": "Колеса"
+        },
+        {
+            "name": "Колесо фортуны",
+            "description": "Колесо фортуны"
         }
     ]
 }
