@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Sector;
-use App\Enums\StatusWeelType;
+use App\Models\UserPrize;
+use App\Enums\StatusWheelType;
 
 class Wheel extends Model
 {
@@ -24,12 +25,16 @@ class Wheel extends Model
         return $this->hasMany(Sector::class);
     }
 
+    public function userPrizes(){
+        return $this->hasMany(UserPrize::class);
+    }
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
-            $model->status = StatusWeelType::nonActive;
+            $model->status = StatusWheelType::nonActive;
         });
     }
 }

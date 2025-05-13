@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('material_things', function (Blueprint $table) {
+        Schema::table('sectors', function (Blueprint $table) {
             $table->dropColumn('count');
         });
     }
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('material_things', function (Blueprint $table) {
-            $table->integer('count')->default(10);
+        Schema::table('sectors', function (Blueprint $table) {
+            $table->integer('count')->deafult(10);
         });
     }
 };

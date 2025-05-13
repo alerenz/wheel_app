@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('material_things', function (Blueprint $table) {
-            $table->dropColumn('count');
+        Schema::table('user_prizes', function (Blueprint $table) {
+            $table->foreignId('wheel_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('material_things', function (Blueprint $table) {
-            $table->integer('count')->default(10);
+        Schema::table('user_prizes', function (Blueprint $table) {
+            $table->dropColumnIfExist('wheel_id');
         });
     }
 };
