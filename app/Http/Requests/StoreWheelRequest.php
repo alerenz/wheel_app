@@ -11,7 +11,7 @@ class StoreWheelRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    
+
     public function authorize(): bool
     {
         return true;
@@ -27,12 +27,13 @@ class StoreWheelRequest extends FormRequest
         return [
             'name'=>['required','string'],
             'count_sectors' => ['required', 'numeric', 'min:4', 'max:10'],
+//            проще было их сделать числами от 1 до 7
             'days_of_week'=>['required',new ExistDayOfWeek()],
             'date_start'=>['required', 'date',],
             'date_end' => ['required', 'date', 'after:today'],
-            'status' => ['in:' . implode(',', array_column(StatusWheelType::cases(), 'value'))],
+            'status' => ['in:' . implode(',', array_column(StatusWheelType::cases(), 'value'))], // вроде можно просто массив без склеивания в строку
             'animation'=>['boolean'],
-            
+
         ];
     }
 

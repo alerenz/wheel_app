@@ -8,6 +8,7 @@ use App\Models\Wheel;
 use App\Models\PromocodesCode;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+// для удобства можно сгенерировать аннотации к моделям через https://github.com/barryvdh/laravel-ide-helper
 class UserPrize extends Model
 {
     protected $fillable = [
@@ -38,5 +39,5 @@ class UserPrize extends Model
     public function promocodeCode(){
         return $this->belongsTo(PromocodesCode::class);
     }
-    
+
 }

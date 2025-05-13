@@ -60,12 +60,14 @@ Route::group(['middleware'=>['jwt.auth', 'role:admin']], function ($router) {
     Route::get('userPrize/{id}',[UserPrizeController::class, 'show']);
 
     Route::get('users',[UserController::class, 'index']);
-    
+
     Route::get('promocodesCode',[PromocodesCodeController::class,'index']);
     Route::post('promocodesCode/{id}',[PromocodesCodeController::class,'store']);
-    
-});
 
+});
+//для url используют kebab-case. Они нечувствительны к регистру
+// как пользователь получит кол-во доступных попыток?
+// лучше сразу разделить контроллеры пользователей и админки
 Route::group(['middleware'=>'jwt.auth'], function ($router) {
     Route::get('wheels/activeWheel',[WheelController::class, 'activeWheel']);
     Route::get('sectors/winSector',[SectorController::class, 'getDroppedSector']);

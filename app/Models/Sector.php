@@ -27,6 +27,7 @@ class Sector extends Model
         return $this->belongsTo(Wheel::class);
     }
 
+//    зачем это?
     protected static function boot()
     {
         parent::boot();

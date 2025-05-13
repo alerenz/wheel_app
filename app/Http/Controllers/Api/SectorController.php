@@ -23,8 +23,8 @@ use Illuminate\Support\Facades\Config;
 class SectorController extends Controller
 {
     /**
-     * 
-     * 
+     *
+     *
      *@OA\Schema(
      *     schema="Sector",
      *     type="object",
@@ -44,7 +44,7 @@ class SectorController extends Controller
      *     @OA\Property(property="name", type="string", example="Ручка синяя шариковая"),
      *     @OA\Property(property="count", type="integer", example=10)
      * )
-     * 
+     *
      * @OA\Get(
      *    path="/api/sector",
      *    summary="Получение списка секторов",
@@ -87,14 +87,14 @@ class SectorController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Post(
      *    path="/api/sector",
      *    summary="Создание сектора",
      *    tags={"Секторы"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
-     * 
+     *
+     *
      *    @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -111,7 +111,7 @@ class SectorController extends Controller
      *             required={"name", "prize_type","prize_id", "wheel_id"}
      *         )
      *     ),
-     * 
+     *
      *    @OA\Response(
      *        response=201,
      *        description="ОК",
@@ -121,7 +121,7 @@ class SectorController extends Controller
      *            @OA\Property(property="prize_id", type="integer", example=1),
      *            @OA\Property(property="wheel_id", type="integer", example=1),
      *        )
-     *        
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -176,17 +176,17 @@ class SectorController extends Controller
             'wheel_id'=>$request->wheel_id
         ]);
         return response()->json($sector,201);
-       
+
     }
 
     /**
-     * 
+     *
      * @OA\Get(
      *    path="/api/sector/{id}",
      *    summary="Получение сектора по id",
      *    tags={"Секторы"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id сектора",
      *        in="path",
@@ -202,7 +202,7 @@ class SectorController extends Controller
      *        @OA\JsonContent(
      *            ref="#/components/schemas/Sector"
      *        )
-     *      
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -236,13 +236,13 @@ class SectorController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Put(
      *    path="/api/sector/{id}",
      *    summary="Обновление сектора по id",
      *    tags={"Секторы"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id сектора",
      *        in="path",
@@ -251,8 +251,8 @@ class SectorController extends Controller
      *        example=1,
      *        @OA\Schema(type="integer")
      *    ),
-     * 
-     * 
+     *
+     *
      *    @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -270,7 +270,7 @@ class SectorController extends Controller
      *             required={"name", "prize_type","prize_id", "probability", "wheel_id", "count"}
      *         )
      *     ),
-     * 
+     *
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
@@ -280,9 +280,9 @@ class SectorController extends Controller
      *            @OA\Property(property="prize_id", type="integer", example=1),
      *            @OA\Property(property="probability", type="float", example=15),
      *            @OA\Property(property="wheel_id", type="integer", example=1),
-     *            
+     *
      *        )
-     *        
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -298,8 +298,8 @@ class SectorController extends Controller
      *            @OA\Property(property="message", type="string", example="Общая сумма вероятностей превышает 100%")
      *        )
      *    ),
-     * 
-     *   
+     *
+     *
      *    @OA\Response(
      *        response=404,
      *        description="Ничего не найдено",
@@ -326,7 +326,7 @@ class SectorController extends Controller
             }
         }
         $type_prize = PrizeTypeService::stringToClass($request->prize_type);
-            
+
         $sector = Sector::findOrFail($id);
         $sector->name = $request->name;
         $sector->prize_type = $type_prize;
@@ -339,13 +339,13 @@ class SectorController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Delete(
      *    path="/api/sector/{id}",
      *    summary="Удаление сектора по id",
      *    tags={"Секторы"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id сектора",
      *        in="path",
@@ -360,12 +360,12 @@ class SectorController extends Controller
      *        description="ОК",
      *        @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Сектор успешно удален")
-     *        )  
+     *        )
      *    ),
-     * 
+     *
      *    @OA\Response(
      *        response=403,
-     *        description="При активном колесе нельзя удалить сектор",  
+     *        description="При активном колесе нельзя удалить сектор",
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -397,7 +397,7 @@ class SectorController extends Controller
 
 
     /**
-     * 
+     *
      * @OA\Get(
      *    path="/api/sectors/winSector",
      *    summary="Получение выйгранного сектора",
@@ -429,14 +429,18 @@ class SectorController extends Controller
      * )
      */
 
+//    сделать автотесты на этот метод
+//    тут уже довольно много логики, лучше ее вынести в сервис
     public function getDroppedSector()
     {
         DB::beginTransaction();
-        
+
         try {
+//            лучше в метод передать сектора из которых он выберет согласно вероятности и сразу его вернет. Не нужно будет делать еще один запрос в бд
             $index = $this->sectorSelection();
-            
+
             $sector = Sector::with('prize')->findOrFail($index);
+//            логичней сначала выбрать нужное колесо, получить его секторы и выбрать из них нужный
             $wheel = Wheel::findOrFail($sector->wheel_id);
             $sectors = Sector::where('wheel_id', $sector->wheel_id)->get();
             $user = auth('api')->user();
@@ -457,6 +461,7 @@ class SectorController extends Controller
                     ->where('active', true)
                     ->get();
 
+//                это зачем?
                 if ($promocodesCodes->isNotEmpty()) {
                     $code = $promocodesCodes->random();
 
@@ -466,7 +471,7 @@ class SectorController extends Controller
                 }
 
             }
-            
+//            почему сохранение тут? а если он выиграл попытку мы ничего не сохраняем?
             $userPrize->save();
 
             $max_attempts = config('custom.max_attempts');
@@ -481,7 +486,10 @@ class SectorController extends Controller
             }
             else if($sector->prize_type == MaterialThing::class){
                 $thing = MaterialThing::findOrFail($sector->prize_id);
+//                а где сохраняются изменения?
                 $thing->count = $thing->count - 1;
+
+//                проще не пересчитывать вероятности тут, а выбирать сектора для выигрыша у которых есть count > 0
                 if($thing->count == 0){
                     $probability = $sector->probability;
                     $probability = $probability / ($countSectors - 1);
@@ -507,11 +515,11 @@ class SectorController extends Controller
                     }
                 }
             }
-            
+
             $user->save();
 
             $sector->prize_type = PrizeTypeService::classToString($sector->prize_type);
-            
+
             DB::commit();
             return response()->json($sector, 200);
         } catch (\Exception $e) {
@@ -521,18 +529,21 @@ class SectorController extends Controller
         }
     }
 
+//    методы лучше называть глаголом. selectSector
     private function sectorSelection(){
-        $sectors = Sector::all();
+        $sectors = Sector::all(); // у нас ведь может быть несколько колес. И что если приз закончился?
         $probabilities = array();
-        $sectorsIds = array();
+        $sectorsIds = array(); // объявление массива в современном php принято делать через $array = []
         if(!$sectors->isEmpty()){
             foreach($sectors as $item){
+//                для добавления в массив обычно используют $probabilities[] = $item->probability
                 array_push($probabilities, $item->probability);
                 array_push($sectorsIds, $item->id);
             }
         }
 
         $total = array_sum($probabilities);
+//        если есть нормализация, то не обязательно сумма вероятностей должна ровняться 100%
         $normalizedProbabilities = array_map(function($p) use ($total) {
             return $p / $total;
         }, $probabilities);
@@ -545,7 +556,7 @@ class SectorController extends Controller
             array_push($cumulativeProbabilities, $cumulativeSum);
         }
 
-        $randomValue = mt_rand() / mt_getrandmax(); 
+        $randomValue = mt_rand() / mt_getrandmax();
         $index = 0;
 
         for ($i = 0; $i < count($cumulativeProbabilities); $i++) {

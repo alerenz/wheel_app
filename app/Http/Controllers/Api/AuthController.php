@@ -10,12 +10,12 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class AuthController extends Controller
 {
     /**
-     * 
+     *
      * @OA\Post(
      *    path="/api/auth/register",
      *    summary="Регистрация пользователя",
      *    tags={"Auth"},
-     *    
+     *
      *    @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -26,25 +26,25 @@ class AuthController extends Controller
      *             @OA\Property(property="name", type="string", example="Иван"),
      *             @OA\Property(property="patronymic", type="string", example="Иванович"),
      *             required = {"username","password","surname","name","patronymic"}
-     *         ) 
+     *         )
      *    ),
-     * 
+     *
      *    @OA\Response(
      *        response=201,
      *        description="OK",
      *        @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Пользователь успешно зарегистрирован")
      *        )
-     *        
+     *
      *    ),
-     * 
+     *
      *    @OA\Response(
      *        response=422,
      *        description="Unprocessable Entity"
      *    )
      * )
      */
-    
+
 
     public function register(Request $request)
     {
@@ -65,33 +65,33 @@ class AuthController extends Controller
             'role'=>'user',
             'active'=>true,
             'attempts'=>0
-            
+
         ]);
 
         return response()->json(['message' => 'Пользователь успешно зарегистрирован'], 201);
     }
 
     /**
-     * 
+     *
      * @OA\Post(
      *    path="/api/auth/login",
      *    summary="Авторизация пользователя",
      *    tags={"Auth"},
-     *    
+     *
      *    @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="username", type="string", example="user123"),
      *             @OA\Property(property="password", type="string", example="qwerty12345"),
-     *             required={"username","password"},    
+     *             required={"username","password"},
      *        )
      *    ),
-     * 
+     *
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
-     *        
+     *
      *    ),
      *    @OA\Response(
      *        response=422,
@@ -101,6 +101,7 @@ class AuthController extends Controller
      */
 
     public function login(){
+//        почему не через параметры как в других местах?
         $credentials = request(['username', 'password']);
 
         if (! $token = JWTAuth::attempt($credentials)) {
@@ -119,7 +120,7 @@ class AuthController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Успешное получение данных пользователя",
-     *        
+     *
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -144,7 +145,7 @@ class AuthController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Выход произошел успешно",
-     *        
+     *
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -170,7 +171,7 @@ class AuthController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="OK",
-     *        
+     *
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -181,7 +182,7 @@ class AuthController extends Controller
      *     )
      * )
      */
-    
+
     public function refresh(){
         return $this->respondWithToken(auth('api')->refresh());
     }

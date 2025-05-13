@@ -27,7 +27,7 @@ class WheelController extends Controller
     *     @OA\Property(property="date_start", type="date", example="2025-05-01"),
     *     @OA\Property(property="date_end", type="date", example="2025-05-31"),
     *     @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
-    *     @OA\Property(property="sectors", type="array", 
+    *     @OA\Property(property="sectors", type="array",
     *         @OA\Items(ref="#/components/schemas/Sector")
     *     )
     * )
@@ -44,8 +44,8 @@ class WheelController extends Controller
     *     @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
     * )
     *
-    * 
-    * 
+    *
+    *
     * @OA\Get(
     *    path="/api/wheel",
     *    summary="Получение списка колес",
@@ -102,7 +102,7 @@ class WheelController extends Controller
      *            @OA\Property(property="message", type="string", example="Forbidden.")
      *        )
      *    )
-     *    
+     *
      * )
      */
     public function index(Request $request)
@@ -135,14 +135,14 @@ class WheelController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Post(
      *    path="/api/wheel",
      *    summary="Создание колеса",
      *    tags={"Колеса"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
-     * 
+     *
+     *
      *    @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -156,7 +156,7 @@ class WheelController extends Controller
      *             required={"name", "count_sectors","animation", "date_start", "date_end", "days_of_week"}
      *         )
      *     ),
-     * 
+     *
      *    @OA\Response(
      *        response=201,
      *        description="ОК",
@@ -171,7 +171,7 @@ class WheelController extends Controller
      *            @OA\Property(property="created_at", type="string", format="date-time", example="2025-05-07T12:31:41.000000Z"),
      *            @OA\Property(property="updated_at", type="string", format="date-time", example="2025-05-07T12:39:53.000000Z"),
      *        )
-     *        
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -191,13 +191,14 @@ class WheelController extends Controller
      */
     public function store(StoreWheelRequest $request)
     {
-        
+
         $wheel = Wheel::create([
             'name'=>$request->name,
             'count_sectors'=>$request->count_sectors,
             'animation'=>$request->animation,
             'date_start'=>$request->date_start,
             'date_end'=>$request->date_end,
+//            для кастинга есть такое https://laravel.com/docs/12.x/eloquent-mutators#array-and-json-casting
             'days_of_week' => json_encode($request->days_of_week),
         ]);
 
@@ -205,13 +206,13 @@ class WheelController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Get(
      *    path="/api/wheel/{id}",
      *    summary="Получение колеса по id",
      *    tags={"Колеса"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id колеса",
      *        in="path",
@@ -227,7 +228,7 @@ class WheelController extends Controller
      *        @OA\JsonContent(
      *            ref="#/components/schemas/Wheel"
      *        )
-     *      
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -243,7 +244,7 @@ class WheelController extends Controller
      *             @OA\Property(property="message", type="string", example="Колеса с таким id не существует")
      *        )
      *    ),
-     *    
+     *
      * )
      */
     public function show($id)
@@ -257,13 +258,13 @@ class WheelController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Put(
      *    path="/api/wheel/{id}",
      *    summary="Обновление колеса по id",
      *    tags={"Колеса"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id колеса",
      *        in="path",
@@ -272,8 +273,8 @@ class WheelController extends Controller
      *        example=1,
      *        @OA\Schema(type="integer")
      *    ),
-     * 
-     * 
+     *
+     *
      *    @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -293,7 +294,7 @@ class WheelController extends Controller
      *             required={"name", "count_sectors","status","animation", "date_start", "date_end", "days_of_week"}
      *         )
      *     ),
-     * 
+     *
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
@@ -308,7 +309,7 @@ class WheelController extends Controller
      *            @OA\Property(property="created_at", type="string", format="date-time", example="2025-05-07T12:31:41.000000Z"),
      *            @OA\Property(property="updated_at", type="string", format="date-time", example="2025-05-07T12:39:53.000000Z"),
      *        )
-     *        
+     *
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -324,12 +325,12 @@ class WheelController extends Controller
      *            @OA\Property(property="message", type="string", example="Колесо в архиве, удалять нельзя")
      *        )
      *    ),
-     * 
+     *
      *    @OA\Response(
      *        response=400,
      *        description="Плохой запрос",
      *        @OA\JsonContent(
-     *            @OA\Property(property="message", type="string", 
+     *            @OA\Property(property="message", type="string",
      *            example="Новая дата окончания не может быть раньше, чем текущая дата окончания")
      *        )
      *    ),
@@ -344,7 +345,7 @@ class WheelController extends Controller
      */
     public function update(UpdateWheelRequest $request, $id)
     {
-    
+
         $wheel = Wheel::withCount('sectors')->findOrFail($id);
         $sectors_count = $wheel->sectors_count;
 
@@ -355,6 +356,7 @@ class WheelController extends Controller
         }
 
         if($request->status == StatusWheelType::active->value && $sectors_count < $wheel->count_sectors){
+//            в общем случае, по-хорошему, ответы делаются отдельными объектами, так проще поддерживать структуру. Тут можно кинуть исключение, а в общем обработчике вернуть ответ
             return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока количество секторов меньше чем задано"],403);
         }
 
@@ -378,13 +380,13 @@ class WheelController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Delete(
      *    path="/api/wheel/{id}",
      *    summary="Удаление колеса по id",
      *    tags={"Колеса"},
      *    security={{"bearerAuth":{"role": "admin"} }},
-     * 
+     *
      *    @OA\Parameter(
      *        description="id колеса",
      *        in="path",
@@ -399,12 +401,12 @@ class WheelController extends Controller
      *        description="ОК",
      *        @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Колесо успешно удалено")
-     *        )  
+     *        )
      *    ),
-     * 
+     *
      *    @OA\Response(
      *        response=403,
-     *        description="Колесо активно, удалить нельзя",  
+     *        description="Колесо активно, удалить нельзя",
      *    ),
      *    @OA\Response(
      *        response=401,
@@ -437,14 +439,14 @@ class WheelController extends Controller
     }
 
     /**
-     * 
+     *
      * @OA\Get(
      *    path="/api/wheels/activeWheel",
      *    summary="Получение активного колеса",
      *    tags={"Колеса"},
      *    security={{"bearerAuth":{} }},
-     * 
-     *  
+     *
+     *
      *
      *    @OA\Response(
      *        response=200,
@@ -452,9 +454,9 @@ class WheelController extends Controller
      *        @OA\JsonContent(
      *            ref="#/components/schemas/Wheel"
      *        )
-     *      
+     *
      *    ),
-     * 
+     *
      *    @OA\Response(
      *        response=404,
      *        description="Not Found",
@@ -462,7 +464,7 @@ class WheelController extends Controller
      *             @OA\Property(property="message", type="string", example="Ничего не найдено")
      *        )
      *    ),
-     * 
+     *
      *    @OA\Response(
      *        response=401,
      *        description="Неавторизованный доступ",
@@ -473,8 +475,10 @@ class WheelController extends Controller
      * )
      */
 
+    // непонятное название. Лучше getActiveWheel
     public function activeWheel()
     {
+//        проверки на дату активности нет?
         $wheel = Wheel::with(['sectors.prize'])
             ->where('status', StatusWheelType::active->value)
             ->orderBy('created_at', 'desc')
@@ -482,7 +486,7 @@ class WheelController extends Controller
         if(!$wheel){
             return response()->json(["message"=>"Ничего не найдено"], 404);
         }
-        
+
         $wheel->days_of_week = json_decode($wheel->days_of_week);
         foreach($wheel->sectors as $sector){
             $sector->prize_type = PrizeTypeService::classToString($sector->prize_type);
