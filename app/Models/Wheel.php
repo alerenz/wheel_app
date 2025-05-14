@@ -68,12 +68,4 @@ class Wheel extends Model
         ];
     }
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->status = StatusWheelType::nonActive;
-        });
-    }
 }

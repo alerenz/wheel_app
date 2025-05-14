@@ -193,6 +193,7 @@ class WheelController extends Controller
             'animation'=>$request->animation,
             'date_start'=>$request->date_start,
             'date_end'=>$request->date_end,
+            'status'=>StatusWheelType::nonActive,
             'days_of_week' =>$request->days_of_week,
         ]);
 
@@ -352,8 +353,8 @@ class WheelController extends Controller
             return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока количество секторов меньше чем задано"],403);
         }
 
-        if($request->status == StatusWheelType::active->value && $probability < 100){
-            return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока общая вероятность меньше 100%"],403);
+        if($request->status == StatusWheelType::active->value && $probability == 0){
+            return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока общая вероятность равна 0"],403);
         }
 
         if($wheel->status == StatusWheelType::active->value || $wheel->status == StatusWheelType::nonActive->value){
