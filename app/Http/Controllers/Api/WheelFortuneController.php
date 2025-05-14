@@ -99,7 +99,8 @@ class WheelFortuneController extends Controller
 
     public function getWinSector()
     {
-        $sector = WinSectorService::getDroppedSector();
+        $user = auth('api')->user();
+        $sector = WinSectorService::getDroppedSector($user);
         if(!$sector){
             return response()->json(["message"=>"Ничего не найдено"]);
         }else{
@@ -143,7 +144,7 @@ class WheelFortuneController extends Controller
     public function getUserPrizes()
     {
         $user = auth('api')->user(); 
-        $userPrizes = UserPrize::with('prize', 'wheel')->where('user_id', $user->id)->get();
+        $userPrizes = UserPrize::with('prize', 'wheel','promocodeCode')->where('user_id', $user->id)->get();
         if(!$userPrizes->isEmpty()){
             foreach($userPrizes as $item){
                 $item->prize_type = PrizeTypeService::classToString($item->prize_type);

@@ -18,7 +18,7 @@ use App\Services\PrizeTypeService;
 
 class WinSectorService
 {
-    public static function getDroppedSector()
+    public static function getDroppedSector($user)
     {
         DB::beginTransaction();
         try {
@@ -32,14 +32,13 @@ class WinSectorService
             }
 
             $sectors = $wheel->sectors;
-            $countSectors = $sectors->count();
-            $sector = self::selectSector($sectors);
+            $activeSectors = self::getActiveSectors($sectors);
+
+            $sector = self::selectSector($activeSectors);
 
             if($sector == null){
                 return null;
             }
-
-            $user = auth('api')->user();
 
             $user->attempts--;
             if ($user->attempts < 0) {
@@ -63,6 +62,8 @@ class WinSectorService
                     $code->active = false;
                     $code->save();
                     $userPrize->promocodeCode_id = $code->id;
+                }else{
+                    return null;
                 }
 
             }
@@ -78,32 +79,6 @@ class WinSectorService
                 $thing = MaterialThing::findOrFail($sector->prize_id);
                 $thing->count = $thing->count - 1;
                 $thing->save();
-                if($thing->count == 0){
-                    $probability = $sector->probability;
-                    $probability = $probability/($countSectors - 1);
-                    $sector->probability = 0;
-                    foreach($sectors as $item){
-                        if($item->id != $sector->id){
-                            $item->probability = $item->probability + $probability;
-                        }
-                    }
-                    $sector->save();
-                }
-            }else if($sector->prize_type == Promocode::class){
-                $promocodesCodesCount = PromocodesCode::where('promocode_id',$sector->prize_id)
-                ->where('active', true)->count();
-
-                if($promocodesCodesCount == 0){
-                    $probability = $sector->probability;
-                    $probability = $probability / ($countSectors - 1);
-                    $sector->probability = 0;
-                    foreach($sectors as $item){
-                        if($item->id != $sector->id){
-                            $item->probability = $item->probability + $probability;
-                        }
-                    }
-                    $sector->save();
-                }
             }
 
             $user->save();
@@ -125,9 +100,10 @@ class WinSectorService
         
         if (!$sectors->isEmpty()) {
             foreach ($sectors as $item) {
-                $probabilities[] = $item->probability;
+                $probabilities[] = $item->probability / 100;
                 $sectorsIds[] = $item->id;
             }
+            
             $total = array_sum($probabilities);
             $normalizedProbabilities = array_map(function($p) use ($total) {
                 return $p / $total;
@@ -155,4 +131,32 @@ class WinSectorService
 
         return null; 
     }
+
+    private static function getActiveSectors($sectors){
+        $activeSectors = [];
+
+        foreach($sectors as $item){
+            if($item->prize_type == MaterialThing::class){
+                $thing = MaterialThing::findOrFail($item->prize_id);
+                if($thing->count > 0){
+                    $activeSectors[] = $item->id;
+                }
+            }else if($item->prize_type == Promocode::class){
+                $promocodesCodesCount = PromocodesCode::where('promocode_id',$item->prize_id)
+                ->where('active', true)->count();
+                if($promocodesCodesCount > 0){
+                    $activeSectors[] = $item->id;
+                }
+            }else{
+                $activeSectors[] = $item->id;
+            }
+        }
+
+        // dd($activeSectors);
+        $records = Sector::with(['prize'])->whereIn('id', $activeSectors)->get();
+
+        return $records;
+    }
+
+    
 }
