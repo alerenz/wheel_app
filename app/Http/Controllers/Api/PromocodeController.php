@@ -61,7 +61,7 @@ class PromocodeController extends Controller
      * 
      * @OA\Post(
      *    path="/api/promocode",
-     *    summary="Создание промокодов посредством загрузки csv файла",
+     *    summary="Создание промокода",
      *    tags={"Промокоды"},
      *    security={{"bearerAuth":{"role": "admin"} }},
      * 

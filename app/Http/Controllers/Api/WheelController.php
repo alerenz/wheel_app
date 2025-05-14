@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Wheel;
-use App\Models\Promocode;
-use App\Models\MaterialThing;
-use App\Models\EmptyPrize;
 use App\Http\Requests\StoreWheelRequest;
 use App\Http\Requests\UpdateWheelRequest;
 use App\Models\Sector;

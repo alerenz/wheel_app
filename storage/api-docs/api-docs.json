@@ -1571,7 +1571,7 @@
                 "tags": [
                     "Промокоды"
                 ],
-                "summary": "Создание промокодов посредством загрузки csv файла",
+                "summary": "Создание промокода",
                 "operationId": "1937e48037402a557b7aca7b5ca2074e",
                 "requestBody": {
                     "required": true,
