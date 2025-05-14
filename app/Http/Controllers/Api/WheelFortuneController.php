@@ -151,4 +151,36 @@ class WheelFortuneController extends Controller
         }
         return response()->json($userPrizes, 200);
     }
+
+    /**
+     * 
+     * @OA\Get(
+     *    path="/api/user/attempts",
+     *    summary="Получение кол-во попыток пользователя",
+     *    tags={"Колесо фортуны"},
+     *    security={{"bearerAuth":{} }},
+     * 
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="attempts", type="integer", example=4)
+     *        )
+     *      
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *        )
+     *    )
+     * )
+     */
+    public function getUserAttempts()
+    {
+        $user = auth('api')->user();
+        $attempts = $user->attempts;
+        return response()->json(["attempts"=>$attempts], 200);
+    }
 }
