@@ -3610,6 +3610,54 @@
                     }
                 ]
             }
+        },
+        "/api/user/attempts": {
+            "get": {
+                "tags": [
+                    "Колесо фортуны"
+                ],
+                "summary": "Получение кол-во попыток пользователя",
+                "operationId": "0bedd7623667ee1db50d9587560a17fd",
+                "responses": {
+                    "200": {
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "attempts": {
+                                            "type": "integer",
+                                            "example": 4
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный доступ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {

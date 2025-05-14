@@ -295,20 +295,6 @@ class SectorController extends Controller
     public function update(UpdateSectorRequest $request, $id)
     {
         $sector = Sector::findOrFail($id);
-        
-        $sectors = Sector::where('wheel_id', $request->wheel_id)->get();
-        if(!$sectors->isEmpty()){
-            $sum = 0;
-            foreach($sectors as $item){
-                $sum += $item->probability;
-            }
-
-            $sum += $request->probability - $sector->probability;
-            if($sum > 100){
-                return response()->json(["message"=>"Общая сумма вероятностей превышает 100%"],403);
-            }
-        }
-
         $typePrize = PrizeTypeService::stringToClass($request->prize_type);
             
         

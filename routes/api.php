@@ -70,7 +70,7 @@ Route::group(['middleware'=>['jwt.auth', 'role:admin']], function ($router) {
     Route::post('attempt',[AttemptController::class,'store']);
     Route::get('attempt/{id}',[AttemptController::class,'show']);
     Route::put('attempt/{id}',[AttemptController::class,'update']);
-    Route::delete('attempt/{id}',[AttemptController::class,'delete']);
+    Route::delete('attempt/{id}',[AttemptController::class,'destroy']);
     
 });
 
@@ -78,4 +78,5 @@ Route::group(['middleware'=>'jwt.auth'], function ($router) {
     Route::get('wheel-fortune/active-wheel',[WheelFortuneController::class, 'getActiveWheel']);
     Route::get('wheel-fortune/win-sector',[WheelFortuneController::class, 'getWinSector']);
     Route::get('user-prizes',[WheelFortuneController::class, 'getUserPrizes']);
+    Route::get('user/attempts', [WheelFortuneController::class, 'getUserAttempts']);
 });
