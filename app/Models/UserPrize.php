@@ -66,7 +66,7 @@ class UserPrize extends Model
     }
 
     public function promocodeCode(){
-        return $this->belongsTo(PromocodesCode::class);
+        return $this->belongsTo(PromocodesCode::class, 'promocodeCode_id');
     }
     
 }
