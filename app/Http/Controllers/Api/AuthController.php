@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -46,16 +47,8 @@ class AuthController extends Controller
      */
     
 
-    public function register(Request $request)
+    public function register(StoreUserRequest $request)
     {
-        $request->validate([
-            'username' => 'required|string|unique|min:5',
-            'password' => 'required|string|min:6|max:20',
-            'surname'=>'required|string',
-            'name'=>'required|string',
-            'patronymic'=>'required|string',
-        ]);
-
         $user = User::create([
             'username' => $request->username,
             'password' => bcrypt($request->password),
