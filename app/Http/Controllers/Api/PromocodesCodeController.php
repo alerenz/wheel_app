@@ -119,7 +119,7 @@ class PromocodesCodeController extends Controller
     {
         $promocode = Promocode::findOrFail($id);
         if($promocode == null){
-            return response()->json(["message"=>"Промокода с таким id не существует"]);
+            return response()->json(["message"=>"Промокода с таким id не существует"], 404);
         }
         $allPromocodesCodes = PromocodesCode::all();
         $file = $request->file('file');
@@ -136,20 +136,20 @@ class PromocodesCodeController extends Controller
                 $num = count($data);
                 
                 if($num !== 1){
-                    return response()->json(["message"=>"В строке должно быть одно поле с кодами"]);
+                    return response()->json(["message"=>"В строке должно быть одно поле с кодами"],422);
                 }
                 $code = $data[0];
 
                 if($code === null || $code === "" || $code === " " || strlen($code) < 4 || strlen($code) > 8){
                     return response()->json(["message"=>
-                    "На ".$row." cтроке указан неверный код промокода, он должен быть от 4 до 8 символов"]);
+                    "На ".$row." cтроке указан неверный код промокода, он должен быть от 4 до 8 символов"],422);
                 }
 
                 if($allPromocodesCodes !== null){
                     foreach($allPromocodesCodes as $item){
                         if($item->code === $code){
                             return response()->json(["message"=>
-                            "На ".$row." cтроке код активации совпадает с другим кодом - ".$item->code]);
+                            "На ".$row." cтроке код активации совпадает с другим кодом - ".$item->code],422);
                         }
                     }
                 }
@@ -158,7 +158,7 @@ class PromocodesCodeController extends Controller
                     foreach($promocodesCodes as $item){
                         if($item["code"] === $code){
                             return response()->json(["message"=>
-                            "На ".$row." cтроке код активации совпадает с другим кодом - ".$item["code"]]);
+                            "На ".$row." cтроке код активации совпадает с другим кодом - ".$item["code"]],422);
                         }
                     }
                 }
@@ -173,7 +173,7 @@ class PromocodesCodeController extends Controller
             }
             fclose($handle);
         }else{
-            return response()->json(["message"=>"Нельзя открыть файл"]);
+            return response()->json(["message"=>"Нельзя открыть файл"],406);
         }
 
         $newPromocodesCodes = [];
