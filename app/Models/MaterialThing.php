@@ -32,6 +32,7 @@ class MaterialThing extends Model
 {
     protected $fillable = [
         'name',
+        'count',
     ];
 
 
