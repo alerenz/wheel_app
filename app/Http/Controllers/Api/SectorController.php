@@ -295,9 +295,12 @@ class SectorController extends Controller
     public function update(UpdateSectorRequest $request, $id)
     {
         $sector = Sector::findOrFail($id);
+        $wheel = Wheel::where('id',$sector->wheel_id)->first();
+        if($wheel->status == StatusWheelType::active->value){
+            return response()->json(["message"=>"Сектор активного колеса нельзя редактировать"],403);
+        }
+
         $typePrize = PrizeTypeService::stringToClass($request->prize_type);
-            
-        
         $sector->prize_type = $typePrize;
         $sector->prize_id = $request->prize_id;
         $sector->probability = $request->probability;

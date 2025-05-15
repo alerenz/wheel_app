@@ -365,6 +365,10 @@ class WheelController extends Controller
             return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока количество секторов меньше чем задано"],403);
         }
 
+        if($wheel->status == StatusWheelType::active->value && $request->count_sectors != $wheel->count_sectors){
+            return response()->json(["message"=>"Нельзя у активного колеса изменять количество секторов"],403);
+        }
+
         if($request->status == StatusWheelType::active->value && $probability == 0){
             return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока общая вероятность равна 0"],403);
         }
