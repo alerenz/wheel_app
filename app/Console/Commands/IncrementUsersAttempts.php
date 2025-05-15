@@ -50,7 +50,7 @@ class IncrementUsersAttempts extends Command
 
                 $wheels = Wheel::where('status', StatusWheelType::active->value)->get();
                 foreach($wheels as $wheel){
-                    $wheelDays = json_decode($wheel->days_of_week);
+                    $wheelDays = $wheel->days_of_week;
                     if (in_array($currentDay, $wheelDays)) {
                         User::where('attempts', '<', $max_attempts)
                                 ->increment('attempts');
