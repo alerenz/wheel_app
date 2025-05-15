@@ -186,7 +186,10 @@ class WheelController extends Controller
      */
     public function store(StoreWheelRequest $request)
     {
-        
+        $wheelDays = $request->days_of_week;
+        foreach ($wheelDays as $key => $item) {
+            $wheelDays[$key] = mb_strtolower($item);
+        }
         $wheel = Wheel::create([
             'name'=>$request->name,
             'count_sectors'=>$request->count_sectors,
@@ -194,7 +197,7 @@ class WheelController extends Controller
             'date_start'=>$request->date_start,
             'date_end'=>$request->date_end,
             'status'=>StatusWheelType::nonActive,
-            'days_of_week' =>$request->days_of_week,
+            'days_of_week' =>$wheelDays,
         ]);
 
         return response()->json($wheel, 201);
@@ -357,6 +360,11 @@ class WheelController extends Controller
             return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока общая вероятность равна 0"],403);
         }
 
+        $wheelDays = $request->days_of_week;
+        foreach ($wheelDays as $key => $item) {
+            $wheelDays[$key] = mb_strtolower($item);
+        }
+
         if($wheel->status == StatusWheelType::active->value || $wheel->status == StatusWheelType::nonActive->value){
             $wheel->name = $request->name;
             $wheel->count_sectors = $request->count_sectors;
@@ -364,7 +372,7 @@ class WheelController extends Controller
             $wheel->animation = $request->animation;
             $wheel->date_start = $request->date_start;
             $wheel->date_end = $request->date_end;
-            $wheel->days_of_week = $request->days_of_week;
+            $wheel->days_of_week = $wheelDays;
             $wheel->save();
             return response()->json($wheel);
         }else{
