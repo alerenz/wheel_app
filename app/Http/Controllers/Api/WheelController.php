@@ -10,6 +10,7 @@ use App\Models\Sector;
 use App\Enums\StatusWheelType;
 use Illuminate\Http\Request;
 use App\Services\PrizeTypeService;
+use Carbon\Carbon;
 
 class WheelController extends Controller
 {
@@ -186,10 +187,18 @@ class WheelController extends Controller
      */
     public function store(StoreWheelRequest $request)
     {
+
+        $dateStart = Carbon::parse($request->date_start);
+        $dateEnd = Carbon::parse($request->date_end);
+        if ($dateEnd <= $dateStart) {
+            return response()->json(["message" => "Дата окончания должна быть позже даты начала."], 422);
+        }
+
         $wheelDays = $request->days_of_week;
         foreach ($wheelDays as $key => $item) {
             $wheelDays[$key] = mb_strtolower($item);
         }
+        
         $wheel = Wheel::create([
             'name'=>$request->name,
             'count_sectors'=>$request->count_sectors,
@@ -358,6 +367,12 @@ class WheelController extends Controller
 
         if($request->status == StatusWheelType::active->value && $probability == 0){
             return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока общая вероятность равна 0"],403);
+        }
+
+        $dateStart = Carbon::parse($request->date_start);
+        $dateEnd = Carbon::parse($request->date_end);
+        if ($dateEnd <= $dateStart) {
+            return response()->json(["message" => "Дата окончания должна быть позже даты начала."], 422);
         }
 
         $wheelDays = $request->days_of_week;
