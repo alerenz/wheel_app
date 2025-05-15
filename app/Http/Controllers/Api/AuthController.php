@@ -105,7 +105,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $refreshToken = hash('sha512', Str::random(64));
+        $refreshToken = Str::random(64);
         $expiresAt = now()->addMinutes(config('jwt.refresh_ttl'));
         $user = User::where('username',$request->username)->first();
 
@@ -220,7 +220,7 @@ class AuthController extends Controller
         }
 
         $newAccessToken = auth('api')->refresh();
-        $newRefreshToken = hash('sha512', Str::random(64));
+        $newRefreshToken = Str::random(64);
         $expiresAt = now()->addMinutes(config('jwt.refresh_ttl'));
 
         $refreshTokenRecord->update([
