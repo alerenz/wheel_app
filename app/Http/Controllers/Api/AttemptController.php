@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\StatusWheelType;
 use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\UserPrize;
 use App\Http\Requests\StoreAttemptRequest;
 use App\Http\Requests\UpdateAttemptRequest;
+use App\Models\Wheel;
+use App\Services\ActiveWheelService;
 
 class AttemptController extends Controller
 {
@@ -226,6 +229,7 @@ class AttemptController extends Controller
         if(!$userPrizes->isEmpty()){
             return response()->json(["message"=>"Этот приз редактировать нельзя, его выйграли"], 403);
         }
+        
         $attempt->name = $request->name;
         $attempt->save();
 
@@ -282,6 +286,18 @@ class AttemptController extends Controller
     public function destroy($id)
     {
         $attempt = Attempt::findOrFail($id);
+        $userPrizes = UserPrize::where('prize_type', Attempt::class)->where('prize_id', $id)->get();
+        if(!$userPrizes->isEmpty()){
+            return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
+        }
+
+        $wheel = ActiveWheelService::getActiveWheel();
+        $sectors = $wheel->sectors;
+        foreach($sectors as $item){
+            if($item->prize_type == Attempt::class && $item->prize_id == $id){
+                return response()->json(["message"=>"Приз в активном колесе - нельзя удалить"], 403);
+            }
+        }
         $attempt->delete();
         return response()->json(["message"=>"Попытка успешно удалена"]);
     }

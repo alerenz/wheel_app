@@ -7,6 +7,7 @@ use App\Models\EmptyPrize;
 use App\Http\Requests\StoreEmptyPrizeRequest;
 use App\Http\Requests\UpdateEmptyPrizeRequest;
 use App\Models\UserPrize;
+use App\Services\ActiveWheelService;
 
 class EmptyPrizeController extends Controller
 {
@@ -286,6 +287,14 @@ class EmptyPrizeController extends Controller
         $userPrizes = UserPrize::where('prize_type', EmptyPrize::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
             return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
+        }
+
+        $wheel = ActiveWheelService::getActiveWheel();
+        $sectors = $wheel->sectors;
+        foreach($sectors as $item){
+            if($item->prize_type == EmptyPrize::class && $item->prize_id == $id){
+                return response()->json(["message"=>"Приз в активном колесе - нельзя удалить"],403);
+            }
         }
         $emptyPrize->delete();
         return response()->json(["message"=>"Пустой приз успешно удален"]);

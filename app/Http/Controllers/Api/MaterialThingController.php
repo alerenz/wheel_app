@@ -7,6 +7,7 @@ use App\Models\MaterialThing;
 use App\Http\Requests\StoreMaterialThingRequest;
 use App\Http\Requests\UpdateMaterialThingRequest;
 use App\Models\UserPrize;
+use App\Services\ActiveWheelService;
 
 class MaterialThingController extends Controller
 {
@@ -291,6 +292,14 @@ class MaterialThingController extends Controller
         $userPrizes = UserPrize::where('prize_type', MaterialThing::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
             return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
+        }
+
+        $wheel = ActiveWheelService::getActiveWheel();
+        $sectors = $wheel->sectors;
+        foreach($sectors as $item){
+            if($item->prize_type == MaterialThing::class && $item->prize_id == $id){
+                return response()->json(["message"=>"Приз в активном колесе - нельзя удалить"],403);
+            }
         }
         $materialThing->delete();
         return response()->json(["message"=>"Вещь успешно удалена"]);

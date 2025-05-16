@@ -7,6 +7,7 @@ use App\Models\Promocode;
 use App\Http\Requests\StorePromocodeRequest;
 use App\Http\Requests\UpdatePromocodeRequest;
 use App\Models\UserPrize;
+use App\Services\ActiveWheelService;
 use DateTime;
 
 class PromocodeController extends Controller
@@ -292,6 +293,14 @@ class PromocodeController extends Controller
         $userPrizes = UserPrize::where('prize_type', Promocode::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
             return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
+        }
+
+        $wheel = ActiveWheelService::getActiveWheel();
+        $sectors = $wheel->sectors;
+        foreach($sectors as $item){
+            if($item->prize_type == Promocode::class && $item->prize_id == $id){
+                return response()->json(["message"=>"Приз в активном колесе - нельзя удалить"],403);
+            }
         }
         $promocode->delete();
         return response()->json(["message"=>"Промокод успешно удален"]);
