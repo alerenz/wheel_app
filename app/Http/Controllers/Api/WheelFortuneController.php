@@ -6,6 +6,7 @@ use App\Enums\StatusWheelType;
 use App\Http\Controllers\Controller;
 use App\Models\UserPrize;
 use App\Models\Wheel;
+use App\Services\ActiveWheelService;
 use App\Services\PrizeTypeService;
 use App\Services\WinSectorService;
 
@@ -50,10 +51,7 @@ class WheelFortuneController extends Controller
 
     public function getActiveWheel()
     {
-        $wheel = Wheel::with(['sectors.prize'])
-            ->where('status', StatusWheelType::active->value)
-            ->orderBy('created_at', 'desc')
-            ->first();
+        $wheel = ActiveWheelService::getActiveWheel();
         if(!$wheel){
             return response()->json(["message"=>"Ничего не найдено"], 404);
         }
