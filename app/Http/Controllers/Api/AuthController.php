@@ -105,17 +105,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $refreshToken = Str::random(64);
-        $expiresAt = now()->addMinutes(config('jwt.refresh_ttl'));
-        $user = User::where('username',$request->username)->first();
-
-        RefreshToken::create([
-            'token' => $refreshToken,
-            'user_id'=>$user->id,
-            'expires_at' => $expiresAt
-        ]);
-
-        return $this->respondWithToken($token, $refreshToken);
+        return $this->respondWithToken($token);
     }
 
     /**
@@ -178,14 +168,6 @@ class AuthController extends Controller
      *     security={{"bearerAuth": {} }},
      *     tags={"Auth"},
      * 
-     * @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="refresh_token", type="string", example="abc1234hfhfgsjhehjdhu"),
-     *             required = {"refresh_token"}
-     *         ) 
-     *    ),
      *     @OA\Response(
      *         response=200,
      *         description="OK",
@@ -201,43 +183,18 @@ class AuthController extends Controller
      * )
      */
     
-    public function refresh(Request $request)
+    public function refresh()
     {
-        $request->validate([
-            'refresh_token' => 'required'
-        ]);
-        $refreshToken = $request->refresh_token;
-        $refreshTokenRecord = RefreshToken::where('token', $refreshToken)->first();
 
-        if (!$refreshTokenRecord || $refreshTokenRecord->expires_at <= now()) {
-            return response()->json(['error' => 'Refresh токен истек или недействителен'], 401);
-        }
-
-        $user = User::find($refreshTokenRecord->user_id);
-
-        if (!$user) {
-            return response()->json(['error' => 'Пользователь не найден'], 404);
-        }
-
-        $newAccessToken = auth('api')->refresh();
-        $newRefreshToken = Str::random(64);
-        $expiresAt = now()->addMinutes(config('jwt.refresh_ttl'));
-
-        $refreshTokenRecord->update([
-            'token' => $newRefreshToken,
-            'expires_at' => $expiresAt
-        ]);
-
-        return $this->respondWithToken($newAccessToken, $newRefreshToken);
+        return $this->respondWithToken(auth('api')->refresh());
     }
 
-    protected function respondWithToken($token,  $refreshToken)
+    protected function respondWithToken($token)
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 30,
-            'refresh_token' => $refreshToken,
+            'expires_in' => auth()->factory()->getTTL() * 60,
         ]);
     }
 

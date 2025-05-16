@@ -21,11 +21,11 @@ Route::get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::get('show', [AuthController::class, 'user']);
     Route::post('register', [AuthController::class, 'register']);
 });
+
+
 
 Route::group(['middleware'=>['jwt.auth', 'role:admin']], function ($router) {
     Route::get('promocode', [PromocodeController::class,'index']);
@@ -71,6 +71,9 @@ Route::group(['middleware'=>['jwt.auth', 'role:admin']], function ($router) {
     Route::get('attempt/{id}',[AttemptController::class,'show']);
     Route::put('attempt/{id}',[AttemptController::class,'update']);
     Route::delete('attempt/{id}',[AttemptController::class,'destroy']);
+
+    Route::post('auth/logout', [AuthController::class, 'logout']);
+    Route::get('auth/show', [AuthController::class, 'user']);
     
 });
 
