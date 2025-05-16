@@ -77,6 +77,20 @@ class WheelController extends Controller
     *         required=false,
     *         @OA\Schema(type="string", enum={"asc", "desc"}, default="asc")
     *     ),
+    *     @OA\Parameter(
+    *         name="per_page",
+    *         description="Количество элементов на странице (по умолчанию 10)",
+    *         required=false,
+    *         in="query",
+    *         @OA\Schema(type="integer")
+    *     ),
+    *    @OA\Parameter(
+    *         name="page",
+    *         description="Страница",
+    *         required=false,
+    *         in="query",
+    *         @OA\Schema(type="integer")
+    *     ),
      *
      *    @OA\Response(
      *        response=200,
@@ -119,7 +133,8 @@ class WheelController extends Controller
         $sortOrder = $request->input('order', 'asc');
         $query->orderBy($sortField, $sortOrder);
 
-        $wheels = $query->get();
+        $perPage = $request->input('per_page', 10);
+        $wheels = $query->paginate($perPage);
 
         foreach ($wheels as $wheel) {
             foreach($wheel->sectors as $sector){

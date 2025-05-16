@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\StatusWheelType;
 use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\UserPrize;
 use App\Http\Requests\StoreAttemptRequest;
 use App\Http\Requests\UpdateAttemptRequest;
-use App\Models\Wheel;
 use App\Services\ActiveWheelService;
+use Illuminate\Http\Request;
 
 class AttemptController extends Controller
 {
@@ -28,6 +27,34 @@ class AttemptController extends Controller
      *    summary="Получение списка попыток",
      *    tags={"Попытки"},
      *    security={{"bearerAuth":{"role": "admin"} }},
+     *    @OA\Parameter(
+    *         name="sort",
+    *         in="query",
+    *         description="Поле для сортировки",
+    *         required=false,
+    *         @OA\Schema(type="string", default="id")
+    *     ),
+    *     @OA\Parameter(
+    *         name="order",
+    *         in="query",
+    *         description="Порядок сортировки",
+    *         required=false,
+    *         @OA\Schema(type="string", enum={"asc", "desc"}, default="asc")
+    *     ),
+    *    @OA\Parameter(
+    *         name="per_page",
+    *         description="Количество элементов на странице (по умолчанию 10)",
+    *         required=false,
+    *         in="query",
+    *         @OA\Schema(type="integer")
+    *     ),
+    *    @OA\Parameter(
+    *         name="page",
+    *         description="Страница",
+    *         required=false,
+    *         in="query",
+    *         @OA\Schema(type="integer")
+    *     ),
      *
      *    @OA\Response(
      *        response=200,
@@ -54,9 +81,17 @@ class AttemptController extends Controller
      *    
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Attempt::all(), 200);
+        $query = Attempt::query();
+        $sortField = $request->input('sort', 'id');
+        $sortOrder = $request->input('order', 'asc');
+        $query->orderBy($sortField, $sortOrder);
+
+        $perPage = $request->input('per_page', 10);
+        $attempts = $query->paginate($perPage);
+
+        return response()->json($attempts, 200);
     }
 
 /**
