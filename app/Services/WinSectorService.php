@@ -100,13 +100,21 @@ class WinSectorService
         
         if (!$sectors->isEmpty()) {
             foreach ($sectors as $item) {
-                $probabilities[] = $item->probability / 100;
+                if($item->probability > 0){
+                    $probabilities[] = $item->probability / 100;
+                }else{
+                    $probabilities[] = $item->probability;
+                }
                 $sectorsIds[] = $item->id;
             }
             
             $total = array_sum($probabilities);
             $normalizedProbabilities = array_map(function($p) use ($total) {
-                return $p / $total;
+                if($p > 0){
+                    return $p / $total;
+                }else{
+                    return $p;
+                }
             }, $probabilities);
 
             $cumulativeProbabilities = [];
