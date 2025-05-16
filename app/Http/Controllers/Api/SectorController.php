@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\MaterialThing;
+use App\Models\Promocode;
+use App\Models\PromocodesCode;
 use App\Models\Sector;
 use App\Models\Wheel;
 use App\Http\Requests\StoreSectorRequest;
@@ -139,19 +142,19 @@ class SectorController extends Controller
             return response()->json(["message"=>"Нелья добавлять секторы, доступно только ".$wheel->count_sectors." секторов"],403);
         }
 
-        if(!$sectors->isEmpty()){
-            $sum = 0;
-            foreach($sectors as $item){
-                $sum += $item->probability;
-            }
+        $typePrize = PrizeTypeService::stringToClass($request->prize_type);
 
-            $sum += $request->probability;
-            if($sum > 100){
-                return response()->json(["message"=>"Общая сумма вероятностей превышает 100%"],403);
+        if($typePrize == Promocode::class){
+            $countCodes = PromocodesCode::where('promocode_id', $request->prize_id)->count();
+            if($countCodes == 0){
+                return response()->json(["message"=>"Нельзя добавить промокод на сектор, так как нет загруженных кодов"], 403);
+            }
+        }else if ($typePrize == MaterialThing::class){
+            $thing = MaterialThing::findOrFail($request->prize_id);
+            if($thing->count == 0){
+                return response()->json(["message"=>"Нельзя добавить вещь на сектор, укажите его количество"], 403);
             }
         }
-
-        $typePrize = PrizeTypeService::stringToClass($request->prize_type);
 
         $sector = Sector::create([
             'prize_type'=>$typePrize,
@@ -301,6 +304,18 @@ class SectorController extends Controller
         }
 
         $typePrize = PrizeTypeService::stringToClass($request->prize_type);
+        if($typePrize == Promocode::class){
+            $countCodes = PromocodesCode::where('promocode_id', $request->prize_id)->count();
+            if($countCodes == 0){
+                return response()->json(["message"=>"Нельзя добавить промокод на сектор, так как нет загруженных кодов"], 403);
+            }
+        }else if ($typePrize == MaterialThing::class){
+            $thing = MaterialThing::findOrFail($request->prize_id);
+            if($thing->count == 0){
+                return response()->json(["message"=>"Нельзя добавить вещь на сектор, укажите его количество"], 403);
+            }
+        }
+
         $sector->prize_type = $typePrize;
         $sector->prize_id = $request->prize_id;
         $sector->probability = $request->probability;
