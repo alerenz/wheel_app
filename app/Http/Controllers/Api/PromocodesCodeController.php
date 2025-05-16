@@ -140,7 +140,7 @@ class PromocodesCodeController extends Controller
                 }
                 $code = $data[0];
 
-                if($code === null || $code === "" || $code === " " || strlen($code) < 4 || strlen($code) > 8){
+                if($code === null || $code === "" || mb_strlen($code) < 4 || mb_strlen($code) > 8){
                     return response()->json(["message"=>
                     "На ".$row." cтроке указан неверный код промокода, он должен быть от 4 до 8 символов"],422);
                 }
