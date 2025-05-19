@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Services\ActiveWheelService;
 use Illuminate\Console\Command;
 use App\Models\User;
-use App\Models\Wheel;
-use App\Enums\StatusWheelType;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -48,15 +47,19 @@ class IncrementUsersAttempts extends Command
             
                 $currentDay = $daysMap[$currentDayIndex];
 
-                $wheels = Wheel::where('status', StatusWheelType::active->value)->get();
-                foreach($wheels as $wheel){
+                $wheel = ActiveWheelService::getActiveWheel();
+                if($wheel != null){
                     $wheelDays = $wheel->days_of_week;
                     if (in_array($currentDay, $wheelDays)) {
                         User::where('attempts', '<', $max_attempts)
                                 ->increment('attempts');
                         
-                        Log::info("Попытки для прокрутки колеса {$wheel->name} увеличились для всех пользователей");
+                        Log::info(message: "Попытки для прокрутки колеса {$wheel->name} увеличились для всех пользователей");
+                        $this->info("Попытки для прокрутки колеса {$wheel->name} увеличились для всех пользователей");
                     }
+                }else{
+                    Log::info("Нет активного колеса");
+                    $this->info("Нет активного колеса");
                 }
             }catch(\Exception $e){
                 Log::error("Ошибка при инкременте попыток: " . $e->getMessage());
