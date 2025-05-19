@@ -528,7 +528,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
+                                        "access_token": {
                                             "type": "string",
                                             "example": "Пользователь успешно зарегистрирован"
                                         }
@@ -577,7 +577,28 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "ОК"
+                        "description": "ОК",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "token"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer",
+                                            "example": 3600
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "description": "Unprocessable Entity"
@@ -594,7 +615,48 @@
                 "operationId": "f2231a68911a1efb2db43651ce16c938",
                 "responses": {
                     "200": {
-                        "description": "Успешное получение данных пользователя"
+                        "description": "Успешное получение данных пользователя",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "username": {
+                                            "type": "string",
+                                            "example": "user"
+                                        },
+                                        "surname": {
+                                            "type": "string",
+                                            "example": "Иванов"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Иван"
+                                        },
+                                        "patronymic": {
+                                            "type": "string",
+                                            "example": "Иванович"
+                                        },
+                                        "active": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "user"
+                                        },
+                                        "attempts": {
+                                            "type": "integer",
+                                            "example": 3
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -664,7 +726,28 @@
                 "operationId": "30c20c52f5f72828d8c531fd7c9ea3e7",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "token"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer",
+                                            "example": 3600
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Неавторизованный доступ",
@@ -4143,6 +4226,10 @@
                     "role": {
                         "type": "string",
                         "example": "user"
+                    },
+                    "attempts": {
+                        "type": "integer",
+                        "example": 3
                     }
                 },
                 "type": "object"

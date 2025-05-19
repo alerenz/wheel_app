@@ -23,6 +23,7 @@ class UserController extends Controller
      *     @OA\Property(property="patronymic", type="string", example="Иванович"),
      *     @OA\Property(property="active", type="boolean", example=true),
      *     @OA\Property(property="role", type="string", example="user"),
+     *     @OA\Property(property="attempts", type="integer", example=3),
      * )
      * 
      * @OA\Get(

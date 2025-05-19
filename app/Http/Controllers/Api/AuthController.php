@@ -14,6 +14,8 @@ class AuthController extends Controller
 {
     /**
      * 
+     * 
+     * 
      * @OA\Post(
      *    path="/api/auth/register",
      *    summary="Регистрация пользователя",
@@ -36,8 +38,8 @@ class AuthController extends Controller
      *        response=201,
      *        description="OK",
      *        @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Пользователь успешно зарегистрирован")
-     *        )
+     *            @OA\Property(property="access_token", type="string", example="Пользователь успешно зарегистрирован"),
+     *         )
      *        
      *    ),
      * 
@@ -85,6 +87,11 @@ class AuthController extends Controller
      *    @OA\Response(
      *        response=200,
      *        description="ОК",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="access_token", type="string", example="token"),
+     *            @OA\Property(property="token_type", type="string", example="bearer"),
+     *            @OA\Property(property="expires_in", type="integer", example=3600)
+     *         )
      *        
      *    ),
      *    @OA\Response(
@@ -117,6 +124,16 @@ class AuthController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Успешное получение данных пользователя",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="username", type="string", example="user"),
+     *             @OA\Property(property="surname", type="string", example="Иванов"),
+     *             @OA\Property(property="name", type="string", example="Иван"),
+     *             @OA\Property(property="patronymic", type="string", example="Иванович"),
+     *             @OA\Property(property="active", type="boolean", example="true"),
+     *             @OA\Property(property="role", type="string", example="user"),
+     *             @OA\Property(property="attempts", type="integer", example=3),
+     *         ),
      *        
      *     ),
      *     @OA\Response(
@@ -171,6 +188,11 @@ class AuthController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="OK",
+     *         @OA\JsonContent(
+     *            @OA\Property(property="access_token", type="string", example="token"),
+     *            @OA\Property(property="token_type", type="string", example="bearer"),
+     *            @OA\Property(property="expires_in", type="integer", example=3600)
+     *         )
      *        
      *     ),
      *     @OA\Response(
