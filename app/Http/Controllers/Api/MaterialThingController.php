@@ -266,8 +266,15 @@ class MaterialThingController extends Controller
         $materialThing = MaterialThing::findOrFail($id);
         $userPrizes = UserPrize::where('prize_type', MaterialThing::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
-            return response()->json(["message"=>"Эту вещь редактировать нельзя, его выйграли"], 403);
+            if($materialThing->name != $request->name){
+                return response()->json(["message"=>"Эту вещь редактировать нельзя, его выиграли"], 403);
+            }
+
+            if($materialThing->name == $request->name && $request->count <= 0){
+                return response()->json(["message"=>"Количество выйгранного приза должно быть больше 0"],403);
+            }
         }
+
         $materialThing->name = $request->name;
         $materialThing->count = $request->count;
 
