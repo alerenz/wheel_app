@@ -23,7 +23,7 @@ class StoreMaterialThingRequest extends FormRequest
     {
         return [
             'name'=>['required','string'],
-            'count'=>['required','integer', 'min:0'],
+            'count'=>['required','integer', 'min:1'],
         ];
     }
 
@@ -34,7 +34,7 @@ class StoreMaterialThingRequest extends FormRequest
             'name.string' => 'Тип данных наименование строка',
             'count.required' => 'Количество обязательно для заполнения',
             'count.integer'=>'Количество должно быть числом',
-            'count.min'=>'Количество не может быть меньше 0',
+            'count.min'=>'Количество должно быть больше 0',
         ];
     }
 }
