@@ -44,8 +44,8 @@ class StoreUserRequest extends FormRequest
             'surname.string' => 'Фамилия должна быть строкой',
             'name.required' => 'Имя обязательно для заполнения',
             'name.string' => 'Имя должно быть строкой',
-            'patronymic.required' => 'Отчевство обязательно для заполнения',
-            'patronymic.string' => 'Отчевство должно быть строкой',
+            'patronymic.required' => 'Отчество обязательно для заполнения',
+            'patronymic.string' => 'Отчество должно быть строкой',
         ];
     }
 }
