@@ -97,7 +97,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $query = User::query();
-        if ($request->has('username') && $request->name != '') {
+        if ($request->has('username') && $request->username != '') {
             $query->where('username', 'like', '%' . $request->input('username') . '%');
         }
         $sortField = $request->input('sort', 'id');
