@@ -50,6 +50,13 @@ class MaterialThingController extends Controller
     *         @OA\Schema(type="string", enum={"asc", "desc"}, default="asc")
     *     ),
     *    @OA\Parameter(
+    *         name="no_paginate",
+    *         description="Указание, нужна ли пагинация",
+    *         required=false,
+    *         in="query",
+    *         @OA\Schema(type="boolean", enum={"true", "false"}, default="false")
+    *     ),
+    *    @OA\Parameter(
     *         name="per_page",
     *         description="Количество элементов на странице (по умолчанию 10)",
     *         required=false,
@@ -99,8 +106,12 @@ class MaterialThingController extends Controller
         $sortOrder = $request->input('order', 'asc');
         $query->orderBy($sortField, $sortOrder);
 
-        $perPage = $request->input('per_page', 10);
-        $things = $query->paginate($perPage);
+        if($request->input('no_paginate', false)){
+            $things = $query->get();
+        }else{
+            $perPage = $request->input('per_page', 10);
+            $things = $query->paginate($perPage);
+        }
 
         return response()->json($things, 200);
     }

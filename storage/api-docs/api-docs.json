@@ -48,6 +48,20 @@
                         }
                     },
                     {
+                        "name": "no_paginate",
+                        "in": "query",
+                        "description": "Указание, нужна ли пагинация",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": "false",
+                            "enum": [
+                                "true",
+                                "false"
+                            ]
+                        }
+                    },
+                    {
                         "name": "per_page",
                         "in": "query",
                         "description": "Количество элементов на странице (по умолчанию 10)",
@@ -824,6 +838,20 @@
                         }
                     },
                     {
+                        "name": "no_paginate",
+                        "in": "query",
+                        "description": "Указание, нужна ли пагинация",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": "false",
+                            "enum": [
+                                "true",
+                                "false"
+                            ]
+                        }
+                    },
+                    {
                         "name": "per_page",
                         "in": "query",
                         "description": "Количество элементов на странице (по умолчанию 10)",
@@ -1298,6 +1326,20 @@
                             "enum": [
                                 "asc",
                                 "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "no_paginate",
+                        "in": "query",
+                        "description": "Указание, нужна ли пагинация",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": "false",
+                            "enum": [
+                                "true",
+                                "false"
                             ]
                         }
                     },
@@ -1785,6 +1827,20 @@
                             "enum": [
                                 "asc",
                                 "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "no_paginate",
+                        "in": "query",
+                        "description": "Указание, нужна ли пагинация",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": "false",
+                            "enum": [
+                                "true",
+                                "false"
                             ]
                         }
                     },

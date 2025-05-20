@@ -49,6 +49,13 @@ class PromocodeController extends Controller
     *         @OA\Schema(type="string", enum={"asc", "desc"}, default="asc")
     *     ),
     *    @OA\Parameter(
+    *         name="no_paginate",
+    *         description="Указание, нужна ли пагинация",
+    *         required=false,
+    *         in="query",
+    *         @OA\Schema(type="boolean", enum={"true", "false"}, default="false")
+    *     ),
+    *    @OA\Parameter(
     *         name="per_page",
     *         description="Количество элементов на странице (по умолчанию 10)",
     *         required=false,
@@ -100,8 +107,12 @@ class PromocodeController extends Controller
         $sortOrder = $request->input('order', 'asc');
         $query->orderBy($sortField, $sortOrder);
 
-        $perPage = $request->input('per_page', 10);
-        $promocodes = $query->paginate($perPage);
+        if($request->input('no_paginate', false)){
+            $promocodes = $query->get();
+        }else{
+            $perPage = $request->input('per_page', 10);
+            $promocodes = $query->paginate($perPage);
+        }
 
         return response()->json($promocodes, 200);
     }
