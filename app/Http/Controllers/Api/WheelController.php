@@ -408,7 +408,7 @@ class WheelController extends Controller
             $wheel->date_end = $request->date_end;
             $wheel->days_of_week = $wheelDays;
             $wheel->save();
-            return response()->json($wheel);
+            return response()->json($wheel, 200);
         }else{
             return response()->json(["message"=>"Колесо в архиве, изменять нельзя"],403);
         }
