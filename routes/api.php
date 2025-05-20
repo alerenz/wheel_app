@@ -9,15 +9,10 @@ use App\Http\Controllers\Api\EmptyPrizeController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\WheelController;
 use App\Http\Controllers\Api\SectorController;
-use App\Http\Middleware\CheckRole;
 use App\Http\Controllers\Api\AttemptController;
 use App\Http\Controllers\Api\UserPrizeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PromocodesCodeController;
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth');
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
