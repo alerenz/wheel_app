@@ -29,6 +29,13 @@ class MaterialThingController extends Controller
      *    tags={"Вещи"},
      *    security={{"bearerAuth":{"role": "admin"} }},
      *    @OA\Parameter(
+    *         name="name",
+    *         in="query",
+    *         description="Фильтрация по наименованию",
+    *         required=false,
+    *         @OA\Schema(type="string")
+    *     ),
+     *    @OA\Parameter(
     *         name="sort",
     *         in="query",
     *         description="Поле для сортировки",
@@ -85,6 +92,9 @@ class MaterialThingController extends Controller
     public function index(Request $request)
     {
         $query = MaterialThing::query();
+        if ($request->has('name') && $request->name != '') {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc');
         $query->orderBy($sortField, $sortOrder);

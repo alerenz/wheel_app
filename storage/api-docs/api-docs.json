@@ -15,6 +15,15 @@
                 "operationId": "1a55e26b9a4c7dfa0b004a7bf0bafafd",
                 "parameters": [
                     {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Фильтрация по наименованию",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "sort",
                         "in": "query",
                         "description": "Поле для сортировки",
@@ -782,6 +791,15 @@
                 "operationId": "2f951e98663a5beb85b386ee6b059541",
                 "parameters": [
                     {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Фильтрация по наименовании",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "sort",
                         "in": "query",
                         "description": "Поле для сортировки",
@@ -1250,6 +1268,15 @@
                 "summary": "Получение списка вещей",
                 "operationId": "53182061aec9bb8bf72386e16e5dd057",
                 "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Фильтрация по наименованию",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "sort",
                         "in": "query",
@@ -1728,6 +1755,15 @@
                 "summary": "Получение списка промокодов",
                 "operationId": "bd471a9cafdaf551d9c0a07a274be5af",
                 "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Фильтрация по наименованию",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "sort",
                         "in": "query",
@@ -2523,8 +2559,8 @@
                                         "type": "string",
                                         "enum": [
                                             "promocode",
-                                            "material_thing",
-                                            "empty_prize"
+                                            "material-thing",
+                                            "empty-prize"
                                         ],
                                         "example": "promocode"
                                     },
@@ -2732,8 +2768,8 @@
                                         "type": "string",
                                         "enum": [
                                             "promocode",
-                                            "material_thing",
-                                            "empty_prize"
+                                            "material-thing",
+                                            "empty-prize"
                                         ],
                                         "example": "promocode"
                                     },
@@ -4269,7 +4305,7 @@
                     },
                     "prize_type": {
                         "type": "string",
-                        "example": "material_thing"
+                        "example": "material-thing"
                     },
                     "prize_id": {
                         "type": "integer",
@@ -4360,7 +4396,7 @@
                     },
                     "prize_type": {
                         "type": "string",
-                        "example": "empty_prize"
+                        "example": "empty-prize"
                     },
                     "prize_id": {
                         "type": "integer",

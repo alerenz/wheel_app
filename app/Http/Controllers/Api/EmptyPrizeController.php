@@ -28,6 +28,13 @@ class EmptyPrizeController extends Controller
      *    tags={"Пустые призы"},
      *    security={{"bearerAuth":{"role": "admin"} }},
      *    @OA\Parameter(
+    *         name="name",
+    *         in="query",
+    *         description="Фильтрация по наименовании",
+    *         required=false,
+    *         @OA\Schema(type="string")
+    *     ),
+     *    @OA\Parameter(
     *         name="sort",
     *         in="query",
     *         description="Поле для сортировки",
@@ -84,6 +91,9 @@ class EmptyPrizeController extends Controller
     public function index(Request $request)
     {
         $query = EmptyPrize::query();
+        if ($request->has('name') && $request->name != '') {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc');
         $query->orderBy($sortField, $sortOrder);
