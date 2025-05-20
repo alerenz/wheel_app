@@ -61,7 +61,7 @@ class PromocodeController extends Controller
      *        description="ОК",
      *        @OA\JsonContent(
      *            type="array",
-     *            @OA\Items(ref="#/components/schemas/Promocode")
+     *            @OA\Items(ref="#/components/schemas/Promocode"),
      *        )
      *
      *    ),
@@ -83,7 +83,9 @@ class PromocodeController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Promocode::withCount('codes');
+        $query = Promocode::withCount(['codes' => function ($q) {
+            $q->where('active', true);
+        }]);
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc');
         $query->orderBy($sortField, $sortOrder);
