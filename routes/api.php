@@ -64,6 +64,7 @@ Route::group(['middleware'=>['jwt.auth', 'role:admin']], function ($router) {
     Route::get('user-prize/{id}',[UserPrizeController::class, 'show']);
 
     Route::get('users',[UserController::class, 'index']);
+    Route::post('users/accrual-attempts/{id}',[UserController::class, 'accrualAttempts']);
     
     Route::get('promocodes-code',[PromocodesCodeController::class,'index']);
     Route::post('promocodes-code/{id}',[PromocodesCodeController::class,'store']);

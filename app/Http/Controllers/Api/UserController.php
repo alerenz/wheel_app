@@ -131,4 +131,80 @@ class UserController extends Controller
     {
         //
     }
+
+    /**
+     * 
+     * @OA\Post(
+     *    path="/api/users/accrual-attempts/{id}",
+     *    summary="Начисление попыток",
+     *    tags={"Пользователи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id пользователя",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     * 
+     * 
+     *    @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="attempts", type="integer", example=3),
+     *             required={"attempts"}
+     *         )
+     *     ),
+     * 
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Попытки для пользователя user1 начилислились")
+     *        )
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=422,
+     *        description="Необрабатываемый контент",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Количество начисляемых попыток должно быть больше 0")
+     *        )
+     *    ),
+     * )
+     */
+
+    public function accrualAttempts(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        if($request->attempts < 0){
+            return response()->json(["message"=>"Количество начисляемых попыток должно быть больше 0"], 422);
+        }
+        if($request->attempts > config('custom.max_attempts')){
+            return response()->json(["message"=>
+            "Количество начисляемых попыток не может быть больше чем ".config('custom.max_attempts')], 422);
+        }
+
+        $user->attempts = $request->attempts;
+        $user->save();
+
+        return response()->json(["message"=>"Попытки для пользователя ".$user->username." начислились"], 200);
+    }
 }
