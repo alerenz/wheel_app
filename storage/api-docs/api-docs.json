@@ -3506,10 +3506,6 @@
                                         "type": "string",
                                         "example": "Акция мая"
                                     },
-                                    "animation": {
-                                        "type": "boolean",
-                                        "example": true
-                                    },
                                     "date_start": {
                                         "type": "string",
                                         "format": "date",
@@ -3550,10 +3546,6 @@
                                         "status": {
                                             "type": "string",
                                             "example": "Не активно"
-                                        },
-                                        "animation": {
-                                            "type": "boolean",
-                                            "example": true
                                         },
                                         "date_start": {
                                             "type": "string",
@@ -3750,10 +3742,6 @@
                                         ],
                                         "example": "Активно"
                                     },
-                                    "animation": {
-                                        "type": "boolean",
-                                        "example": true
-                                    },
                                     "date_start": {
                                         "type": "string",
                                         "format": "date",
@@ -3794,10 +3782,6 @@
                                         "status": {
                                             "type": "string",
                                             "example": "Не активно"
-                                        },
-                                        "animation": {
-                                            "type": "boolean",
-                                            "example": true
                                         },
                                         "date_start": {
                                             "type": "string",
@@ -4421,17 +4405,9 @@
                         "type": "string",
                         "example": "Акция мая"
                     },
-                    "count_sectors": {
-                        "type": "integer",
-                        "example": 5
-                    },
                     "status": {
                         "type": "string",
                         "example": "Не активно"
-                    },
-                    "animation": {
-                        "type": "boolean",
-                        "example": true
                     },
                     "date_start": {
                         "type": "string",
@@ -4471,10 +4447,6 @@
                     "status": {
                         "type": "string",
                         "example": "Не активно"
-                    },
-                    "animation": {
-                        "type": "boolean",
-                        "example": true
                     },
                     "date_start": {
                         "type": "string",

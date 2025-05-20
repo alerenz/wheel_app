@@ -29,7 +29,6 @@ class UpdateWheelRequest extends FormRequest
             'date_start'=>['required', 'date',],
             'date_end' => ['required', 'date', 'after:today','different:date_start'],
             'status' => ['required', 'in:' . implode(',', array_column(StatusWheelType::cases(), 'value'))],
-            'animation'=>['boolean'],
             
         ];
     }
@@ -47,7 +46,6 @@ class UpdateWheelRequest extends FormRequest
             'date_end.different'=>'Дата начала и дата окончания не могут быть одинаковыми',
             'status.required' => 'Статус обязателен для заполнения',
             'status.in'=>'Неверный тип статуса, может быть только: '.implode(', ', array_column(StatusWheelType::cases(), 'value')),
-            'animation.boolean'=>"Анимация должна быть булевым значением",
             'days_of_week.required'=>'Дни недели обязательны для заполнения',
         ];
     }

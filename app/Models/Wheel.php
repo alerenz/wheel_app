@@ -43,7 +43,6 @@ class Wheel extends Model
     protected $fillable = [
         'name',
         'status',
-        'animation',
         'date_start',
         'date_end',
         'days_of_week',

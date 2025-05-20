@@ -19,9 +19,7 @@ class WheelController extends Controller
     *     schema="Wheel",
     *     type="object",
     *     @OA\Property(property="name", type="string", example="Акция мая"),
-    *     @OA\Property(property="count_sectors", type="integer", example=5),
     *     @OA\Property(property="status", type="string", example="Не активно"),
-    *     @OA\Property(property="animation", type="boolean", example=true),
     *     @OA\Property(property="date_start", type="date", example="2025-05-01"),
     *     @OA\Property(property="date_end", type="date", example="2025-05-31"),
     *     @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
@@ -35,7 +33,6 @@ class WheelController extends Controller
     *     type="object",
     *     @OA\Property(property="name", type="string", example="Акция мая"),
     *     @OA\Property(property="status", type="string", example="Не активно"),
-    *     @OA\Property(property="animation", type="boolean", example=true),
     *     @OA\Property(property="date_start", type="date", example="2025-05-01"),
     *     @OA\Property(property="date_end", type="date", example="2025-05-31"),
     *     @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
@@ -158,7 +155,6 @@ class WheelController extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="name", type="string", example="Акция мая"),
-     *             @OA\Property(property="animation", type="boolean", example=true),
      *             @OA\Property(property="date_start", type="date", example="2025-05-01"),
      *             @OA\Property(property="date_end", type="date", example="2025-05-31"),
      *             @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
@@ -172,7 +168,6 @@ class WheelController extends Controller
      *        @OA\JsonContent(
      *            @OA\Property(property="name", type="string", example="Акция мая"),
      *            @OA\Property(property="status", type="string", example="Не активно"),
-     *            @OA\Property(property="animation", type="boolean", example=true),
      *            @OA\Property(property="date_start", type="date", example="2025-05-01"),
      *            @OA\Property(property="date_end", type="date", example="2025-05-31"),
      *            @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
@@ -213,7 +208,6 @@ class WheelController extends Controller
         
         $wheel = Wheel::create([
             'name'=>$request->name,
-            'animation'=>$request->animation,
             'date_start'=>$request->date_start,
             'date_end'=>$request->date_end,
             'status'=>StatusWheelType::nonActive,
@@ -303,7 +297,6 @@ class WheelController extends Controller
      *                 enum={"Активно", "Не активно", "В архиве"},
      *                 example="Активно"
      *             ),
-     *             @OA\Property(property="animation", type="boolean", example=true),
      *             @OA\Property(property="date_start", type="date", example="2025-05-01"),
      *             @OA\Property(property="date_end", type="date", example="2025-05-31"),
      *             @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
@@ -317,7 +310,6 @@ class WheelController extends Controller
      *        @OA\JsonContent(
      *            @OA\Property(property="name", type="string", example="Акция мая"),
      *            @OA\Property(property="status", type="string", example="Не активно"),
-     *            @OA\Property(property="animation", type="boolean", example=true),
      *            @OA\Property(property="date_start", type="date", example="2025-05-01"),
      *            @OA\Property(property="date_end", type="date", example="2025-05-31"),
      *            @OA\Property(property="days_of_week", type="array", @OA\Items(type="string"),example={"Понедельник", "Среда"}),
@@ -392,7 +384,6 @@ class WheelController extends Controller
         if($wheel->status == StatusWheelType::active->value || $wheel->status == StatusWheelType::nonActive->value){
             $wheel->name = $request->name;
             $wheel->status = StatusWheelType::from($request->status)->value;
-            $wheel->animation = $request->animation;
             $wheel->date_start = $request->date_start;
             $wheel->date_end = $request->date_end;
             $wheel->days_of_week = $wheelDays;
