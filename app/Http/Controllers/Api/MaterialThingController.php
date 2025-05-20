@@ -331,7 +331,7 @@ class MaterialThingController extends Controller
         $materialThing = MaterialThing::findOrFail($id);
         $userPrizes = UserPrize::where('prize_type', MaterialThing::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
-            return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
+            return response()->json(["message"=>"Этот приз удалить нельзя, его выиграли"], 403);
         }
 
         $wheel = ActiveWheelService::getActiveWheel();

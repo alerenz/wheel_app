@@ -266,7 +266,7 @@ class PromocodeController extends Controller
         $promocode = Promocode::findOrFail($id);
         $userPrizes = UserPrize::where('prize_type', Promocode::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
-            return response()->json(["message"=>"Этот промокод редактировать нельзя, его выйграли"], 403);
+            return response()->json(["message"=>"Этот промокод редактировать нельзя, его выиграли"], 403);
         }
         $promocode->name = $request->name;
         $promocode->save();
@@ -328,7 +328,7 @@ class PromocodeController extends Controller
         $promocode = Promocode::findOrFail($id);
         $userPrizes = UserPrize::where('prize_type', Promocode::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
-            return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
+            return response()->json(["message"=>"Этот приз удалить нельзя, его выиграли"], 403);
         }
 
         $wheel = ActiveWheelService::getActiveWheel();

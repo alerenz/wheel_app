@@ -262,7 +262,7 @@ class EmptyPrizeController extends Controller
         $emptyPrize = EmptyPrize::findOrFail($id);
         $userPrizes = UserPrize::where('prize_type', EmptyPrize::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
-            return response()->json(["message"=>"Этот приз редактировать нельзя, его выйграли"], 403);
+            return response()->json(["message"=>"Этот приз редактировать нельзя, его выиграли"], 403);
         }
         $emptyPrize->name = $request->name;
         $emptyPrize->save();
@@ -323,7 +323,7 @@ class EmptyPrizeController extends Controller
         $emptyPrize = EmptyPrize::findOrFail($id);
         $userPrizes = UserPrize::where('prize_type', EmptyPrize::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
-            return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
+            return response()->json(["message"=>"Этот приз удалить нельзя, его выиграли"], 403);
         }
 
         $wheel = ActiveWheelService::getActiveWheel();

@@ -262,7 +262,7 @@ class AttemptController extends Controller
         $attempt = Attempt::findOrFail($id);
         $userPrizes = UserPrize::where('prize_type', Attempt::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
-            return response()->json(["message"=>"Этот приз редактировать нельзя, его выйграли"], 403);
+            return response()->json(["message"=>"Этот приз редактировать нельзя, его выиграли"], 403);
         }
         
         $attempt->name = $request->name;
@@ -323,7 +323,7 @@ class AttemptController extends Controller
         $attempt = Attempt::findOrFail($id);
         $userPrizes = UserPrize::where('prize_type', Attempt::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
-            return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
+            return response()->json(["message"=>"Этот приз удалить нельзя, его выиграли"], 403);
         }
 
         $wheel = ActiveWheelService::getActiveWheel();
