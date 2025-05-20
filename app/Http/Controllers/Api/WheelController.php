@@ -34,7 +34,6 @@ class WheelController extends Controller
     *     schema="WheelWithOutSectors",
     *     type="object",
     *     @OA\Property(property="name", type="string", example="Акция мая"),
-    *     @OA\Property(property="count_sectors", type="integer", example=5),
     *     @OA\Property(property="status", type="string", example="Не активно"),
     *     @OA\Property(property="animation", type="boolean", example=true),
     *     @OA\Property(property="date_start", type="date", example="2025-05-01"),
@@ -159,7 +158,6 @@ class WheelController extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="name", type="string", example="Акция мая"),
-     *             @OA\Property(property="count_sectors", type="integer", example=5),
      *             @OA\Property(property="animation", type="boolean", example=true),
      *             @OA\Property(property="date_start", type="date", example="2025-05-01"),
      *             @OA\Property(property="date_end", type="date", example="2025-05-31"),
@@ -173,7 +171,6 @@ class WheelController extends Controller
      *        description="ОК",
      *        @OA\JsonContent(
      *            @OA\Property(property="name", type="string", example="Акция мая"),
-     *            @OA\Property(property="count_sectors", type="integer", example=5),
      *            @OA\Property(property="status", type="string", example="Не активно"),
      *            @OA\Property(property="animation", type="boolean", example=true),
      *            @OA\Property(property="date_start", type="date", example="2025-05-01"),
@@ -216,7 +213,6 @@ class WheelController extends Controller
         
         $wheel = Wheel::create([
             'name'=>$request->name,
-            'count_sectors'=>$request->count_sectors,
             'animation'=>$request->animation,
             'date_start'=>$request->date_start,
             'date_end'=>$request->date_end,
@@ -301,7 +297,6 @@ class WheelController extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="name", type="string", example="Акция мая"),
-     *             @OA\Property(property="count_sectors", type="integer", example=5),
      *             @OA\Property(
      *                 property="status",
      *                 type="string",
@@ -321,7 +316,6 @@ class WheelController extends Controller
      *        description="ОК",
      *        @OA\JsonContent(
      *            @OA\Property(property="name", type="string", example="Акция мая"),
-     *            @OA\Property(property="count_sectors", type="integer", example=5),
      *            @OA\Property(property="status", type="string", example="Не активно"),
      *            @OA\Property(property="animation", type="boolean", example=true),
      *            @OA\Property(property="date_start", type="date", example="2025-05-01"),
@@ -376,12 +370,8 @@ class WheelController extends Controller
             $probability += $sector->probability;
         }
 
-        if($request->status == StatusWheelType::active->value && $sectors_count < $wheel->count_sectors){
-            return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока количество секторов меньше чем задано"],403);
-        }
-
-        if($wheel->status == StatusWheelType::active->value && $request->count_sectors != $wheel->count_sectors){
-            return response()->json(["message"=>"Нельзя у активного колеса изменять количество секторов"],403);
+        if($request->status == StatusWheelType::active->value && $sectors_count < 4){
+            return response()->json(["message"=>"Нельзя присвоить колесу статус Активный, пока количество секторов меньше чем 4"],403);
         }
 
         if($request->status == StatusWheelType::active->value && $probability == 0){
@@ -401,7 +391,6 @@ class WheelController extends Controller
 
         if($wheel->status == StatusWheelType::active->value || $wheel->status == StatusWheelType::nonActive->value){
             $wheel->name = $request->name;
-            $wheel->count_sectors = $request->count_sectors;
             $wheel->status = StatusWheelType::from($request->status)->value;
             $wheel->animation = $request->animation;
             $wheel->date_start = $request->date_start;

@@ -12,7 +12,6 @@ use App\Enums\StatusWheelType;
  *
  * @property int $id
  * @property string $name
- * @property int $count_sectors
  * @property bool $animation
  * @property string $date_start
  * @property string $date_end
@@ -43,7 +42,6 @@ class Wheel extends Model
 {
     protected $fillable = [
         'name',
-        'count_sectors',
         'status',
         'animation',
         'date_start',

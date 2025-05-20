@@ -31,6 +31,13 @@ class UserController extends Controller
      *    summary="Получение списка пользователей",
      *    tags={"Пользователи"},
      *    security={{"bearerAuth":{"role": "admin"} }},
+    *     @OA\Parameter(
+    *         name="username",
+    *         in="query",
+    *         description="Фильтрация по логину",
+    *         required=false,
+    *         @OA\Schema(type="string")
+    *     ),
      *    @OA\Parameter(
     *         name="sort",
     *         in="query",
@@ -90,6 +97,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $query = User::query();
+        if ($request->has('username') && $request->name != '') {
+            $query->where('username', 'like', '%' . $request->input('username') . '%');
+        }
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc');
         $query->orderBy($sortField, $sortOrder);
@@ -197,11 +207,6 @@ class UserController extends Controller
         if($request->attempts < 0){
             return response()->json(["message"=>"Количество начисляемых попыток должно быть больше 0"], 422);
         }
-        if($request->attempts > config('custom.max_attempts')){
-            return response()->json(["message"=>
-            "Количество начисляемых попыток не может быть больше чем ".config('custom.max_attempts')], 422);
-        }
-
         $user->attempts = $request->attempts;
         $user->save();
 

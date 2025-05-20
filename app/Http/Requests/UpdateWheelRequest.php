@@ -25,7 +25,6 @@ class UpdateWheelRequest extends FormRequest
     {
         return [
             'name'=>['required','string'],
-            'count_sectors' => ['required', 'numeric', 'min:4', 'max:10'],
             'days_of_week'=>['required',new ExistDayOfWeek()],
             'date_start'=>['required', 'date',],
             'date_end' => ['required', 'date', 'after:today','different:date_start'],
@@ -40,10 +39,6 @@ class UpdateWheelRequest extends FormRequest
         return [
             'name.required' => 'Наименование обязательно для заполнения',
             'name.string' => 'Тип данных наименование строка',
-            'count_sectors.required' => 'Количество секторов обязательно для заполнения',
-            'count_sectors.numeric' => 'Количество секторов должно быть числом',
-            'count_sectors.min' => 'Количество секторов не может быть меньше 4',
-            'count_sectors.max'=>'Количество секторов не может быть больше 10',
             'date_start.required' => 'Дата начала обязательна',
             'date_start.date' => 'Неверный формат даты',
             'date_end.required' => 'Дата окончания обязательна',

@@ -174,8 +174,8 @@ class SectorController extends Controller
         }
         $sectors = Sector::where('wheel_id', $wheel->id)->get();
         $count_sec = $sectors->count();
-        if($count_sec == $wheel->count_sectors){
-            return response()->json(["message"=>"Нелья добавлять секторы, доступно только ".$wheel->count_sectors." секторов"],403);
+        if($count_sec == 10){
+            return response()->json(["message"=>"Нелья добавлять секторы, их уже 10"],403);
         }
 
         $typePrize = PrizeTypeService::stringToClass($request->prize_type);

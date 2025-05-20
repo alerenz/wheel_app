@@ -2968,6 +2968,15 @@
                 "operationId": "566aed8efb436ca506e0ef51a032ecd9",
                 "parameters": [
                     {
+                        "name": "username",
+                        "in": "query",
+                        "description": "Фильтрация по логину",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "sort",
                         "in": "query",
                         "description": "Поле для сортировки",
@@ -3497,10 +3506,6 @@
                                         "type": "string",
                                         "example": "Акция мая"
                                     },
-                                    "count_sectors": {
-                                        "type": "integer",
-                                        "example": 5
-                                    },
                                     "animation": {
                                         "type": "boolean",
                                         "example": true
@@ -3541,10 +3546,6 @@
                                         "name": {
                                             "type": "string",
                                             "example": "Акция мая"
-                                        },
-                                        "count_sectors": {
-                                            "type": "integer",
-                                            "example": 5
                                         },
                                         "status": {
                                             "type": "string",
@@ -3740,10 +3741,6 @@
                                         "type": "string",
                                         "example": "Акция мая"
                                     },
-                                    "count_sectors": {
-                                        "type": "integer",
-                                        "example": 5
-                                    },
                                     "status": {
                                         "type": "string",
                                         "enum": [
@@ -3793,10 +3790,6 @@
                                         "name": {
                                             "type": "string",
                                             "example": "Акция мая"
-                                        },
-                                        "count_sectors": {
-                                            "type": "integer",
-                                            "example": 5
                                         },
                                         "status": {
                                             "type": "string",
@@ -4474,10 +4467,6 @@
                     "name": {
                         "type": "string",
                         "example": "Акция мая"
-                    },
-                    "count_sectors": {
-                        "type": "integer",
-                        "example": 5
                     },
                     "status": {
                         "type": "string",
