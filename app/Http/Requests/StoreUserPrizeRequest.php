@@ -22,6 +22,7 @@ class StoreUserPrizeRequest extends FormRequest
      */
     public function rules(): array
     {
+        $prizeType = $this->input('prize_type');
         return [
             'date' => ['required', 'date', 'equal:today'],
             'prize_type' => ['required'],

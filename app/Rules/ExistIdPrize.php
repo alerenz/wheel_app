@@ -15,8 +15,6 @@ class ExistIdPrize implements ValidationRule
      */
 
     protected $prizeType;
-
-    // Конструктор для передачи prize_type
     public function __construct($prizeType)
     {
         $this->prizeType = $prizeType;
@@ -40,6 +38,11 @@ class ExistIdPrize implements ValidationRule
                     $fail("Приза с таким ID не существует для типа пустой приз.");
                 }
                 break;
+            case 'attempt':
+                if (!DB::table('attempts')->where('id', $value)->exists()) {
+                    $fail("Приза с таким ID не существует для типа попытка.");
+                }
+                break;    
             default:
                 $fail('Некорректный тип приза.');
                 break;

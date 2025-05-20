@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreEmpty_prizeRequest extends FormRequest
+class StorePromocodesCodeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +22,17 @@ class StoreEmpty_prizeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>['required', 'string']
+            'file'=>['required','file','mimes:csv,txt','max:2048'],
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Наименование обязательно для заполнения',
-            'name.string' => 'Тип данных наименование строка',
+            'file.required'=>'Укажите файл',
+            'file.file'=>'Это должен быть файл',
+            'file.mimes'=>'Файл должен быть формата .csv',
+            'file.max'=>'Файл не должен превышать 2 Мб'
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\ExistDayOfWeek;
-use App\Enums\StatusWeelType;
+use App\Enums\StatusWheelType;
 
 class StoreWheelRequest extends FormRequest
 {
@@ -28,9 +28,9 @@ class StoreWheelRequest extends FormRequest
             'name'=>['required','string'],
             'count_sectors' => ['required', 'numeric', 'min:4', 'max:10'],
             'days_of_week'=>['required',new ExistDayOfWeek()],
-            'date_start'=>['required', 'date',],
-            'date_end' => ['required', 'date', 'after:today'],
-            'status' => ['in:' . implode(',', array_column(StatusWeelType::cases(), 'value'))],
+            'date_start'=>['required', 'date'],
+            'date_end' => ['required', 'date', 'after:today', 'different:date_start'],
+            'status' => ['in:' . implode(',', array_column(StatusWheelType::cases(), 'value'))],
             'animation'=>['boolean'],
             
         ];
@@ -50,8 +50,9 @@ class StoreWheelRequest extends FormRequest
             'date_end.required' => 'Дата окончания обязательна',
             'date_end.date' => 'Неверный формат даты',
             'date_end.after' => 'Дата окончания должна быть позже текущей',
+            'date_end.different'=>'Дата начала и дата окончания не могут быть одинаковыми',
             'status.required' => 'Статус обязателен для заполнения',
-            'status.in'=>'Неверный тип статуса, может быть только: '.implode(', ', array_column(StatusWeelType::cases(), 'value')),
+            'status.in'=>'Неверный тип статуса, может быть только: '.implode(', ', array_column(StatusWheelType::cases(), 'value')),
             'animation.boolean'=>"Анимация должна быть булевым значением",
             'days_of_week.required'=>'Дни недели обязательны для заполнения',
         ];

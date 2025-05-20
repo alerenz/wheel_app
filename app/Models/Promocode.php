@@ -3,60 +3,52 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\DiscountType;
-use App\Model\Sector;
-use App\Model\UserPrize;
+use App\Models\Sector;
+use App\Models\UserPrize;
+use App\Models\PromocodesCode;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $name
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, PromocodesCode> $codes
+ * @property-read int|null $codes_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Promocode newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Promocode newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Promocode query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Promocode whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Promocode whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Promocode whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Promocode whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Sector> $sectors
+ * @property-read int|null $sectors_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, UserPrize> $userPrizes
+ * @property-read int|null $user_prizes_count
+ * @mixin \Eloquent
+ */
 class Promocode extends Model
 {
-    protected $fillable = [
-        'type_discount',
-        'discount_value',
-        'expiry_date',
-    ];
+    protected $fillable = ['name'];
 
     protected $casts = [
-        'expiry_date' => 'date',
-        'discount_value' => 'float'
+        
     ];
 
-    public function generateCode(): string
-    {
-        $digits = str_split('0123456789');
-        $letters = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-        
-        do {
-            $code = '';
-            $allSymbols = array_merge($digits, $letters);
-            
-            for ($i = 0; $i < 6; $i++) {
-                $code .= $allSymbols[array_rand($allSymbols)];
-            }
-        } while (static::where('code', $code)->exists());
-
-        return $code;
+    public function codes(){
+        return $this->hasMany(PromocodesCode::class);
     }
 
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (!$model->code) {
-                $model->code = $model->generateCode();
-            }
-        });
-    }
-
-
-    public function sectors(): MorphMany
+    public function sectors()
     {
         return $this->morphMany(Sector::class, 'prize');
     }
 
-    public function userPrizes(): MorphMany
+    public function userPrizes()
     {
-        return $this->morthMany(userPrize::class, 'prize');
+        return $this->morphMany(userPrize::class, 'prize');
     }
 
 }

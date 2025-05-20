@@ -3,65 +3,345 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Material_thing;
-use App\Http\Requests\StoreMaterial_thingRequest;
-use App\Http\Requests\UpdateMaterial_thingRequest;
+use App\Models\MaterialThing;
+use App\Http\Requests\StoreMaterialThingRequest;
+use App\Http\Requests\UpdateMaterialThingRequest;
 use App\Models\UserPrize;
+use App\Services\ActiveWheelService;
+use Illuminate\Http\Request;
 
 class MaterialThingController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Schema(
+     *     schema="MaterialThing",
+     *     type="object",
+     *     @OA\Property(property="id", type="integer", example=1),
+     *     @OA\Property(property="name", type="string", example="Блокнот А5"),
+     *     @OA\Property(property="count", type="integer", example=100),
+     * )
+     *
+     *
+     * 
+     * @OA\Get(
+     *    path="/api/material-thing",
+     *    summary="Получение списка вещей",
+     *    tags={"Вещи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     *    @OA\Parameter(
+    *         name="sort",
+    *         in="query",
+    *         description="Поле для сортировки",
+    *         required=false,
+    *         @OA\Schema(type="string", default="id")
+    *     ),
+    *     @OA\Parameter(
+    *         name="order",
+    *         in="query",
+    *         description="Порядок сортировки",
+    *         required=false,
+    *         @OA\Schema(type="string", enum={"asc", "desc"}, default="asc")
+    *     ),
+    *    @OA\Parameter(
+    *         name="per_page",
+    *         description="Количество элементов на странице (по умолчанию 10)",
+    *         required=false,
+    *         in="query",
+    *         @OA\Schema(type="integer")
+    *     ),
+    *    @OA\Parameter(
+    *         name="page",
+    *         description="Страница",
+    *         required=false,
+    *         in="query",
+    *         @OA\Schema(type="integer")
+    *     ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *            type="array",
+     *            @OA\Items(ref="#/components/schemas/MaterialThing")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     *    
+     * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Material_thing::all();
+        $query = MaterialThing::query();
+        $sortField = $request->input('sort', 'id');
+        $sortOrder = $request->input('order', 'asc');
+        $query->orderBy($sortField, $sortOrder);
+
+        $perPage = $request->input('per_page', 10);
+        $things = $query->paginate($perPage);
+
+        return response()->json($things, 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 
+     * @OA\Post(
+     *    path="/api/material-thing",
+     *    summary="Создание вещи",
+     *    tags={"Вещи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     * 
+     *    @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Блокнот А5"),
+     *             @OA\Property(property="count", type="integer", example=100),
+     *             required={"name", "count"}
+     *         )
+     *     ),
+     * 
+     *    @OA\Response(
+     *        response=201,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/MaterialThing"
+     *        )
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    )
+     * )
      */
-    public function store(StoreMaterial_thingRequest $request)
+    public function store(StoreMaterialThingRequest $request)
     {
-        $thing= Material_thing::create([
+        $thing= MaterialThing::create([
             'name'=>$request->name,
+            'count'=>$request->count,
         ]);
 
         return response()->json($thing, 201);
     }
 
     /**
-     * Display the specified resource.
+     * 
+     * @OA\Get(
+     *    path="/api/material-thing/{id}",
+     *    summary="Получение вещи по id",
+     *    tags={"Вещи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id вещи",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/MaterialThing"
+     *        )
+     *      
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Вещи с таким id не существует")
+     *        )
+     *    ),
+     * )
      */
     public function show($id)
     {
-        $material_thing = Material_thing::findOrFail($id);
-        return $material_thing;
+        $materialThing = MaterialThing::findOrFail($id);
+        return $materialThing;
     }
 
     /**
-     * Update the specified resource in storage.
+     * 
+     * @OA\Put(
+     *    path="/api/material-thing/{id}",
+     *    summary="Обновление вещи  по id",
+     *    tags={"Вещи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id вещи",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     * 
+     * 
+     *    @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Блокнот А5"),
+     *             @OA\Property(property="count", type="integer", example=100),
+     *             required={"name"}
+     *         )
+     *     ),
+     * 
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *            ref="#/components/schemas/MaterialThing"
+     *        )
+     *        
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=403,
+     *        description="Доступ запрещен",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="Forbidden.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Вещи с таким id не существует")
+     *        )
+     *    ),
+     * )
      */
-    public function update(UpdateMaterial_thingRequest $request, $id)
+    public function update(UpdateMaterialThingRequest $request, $id)
     {
-        $material_thing = Material_thing::findOrFail($id);
-        $material_thing->name = $request->name;
+        $materialThing = MaterialThing::findOrFail($id);
+        $userPrizes = UserPrize::where('prize_type', MaterialThing::class)->where('prize_id', $id)->get();
+        if(!$userPrizes->isEmpty()){
+            if($materialThing->name != $request->name){
+                return response()->json(["message"=>"Эту вещь редактировать нельзя, его выиграли"], 403);
+            }
+        }
 
-        $material_thing->save();
-        return $material_thing;
+        $materialThing->name = $request->name;
+        $materialThing->count = $request->count;
+
+        $materialThing->save();
+        return $materialThing;
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 
+     * @OA\Delete(
+     *    path="/api/material-thing/{id}",
+     *    summary="Удаление вещи по id",
+     *    tags={"Вещи"},
+     *    security={{"bearerAuth":{"role": "admin"} }},
+     * 
+     *    @OA\Parameter(
+     *        description="id вещи",
+     *        in="path",
+     *        name="id",
+     *        required=true,
+     *        example=1,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="ОК",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Вещь успешна удалена")
+     *        ) 
+     *    ),
+     * 
+     *    @OA\Response(
+     *        response=403,
+     *        description="Действие запрещено", 
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Этот приз удалить нельзя, его выйграли")
+     *        ) 
+     *    ),
+     *    @OA\Response(
+     *        response=401,
+     *        description="Неавторизованный доступ",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=404,
+     *        description="Ничего не найдено",
+     *        @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Вещи с таким id не существует")
+     *        )
+     *    ),
+     * )
      */
     public function destroy($id)
     {
-        $material_thing = Material_thing::findOrFail($id);
-        $userPrizes = UserPrize::where('prize_type', Material_thing::class)->where('prize_id', $id)->get();
+        $materialThing = MaterialThing::findOrFail($id);
+        $userPrizes = UserPrize::where('prize_type', MaterialThing::class)->where('prize_id', $id)->get();
         if(!$userPrizes->isEmpty()){
-            return response()->json(["message"=>"Этот приз удалить нельзя, его выйграли"], 403);
+            return response()->json(["message"=>"Этот приз удалить нельзя, его выиграли"], 403);
         }
-        $material_thing->delete();
+
+        $wheel = ActiveWheelService::getActiveWheel();
+        $sectors = $wheel->sectors;
+        foreach($sectors as $item){
+            if($item->prize_type == MaterialThing::class && $item->prize_id == $id){
+                return response()->json(["message"=>"Приз в активном колесе - нельзя удалить"],403);
+            }
+        }
+        $materialThing->delete();
         return response()->json(["message"=>"Вещь успешно удалена"]);
     }
 }

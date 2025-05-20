@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Enums\ExtraditionType;
 use App\Rules\ExistIdPrize;
 
 class UpdateUserPrizeRequest extends FormRequest
@@ -23,6 +22,7 @@ class UpdateUserPrizeRequest extends FormRequest
      */
     public function rules(): array
     {
+        $prizeType = $this->input('prize_type');
         return [
             'date' => ['required', 'date', 'equal:today'],
             'prize_type' => ['required'],

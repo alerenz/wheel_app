@@ -10,5 +10,6 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::command('app:increment-users-attempts')->daily()->timezone('Europe/Samara');
+Schedule::command('app:increment-users-attempts')->daily()->timezone('Europe/Samara')->at('00:01');
+// Schedule::command('app:increment-users-attempts')->everyMinute();
 

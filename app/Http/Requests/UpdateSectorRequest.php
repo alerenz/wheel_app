@@ -25,7 +25,6 @@ class UpdateSectorRequest extends FormRequest
         $prizeType = $this->input('prize_type');
 
         return [
-            'name' => ['required', 'string'],
             'prize_type' => ['required'],
             'prize_id' => [
                 'required',
@@ -33,15 +32,13 @@ class UpdateSectorRequest extends FormRequest
             ],
             'probability' => ['numeric', 'min:0', 'max:100'],
             'wheel_id' => ['required', 'exists:wheels,id'],
-            'count'=>['required','integer','min:0']
+
         ];
     }
 
 
     public function messages(){
         return [
-            'name.required'=>'Наименование сектора обязательно.',
-            'name.string'=>'Наименование должно быть строкой.',
             'prize_type.required' => 'Тип приза обязателен для заполнения',
             'prize_id.required' => 'ID приза обязателен для заполнения',
             'probability.numeric'=>'Вероятность должна быть числом',
@@ -49,9 +46,7 @@ class UpdateSectorRequest extends FormRequest
             'probability.max'=>'Вероятность не должна быть больше 100%',
             'wheel_id.required'=>'ID колеса обязателен для заполнения',
             'wheel_id.exists'=>'Колеса с таким id не существует',
-            'count.required'=>'Количество призов должно быть указано',
-            'count.integer'=>'Количество призов должно быть целым числом',
-            'count.min'=>'Количество призов не может быть отрицательным',
+
         ];
     }
 }
