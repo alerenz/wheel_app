@@ -12,8 +12,8 @@ class PrizeTypeService
 {
     protected static $prizeTypes = [
         'promocode' => Promocode::class,
-        'material_thing' => MaterialThing::class,
-        'empty_prize' => EmptyPrize::class,
+        'material-thing' => MaterialThing::class,
+        'empty-prize' => EmptyPrize::class,
         'attempt'=>Attempt::class,
     ];
 

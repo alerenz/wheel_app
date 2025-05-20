@@ -15,7 +15,6 @@ class ExistDayOfWeek implements ValidationRule
 
     private $validDays = ['понедельник', 'вторник','среда','четверг','пятница','суббота','воскресенье'];
 
-    // Конструктор для передачи prize_type
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {

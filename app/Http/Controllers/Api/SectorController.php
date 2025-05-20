@@ -23,7 +23,7 @@ class SectorController extends Controller
      *     schema="Sector",
      *     type="object",
      *     @OA\Property(property="id", type="integer", example=1),
-     *     @OA\Property(property="prize_type", type="string", example="material_thing"),
+     *     @OA\Property(property="prize_type", type="string", example="material-thing"),
      *     @OA\Property(property="prize_id", type="integer", example=1),
      *     @OA\Property(property="probability", type="string", example="15"),
      *     @OA\Property(property="wheel_id", type="integer", example=1),
@@ -130,7 +130,7 @@ class SectorController extends Controller
      *             @OA\Property(
      *                 property="prize_type",
      *                 type="string",
-     *                 enum={"promocode", "material_thing", "empty_prize"},
+     *                 enum={"promocode", "material-thing", "empty-prize"},
      *                 example="promocode"
      *             ),
      *             @OA\Property(property="prize_id", type="integer", example=1),
@@ -283,7 +283,7 @@ class SectorController extends Controller
      *             @OA\Property(
      *                 property="prize_type",
      *                 type="string",
-     *                 enum={"promocode", "material_thing", "empty_prize"},
+     *                 enum={"promocode", "material-thing", "empty-prize"},
      *                 example="promocode"
      *             ),
      *             @OA\Property(property="prize_id", type="integer", example=1),

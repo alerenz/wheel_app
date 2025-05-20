@@ -28,12 +28,12 @@ class ExistIdPrize implements ValidationRule
                     $fail("Приза с таким ID не существует для типа промокод.");
                 }
                 break;
-            case 'material_thing':
+            case 'material-thing':
                 if (!DB::table('material_things')->where('id', $value)->exists()) {
                     $fail("Приза с таким ID не существует для типа вещь.");
                 }
                 break;
-            case 'empty_prize':
+            case 'empty-prize':
                 if (!DB::table('empty_prizes')->where('id', $value)->exists()) {
                     $fail("Приза с таким ID не существует для типа пустой приз.");
                 }

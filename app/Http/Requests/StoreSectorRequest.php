@@ -30,7 +30,7 @@ class StoreSectorRequest extends FormRequest
                 'required',
                 new ExistIdPrize($prizeType),
             ],
-            'probability' => ['numeric', 'min:0', 'max:100'],
+            'probability' => ['numeric', 'min:0'],
             'wheel_id' => ['required', 'exists:wheels,id'],
         ];
     }
@@ -42,7 +42,6 @@ class StoreSectorRequest extends FormRequest
             'prize_id.required' => 'ID приза обязателен для заполнения',
             'probability.numeric'=>'Вероятность должна быть числом',
             'probability.min'=>'Вероятность не может быть отрицательной',
-            'probability.max'=>'Вероятность не должна быть больше 100%',
             'wheel_id.required'=>'ID колеса обязателен для заполнения',
             'wheel_id.exists'=>'Колеса с таким id не существует',
         ];

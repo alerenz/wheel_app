@@ -16,7 +16,7 @@ class UserPrizeController extends Controller
      *     type="object",
      *     @OA\Property(property="id", type="integer", example=1),
      *     @OA\Property(property="date", type="date",example="2025-06-01"),
-     *     @OA\Property(property="prize_type", type="string",example="empty_prize"),
+     *     @OA\Property(property="prize_type", type="string",example="empty-prize"),
      *     @OA\Property(property="prize_id", type="integer",example=1),
      *     @OA\Property(property="user_id", type="integer",example=1),
      *     @OA\Property(property="wheel_id", type="integer",example=1),
